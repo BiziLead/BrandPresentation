@@ -348,6 +348,8 @@
     .memory-system strong { grid-column:1/-1; color:var(--accent); font-size:25px; }
     .memory-system span { padding:10px; border-radius:10px; background:var(--accent-soft); font-weight:750; }
     .activation-arrow { color:var(--accent); font-size:32px; animation:flowNudge 1.6s ease-in-out infinite; }
+    .activation-arrow .mobile-arrow { display:none; }
+    #brand-03 .slide-frame::after { display:none; }
     .vertical-system { width:min(720px,100%); margin:auto; display:grid; justify-items:center; gap:9px; }
     .system-stage { width:100%; padding:17px 20px; border:1px solid var(--line); border-radius:15px; background:var(--surface-solid); cursor:pointer; text-align:center; }
     .system-stage strong,.system-stage span { display:block; }
@@ -561,13 +563,23 @@
     }
 
     @media (max-width: 640px) {
-      .topbar { padding:0 max(13px,env(safe-area-inset-right)) 0 max(13px,env(safe-area-inset-left)); }
+      .topbar { position:relative;padding:0 max(13px,env(safe-area-inset-right)) 0 max(13px,env(safe-area-inset-left)); }
+      .topbar .title-wrap { margin-right:48px;max-width:calc(100% - 150px); }
+      .topbar .mobile-menu { position:absolute;right:max(13px,env(safe-area-inset-right));top:50%;translate:0 -50%;margin:0; }
       .icon-btn { width:36px;height:36px; }
       .top-actions .optional { display:none; }
       .stage { padding:12px max(12px,env(safe-area-inset-right)) 12px max(12px,env(safe-area-inset-left)); }
-      .slide { inset:12px; }
-      .slide-frame { min-height:100%;padding:24px 20px;border-radius:20px; }
-      .slide.mobile-scroll .slide-frame { min-height:0; }
+      .slide { inset:0;padding:12px;display:block;overflow-x:hidden;overflow-y:auto;overscroll-behavior-y:contain;scrollbar-gutter:stable; }
+      .slide-frame { width:100%;height:auto!important;min-height:100%;padding:64px 20px 28px;border-radius:20px;transform:none!important;transform-origin:top center; }
+      .slide.mobile-scroll .slide-frame { min-height:100%;margin:0; }
+      .slide-frame :is(img,svg,canvas,table,.minimal-table,.brand-prism,.brand-radar,.demand-curve) { max-width:100%; }
+      .slide-frame :is(.brand-slide,.pricing-slide,.p03-slide) { height:auto;min-height:calc(100% - 2px);align-content:start; }
+      /* Mobile reading alignment: center the content while preserving RTL structure. */
+      .brand-slide { text-align:center; }
+      .brand-slide > :is(.kicker,h1,h2,h3,.lead) { justify-self:center;text-align:center; }
+      .brand-slide :is(.core-message,.instructor-cue) { margin-inline:auto;text-align:center; }
+      .brand-slide :is(.signal-box,.memory-system,.system-stage,.concept-row,.product-tile,.meaning-side,.response-side,.availability-side,.case-panel,.architecture-model,.behavior-node,.concept-giant,.version-card,.review-challenge) { text-align:center; }
+      .brand-slide :is(.signal-list,.keyword-cloud,.workshop-actions) { justify-content:center; }
       .two-col, .section-layout { grid-template-columns:1fr; }
       .section-index { font-size:4.5rem; }
       .orbit { display:none; }
@@ -584,6 +596,9 @@
       .choice-duel,.brand-anatomy,.product-compare,.cbbe-layout,.dual-meaning,.dual-response,.availability-pair,.mirror,.different-distinctive,.version-compare { grid-template-columns:1fr; }
       .version-review { grid-template-columns:1fr; }
       .choice-vs,.activation-arrow { rotate:90deg; justify-self:center; }
+      #brand-03 .activation-arrow { rotate:0deg; }
+      #brand-03 .activation-arrow .desktop-arrow { display:none!important; }
+      #brand-03 .activation-arrow .mobile-arrow { display:inline!important; }
       .concept-row { grid-template-columns:1fr; gap:5px; }
       .response-strip,.behavior-examples { grid-template-columns:1fr; }
       .equity-dashboard,.architecture-grid,.decision-options,.evidence-options,.action-options { grid-template-columns:1fr; }
@@ -610,8 +625,19 @@
       .asset-matrix { grid-template-rows:repeat(2,minmax(104px,1fr)); }
       .minimal-table { font-size:12px; }
       .minimal-table th,.minimal-table td { padding:9px 8px; }
+      #brand-21 .minimal-table { display:block;border:0;overflow:visible;background:transparent; }
+      #brand-21 .minimal-table thead { display:none; }
+      #brand-21 .minimal-table tbody { display:grid;gap:12px; }
+      #brand-21 .minimal-table tr { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));overflow:hidden;border:1px solid var(--line);border-radius:14px;background:var(--surface-solid);box-shadow:var(--shadow-sm); }
+      #brand-21 .minimal-table td { display:grid;place-items:center;min-height:52px;padding:11px 8px;border:0;border-top:1px solid var(--line);text-align:center;line-height:1.55;overflow-wrap:anywhere; }
+      #brand-21 .minimal-table td:first-child { grid-column:1/-1;min-height:40px;border-top:0;background:var(--soft);color:var(--accent);font-weight:900; }
+      #brand-21 .minimal-table td:nth-child(2) { border-left:1px solid var(--line); }
       .prism-label { font-size:20px; }
       .brand-flow .flow-node { min-width:94px; }
+      .top-actions .optional { display:none; }
+      .mobile-menu { display:grid; }
+      .sidebar { width:min(86vw,320px);height:100dvh;padding-bottom:max(24px,env(safe-area-inset-bottom));overflow-y:auto; }
+      .sidebar.open { transform:translateX(0); }
     }
 
     @media (max-width: 760px), (max-height: 520px) and (max-width: 1000px) {
@@ -716,7 +742,7 @@
 
         <article class="slide" id="brand-02" data-section="برند به‌عنوان سیستم" data-slide-title="آیا برند واقعاً ممتاز است؟" data-lesson-id="p02"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Premium ≠ Expensive</span><h2>آیا برند واقعاً «ممتاز» است؟</h2><p class="lead">یا فقط «گران» ادراک می‌شود؟</p><div class="choice-duel"><button class="choice-option hotspot" type="button" data-hotspot-title="PREMIUM" data-hotspot-text="مشتری دلیل قابل‌باوری برای پرداخت بیشتر دارد."><span class="big-word accent">PREMIUM</span><b>ارزش بیشتر + شواهد بیشتر</b></button><div class="choice-vs">VS</div><button class="choice-option is-risk hotspot" type="button" data-hotspot-title="EXPENSIVE" data-hotspot-text="مشتری اختلاف قیمت را می‌بیند اما اختلاف ارزش را نه."><span class="big-word">EXPENSIVE</span><b>قیمت بیشتر بدون ارزش قابل‌درک</b></button></div><div class="instructor-cue">رأی کلاسی: آیا هر برند گران‌قیمت، Premium Brand است؟</div></div></div></article>
 
-        <article class="slide" id="brand-03" data-section="برند به‌عنوان سیستم" data-slide-title="برند مساوی لوگو نیست" data-lesson-id="p03"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Brand Definition</span><h2>برند ≠ لوگو</h2><div class="brand-anatomy"><section class="signal-box"><h3>نشانه‌ها</h3><div class="signal-list"><span>Logo</span><span>Color</span><span>Typography</span><span>Packaging</span><span>Advertising</span></div></section><div class="activation-arrow">←</div><section class="memory-system"><strong>BRAND</strong><span>معنا</span><span>حافظه</span><span>تداعی</span><span>انتظار</span><span>تجربه</span></section></div><div class="core-message">لوگو برند نیست؛ لوگو می‌تواند برند را در حافظه فعال کند.</div></div></div></article>
+        <article class="slide" id="brand-03" data-section="برند به‌عنوان سیستم" data-slide-title="برند مساوی لوگو نیست" data-lesson-id="p03"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Brand Definition</span><h2>برند ≠ لوگو</h2><div class="brand-anatomy"><section class="signal-box"><h3>نشانه‌ها</h3><div class="signal-list"><span>Logo</span><span>Color</span><span>Typography</span><span>Packaging</span><span>Advertising</span></div></section><div class="activation-arrow" aria-hidden="true"><span class="desktop-arrow">←</span><span class="mobile-arrow">↓</span></div><section class="memory-system"><strong>BRAND</strong><span>معنا</span><span>حافظه</span><span>تداعی</span><span>انتظار</span><span>تجربه</span></section></div><div class="core-message">لوگو برند نیست؛ لوگو می‌تواند برند را در حافظه فعال کند.</div></div></div></article>
 
         <article class="slide" id="brand-04" data-section="برند به‌عنوان سیستم" data-slide-title="برند کجا ساخته می‌شود؟" data-lesson-id="p04"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Intent → Reality</span><h2>برند کجا ساخته می‌شود؟</h2><p class="lead">نه در Brand Book؛ در ذهن و تجربه مشتری.</p><div class="vertical-system"><button class="system-stage hotspot" type="button" data-hotspot-title="ORGANIZATION" data-hotspot-text="هویت مطلوب و معنایی که سازمان قصد دارد بسازد."><strong>ORGANIZATION</strong><span>آنچه می‌خواهیم باشیم</span></button><b class="system-arrow">↓</b><button class="system-stage hotspot" type="button" data-hotspot-title="TOUCHPOINTS" data-hotspot-text="رفتارها و شواهدی که وعده برند را تحویل می‌دهند یا نقض می‌کنند."><strong>TOUCHPOINTS</strong><span>آنچه انجام می‌دهیم</span></button><b class="system-arrow">↓</b><button class="system-stage hotspot" type="button" data-hotspot-title="CUSTOMER MEMORY" data-hotspot-text="معنا و تجربه‌ای که واقعاً در حافظه بازار باقی می‌ماند."><strong>CUSTOMER MEMORY</strong><span>آنچه واقعاً از ما می‌ماند</span></button></div><div class="core-message">برند چیزی نیست که شرکت درباره خودش می‌گوید.</div></div></div></article>
 
@@ -952,6 +978,7 @@
           slide.classList.toggle("active", i === index);
           slide.setAttribute("aria-hidden", String(i !== index));
         });
+        slides[index].scrollTop = 0;
         sectionLinks.forEach((link, i) => {
           link.classList.toggle("active", i === sectionIndex);
           if (i === sectionIndex) link.setAttribute("aria-current", "true"); else link.removeAttribute("aria-current");
@@ -1028,8 +1055,10 @@
         }
         let scale;
         if (isMobile) {
-          scale = Math.min(1, availableWidth / size.width);
-          slide.classList.toggle("mobile-scroll", size.height * scale > availableHeight + 1);
+          scale = 1;
+          slide.classList.add("mobile-scroll");
+          frame.style.removeProperty("height");
+          frame.style.minHeight = "100%";
         } else {
           scale = Math.max(minimumScale, naturalScale);
           slide.classList.toggle("fit-warning", naturalScale < minimumScale);
