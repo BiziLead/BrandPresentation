@@ -1,0 +1,1472 @@
+<!doctype html>
+<html lang="fa" dir="rtl" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#078b88">
+  <title>استراتژی برند و ارزش ویژه برند</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --font: "Vazirmatn", Tahoma, Arial, sans-serif;
+      --bg: #edf4f8;
+      --bg-2: #f9fcfd;
+      --surface: rgba(255,255,255,.92);
+      --surface-solid: #fff;
+      --soft: rgba(14,48,69,.065);
+      --line: rgba(14,48,69,.14);
+      --line-strong: rgba(14,48,69,.23);
+      --text: #102d3f;
+      --muted: #617988;
+      --dim: #899ca8;
+      --accent: #078b88;
+      --accent-2: #35b9b2;
+      --accent-soft: rgba(7,139,136,.13);
+      --complement: #f47a2a;
+      --complement-2: #ffb44c;
+      --complement-soft: rgba(244,122,42,.13);
+      --success: #139b79;
+      --sidebar: 286px;
+      --topbar: 78px;
+      --footer: 76px;
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --shadow: 0 26px 74px rgba(25,53,68,.14);
+      --ease: cubic-bezier(.22,.8,.22,1);
+      --type-display: clamp(2.1rem,4.7vw,4.9rem);
+      --type-title: clamp(30px,3.15vw,46px);
+      --type-heading: clamp(1rem,1.45vw,1.3rem);
+      --type-lead: clamp(.92rem,1.4vw,1.18rem);
+    }
+
+    html[data-theme="dark"] {
+      --bg: #06111a;
+      --bg-2: #0a1a28;
+      --surface: rgba(14,34,49,.9);
+      --surface-solid: #122a3b;
+      --soft: rgba(255,255,255,.055);
+      --line: rgba(255,255,255,.11);
+      --line-strong: rgba(255,255,255,.2);
+      --text: #f5f8fb;
+      --muted: #a8bac8;
+      --dim: #7890a2;
+      --accent-soft: rgba(24,184,177,.15);
+      --complement-soft: rgba(244,122,42,.16);
+      --shadow: 0 24px 80px rgba(0,0,0,.38);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { width: 100%; min-height: 100%; margin: 0; }
+    img, video, canvas { display:block; max-width:100%; height:auto; }
+    body {
+      overflow: hidden;
+      background: linear-gradient(145deg, var(--bg-2), var(--bg));
+      color: var(--text);
+      font-family: var(--font);
+      transition: background .35s ease, color .25s ease;
+    }
+
+    button { font: inherit; }
+    button:focus-visible { outline: 3px solid rgba(7,139,136,.34); outline-offset: 3px; }
+
+    .motion-backdrop { position:fixed; z-index:0; inset:0; overflow:hidden; pointer-events:none; }
+    .motion-backdrop::before {
+      content:""; position:absolute; inset:-18%; opacity:.48;
+      background:
+        linear-gradient(112deg, transparent 0 30%, rgba(7,139,136,.08) 30% 32%, transparent 32% 55%, rgba(244,122,42,.055) 55% 56.5%, transparent 56.5%),
+        repeating-linear-gradient(112deg, transparent 0 86px, rgba(7,139,136,.045) 86px 88px, transparent 88px 172px);
+      animation: backdropSweep 16s linear infinite;
+    }
+    .motion-network { position:absolute; inset:0; width:100%; height:100%; overflow:visible; opacity:.72; }
+    .network-path { fill:none; stroke:var(--accent); stroke-width:2; stroke-linecap:round; stroke-dasharray:9 13; vector-effect:non-scaling-stroke; animation:dashFlow 2.4s linear infinite; }
+    .network-path.secondary { stroke:var(--accent-2); stroke-width:1.35; opacity:.56; animation-duration:3.2s; }
+    .network-path.complement { stroke:var(--complement); stroke-width:1.6; opacity:.54; animation-direction:reverse; animation-duration:2.8s; }
+    .moving-node { fill:var(--accent); filter:drop-shadow(0 0 7px color-mix(in srgb,var(--accent) 72%,transparent)); }
+    .moving-node.complement { fill:var(--complement); filter:drop-shadow(0 0 7px color-mix(in srgb,var(--complement) 72%,transparent)); }
+    .network-junction { fill:var(--surface-solid); stroke:var(--accent); stroke-width:2; vector-effect:non-scaling-stroke; animation:junctionPulse 2.6s ease-in-out infinite; }
+    .network-junction.j2 { animation-delay:-.85s; }
+    .network-junction.j3 { stroke:var(--complement); animation-delay:-1.65s; }
+    .ambient-grid {
+      position: fixed; z-index:0; inset: 0; pointer-events: none; opacity: .23;
+      background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+      background-size: 54px 54px;
+      mask-image: linear-gradient(to bottom, #000, transparent 78%);
+      animation:gridDrift 9s linear infinite;
+    }
+
+    @keyframes dashFlow { to { stroke-dashoffset:-44; } }
+    @keyframes gridDrift { to { background-position:54px 27px,54px 27px; } }
+    @keyframes backdropSweep { to { transform:translate3d(12%,5%,0); } }
+    @keyframes junctionPulse { 0%,100% { r:5px; opacity:.45; } 50% { r:8px; opacity:1; } }
+
+    .app { position:relative; z-index:1; display: grid; grid-template-columns: var(--sidebar) 1fr; min-height: 100dvh; }
+
+    .sidebar {
+      position: relative; z-index: 20; height: 100dvh; padding: 104px 20px 25px;
+      border-left: 1px solid var(--line); background: color-mix(in srgb, var(--surface-solid) 82%, transparent);
+      backdrop-filter: blur(18px); display: flex; flex-direction: column; gap: 24px;
+    }
+    .brand { display: flex; align-items: center; gap: 8px; padding: 2px 4px 18px; border-bottom: 1px solid var(--line); }
+    .brand-mark { width: 38px; flex:0 0 38px; aspect-ratio: 1; border-radius: 13px; display: grid; place-items: center; color: white; font-weight: 900; background: linear-gradient(145deg,var(--accent-2),var(--accent)); box-shadow: 0 10px 28px rgba(7,139,136,.25); }
+    .brand-mark svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .brand-copy{min-width:0;flex:1}
+    .brand-copy strong, .brand-copy span { display: block; }
+    .brand-copy strong { white-space:nowrap;font-size:clamp(11.5px,.92vw,13px);letter-spacing:-.35px; }
+    .brand-copy span { margin-top: 3px; color: var(--muted); font-size: 13px; }
+
+    .nav-label { padding: 0 6px; color: var(--dim); font-size: 13px; font-weight: 800; letter-spacing: .04em; }
+    .section-nav { display: grid; gap: 8px; overflow: auto; scrollbar-width: thin; }
+    .section-link {
+      width: 100%; border: 1px solid transparent; border-radius: 15px; padding: 12px 13px;
+      background: transparent; color: var(--muted); display: grid; grid-template-columns: 26px 1fr; gap: 9px;
+      align-items: center; text-align: right; cursor: pointer; transition: .2s ease;
+    }
+    .section-link:hover { background: var(--soft); color: var(--text); }
+    .section-link.active { color: var(--text); background: var(--accent-soft); border-color: rgba(7,139,136,.25); }
+    .section-number { display: grid; place-items: center; width: 25px; height: 25px; border-radius: 9px; color: var(--dim); background: var(--soft); font-size: .7rem; font-weight: 800; }
+    .section-link.active .section-number { color: white; background: var(--accent); }
+    .section-name { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-weight: 700; font-size: .78rem; }
+
+    .sidebar-footer { margin-top: auto; padding: 16px 6px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: .68rem; line-height: 1.8; }
+    .university-lockup { display:grid; gap:10px; }
+    .university-logo-wrap { position:absolute; top:18px; right:20px; left:20px; width:auto; min-height:68px; display:grid; place-items:center; padding:8px 10px; border:1px solid var(--line); border-radius:13px; background:#fff; overflow:hidden; }
+    .university-logo { display:block; width:min(188px,100%); height:auto; object-fit:contain; }
+    .instructor-name { color:var(--text); font-size:13px; font-weight:800; line-height:1.7; text-align:right; }
+
+    .shell { min-width: 0; height: 100dvh; display: grid; grid-template-rows: var(--topbar) 1fr var(--footer); }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 clamp(20px,3vw,42px); border-bottom: 1px solid var(--line); }
+    .title-wrap { min-width: 0; }
+    .eyebrow { color: var(--accent); font-weight: 800; font-size: 13px; }
+    .deck-title { margin-top: 4px; max-width: 64vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); font-size: .78rem; }
+    .top-actions { display: flex; gap: 8px; }
+    .icon-btn {
+      width: 39px; height: 39px; border-radius: 13px; border: 1px solid var(--line); background: var(--surface); color: var(--text); cursor: pointer; display: grid; place-items: center; transition: .2s ease;
+    }
+    .icon-btn:hover { transform: translateY(-2px); border-color: var(--line-strong); }
+    .icon-btn[aria-pressed="true"] { color: var(--accent); border-color: rgba(7,139,136,.35); background: var(--accent-soft); }
+    .icon-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+    .stage { position: relative; min-height: 0; padding: clamp(18px,2.4vw,34px) clamp(20px,3.3vw,52px); overflow: hidden; }
+    .slide {
+      position: absolute; inset: clamp(18px,2.4vw,34px) clamp(20px,3.3vw,52px); opacity: 0; visibility: hidden;
+      transform: translateX(-34px) scale(.988); pointer-events: none; transition: opacity .38s var(--ease), transform .45s var(--ease), visibility .45s;
+      display: grid; align-content: center; overflow: hidden;
+    }
+    .slide.active { opacity: 1; visibility: visible; transform: none; pointer-events: auto; z-index: 2; }
+    .slide.exit-back { transform: translateX(34px) scale(.988); }
+
+    .slide-frame {
+      width: min(1180px,100%); min-height: min(670px,100%); margin: auto; padding: clamp(26px,4vw,58px);
+      border: 1px solid var(--line); border-radius: var(--radius-xl); background: var(--surface); box-shadow: var(--shadow); backdrop-filter: blur(16px);
+      display: grid; align-content: center; position: relative; overflow: visible;
+      transform:scale(var(--fit-scale,1)); transform-origin:center center;
+    }
+    .slide.mobile-scroll { align-content:start; overflow-x:hidden; overflow-y:auto; overscroll-behavior:contain; scrollbar-width:thin; }
+    .slide.mobile-scroll .slide-frame { margin-block:0 18px; transform-origin:top center; }
+    .slide-frame.compact-fit { padding:18px 24px; }
+    .slide-frame.compact-fit .brand-slide { gap:8px; }
+    .slide-frame.compact-fit :is(.card,.dashboard-group,.architecture-model,.case-panel,.behavior-node) { min-height:0; padding:10px; }
+    .slide-frame > *, .drawer-header > *, .drawer-body > *, .topbar > *, .bottom-bar > * { min-width:0; }
+    .slide-frame, .drawer-body, .hotspot-popover { overflow-wrap:anywhere; word-break:normal; }
+    .slide-frame::before {
+      content:""; position:absolute; inset:0 0 auto; height:5px; pointer-events:none;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2) 46%,var(--complement) 72%,transparent 94%);
+      background-size:180% 100%; animation:frameSignal 5.5s ease-in-out infinite alternate;
+    }
+    .slide-frame::after {
+      content:""; position:absolute; left:22px; bottom:20px; width:86px; height:12px; opacity:.5; pointer-events:none;
+      background:repeating-linear-gradient(90deg,var(--accent) 0 7px,transparent 7px 12px);
+      animation:markerTravel 2.2s linear infinite;
+    }
+    @keyframes frameSignal { to { background-position:100% 0; } }
+    @keyframes markerTravel { to { background-position:24px 0; } }
+
+    .kicker { display: inline-flex; align-items: center; gap: 8px; width: fit-content; color: var(--accent); font-size: .76rem; font-weight: 900; margin-bottom: 14px; }
+    .kicker::before { content: ""; width: 22px; height: 3px; border-radius: 9px; background: var(--accent); }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { max-width: 880px; margin-bottom: 18px; font-size: var(--type-display); line-height: 1.15; letter-spacing: -.04em; }
+    h2 { max-width: 930px; margin-bottom: 16px; font-size: var(--type-title); line-height: 1.25; letter-spacing: -.025em; }
+    h3 { margin-bottom: 9px; font-size: var(--type-heading); }
+    .lead { max-width: 850px; margin-bottom: 0; color: var(--muted); font-size: var(--type-lead); line-height: 2; }
+    .accent { color: var(--accent); }
+
+    .cover-layout { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0,1.15fr) minmax(280px,.85fr); align-items: center; gap: clamp(28px,5vw,76px); }
+    .cover-meta { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 34px; }
+    .pill { border: 1px solid var(--line); background: var(--soft); color: var(--muted); padding: 8px 12px; border-radius: 999px; font-size: .75rem; }
+    .orbit { position: relative; width: min(32vw,360px); aspect-ratio: 1; margin: auto; border: 1px solid var(--line); border-radius: 50%; display: grid; place-items: center; }
+    .orbit::before, .orbit::after { content:""; position:absolute; border:1px solid var(--line); border-radius:50%; inset:14%; }
+    .orbit::after { inset:30%; border-color:rgba(7,139,136,.38); }
+    .orbit-core { position: relative; z-index: 2; width: 104px; aspect-ratio: 1; border-radius: 35px; display: grid; place-items: center; color: white; background: linear-gradient(145deg,var(--accent-2),var(--accent)); box-shadow: 0 20px 44px rgba(7,139,136,.27); font-weight: 900; }
+    .orbit-node { position:absolute; z-index:3; padding:8px 11px; border-radius:11px; border:1px solid var(--line); background:var(--surface-solid); color:var(--muted); font-size:.7rem; font-weight:800; }
+    .orbit-node:nth-child(2){top:3%;right:36%}.orbit-node:nth-child(3){top:44%;left:-5%}.orbit-node:nth-child(4){bottom:4%;right:34%}.orbit-node:nth-child(5){top:44%;right:-7%}
+
+    .section-cover .slide-frame { background: linear-gradient(135deg, var(--surface), color-mix(in srgb, var(--accent-soft) 75%, var(--surface))); }
+    .section-layout { position:relative; z-index:1; display:grid; grid-template-columns:120px 1fr; align-items:center; gap:clamp(24px,4vw,58px); }
+    .section-index { font-size:clamp(4rem,9vw,8rem); font-weight:900; line-height:1; color:transparent; -webkit-text-stroke:1px var(--line-strong); }
+    .section-rule { width:min(360px,60%); height:5px; border-radius:99px; margin-top:28px; background:linear-gradient(90deg,var(--accent),var(--complement),transparent); }
+
+    .two-col { position:relative;z-index:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(18px,3vw,38px);margin-top:26px; }
+    .panel { padding:clamp(20px,2.5vw,30px);border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--soft); }
+    .panel p { color:var(--muted);line-height:1.9;margin-bottom:0;font-size:.9rem; }
+    .panel-number { width:34px;height:34px;border-radius:11px;display:grid;place-items:center;margin-bottom:16px;background:var(--accent-soft);color:var(--accent);font-weight:900; }
+
+    .cards { position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:28px; }
+    .card { min-height:190px;padding:24px;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--surface-solid);box-shadow:0 14px 30px rgba(20,53,70,.06); }
+    .card-icon { width:42px;height:42px;border-radius:14px;display:grid;place-items:center;margin-bottom:20px;color:white;background:linear-gradient(145deg,var(--accent-2),var(--accent));font-weight:900; }
+    .card:nth-child(2) .card-icon { background:linear-gradient(145deg,var(--complement-2),var(--complement)); }
+    .card p { color:var(--muted);line-height:1.85;font-size:.84rem;margin-bottom:0; }
+
+    .quote { position:relative;z-index:1;max-width:940px;padding:clamp(24px,4vw,48px);border-right:5px solid var(--accent);border-radius:var(--radius-lg);background:var(--soft); }
+    .quote p { font-size:clamp(1.2rem,2.4vw,2.15rem);line-height:1.75;font-weight:700;margin-bottom:20px; }
+    .quote cite { color:var(--muted);font-style:normal;font-size:.82rem; }
+
+    .closing { text-align:center;justify-items:center; }
+    .closing-mark { width:74px;aspect-ratio:1;border-radius:25px;display:grid;place-items:center;margin-bottom:25px;color:white;background:linear-gradient(145deg,var(--accent-2),var(--accent));font-size:1.8rem;font-weight:900;box-shadow:0 18px 45px rgba(7,139,136,.28); }
+
+    .bottom-bar { display:flex;align-items:center;gap:18px;padding:0 clamp(20px,3vw,42px);border-top:1px solid var(--line); }
+    .progress-copy { min-width:74px;color:var(--muted);font-size:13px;font-weight:800; }
+    .progress-track { flex:1;min-width:0;height:5px;border-radius:99px;background:var(--line);overflow:hidden; }
+    .progress-fill { width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--accent),var(--accent-2),var(--complement));transition:width .35s var(--ease); }
+    .nav-actions { display:flex;gap:9px; }
+    .nav-btn { min-width:92px;border:1px solid var(--line);border-radius:13px;padding:10px 15px;background:var(--surface);color:var(--text);cursor:pointer;font-weight:800;font-size:.75rem; }
+    .nav-btn.primary { color:white;border-color:transparent;background:var(--accent); }
+    .nav-btn:disabled { opacity:.35;cursor:not-allowed; }
+
+    .mobile-menu, .sidebar-backdrop { display:none; }
+    .toast { position:fixed;z-index:60;right:50%;bottom:94px;transform:translate(50%,18px);padding:12px 18px;border:1px solid var(--line);border-radius:14px;background:var(--surface-solid);box-shadow:var(--shadow);color:var(--muted);font-size:.75rem;opacity:0;visibility:hidden;transition:.25s ease; }
+    .toast.show { opacity:1;visibility:visible;transform:translate(50%,0); }
+
+    .lesson-trigger {
+      position:absolute; z-index:6; top:22px; left:22px; display:inline-flex; align-items:center; gap:8px;
+      min-height:40px; padding:9px 14px; border:1px solid rgba(7,139,136,.34); border-radius:13px;
+      color:var(--accent); background:color-mix(in srgb,var(--surface-solid) 88%,transparent); box-shadow:0 9px 24px rgba(8,71,79,.1);
+      cursor:pointer; font-weight:900; font-size:13px; transition:transform .2s ease,border-color .2s ease,background .2s ease;
+    }
+    .lesson-trigger:hover { transform:translateY(-2px); border-color:var(--accent); background:var(--accent-soft); }
+    .lesson-trigger::before { content:"＋"; display:grid; place-items:center; width:20px; height:20px; border-radius:7px; color:white; background:var(--accent); font-size:14px; }
+    .slide.has-lesson .slide-frame { padding-top:max(76px,clamp(26px,4vw,58px)); }
+
+    .drawer-backdrop {
+      position:fixed; z-index:80; inset:0; border:0; padding:0; background:rgba(2,16,23,.44); opacity:0; visibility:hidden;
+      cursor:default; transition:opacity .24s ease,visibility .24s ease;
+    }
+    .drawer-backdrop.open { opacity:1; visibility:visible; }
+    .lesson-drawer {
+      position:fixed; z-index:90; inset:0 0 0 auto; width:38vw; min-width:420px; max-width:100vw; padding:0;
+      border:0; border-left:1px solid var(--line); background:var(--surface-solid); color:var(--text); box-shadow:-24px 0 70px rgba(3,23,32,.24);
+      transform:translateX(105%); visibility:hidden; transition:transform .32s var(--ease),visibility .32s; overflow:hidden;
+    }
+    .lesson-drawer.open { transform:none; visibility:visible; }
+    .drawer-shell { width:100%; height:100%; min-width:0; display:grid; grid-template-rows:auto minmax(0,1fr); }
+    .drawer-header { display:flex; align-items:flex-start; justify-content:space-between; gap:18px; padding:24px 26px 20px; border-bottom:1px solid var(--line); background:var(--soft); }
+    .drawer-kicker { margin-bottom:6px; color:var(--accent); font-size:13px; font-weight:900; }
+    .drawer-title { margin:0; max-width:100%; font-size:clamp(22px,2.2vw,31px); line-height:1.35; overflow-wrap:anywhere; }
+    .drawer-close { flex:0 0 auto; width:40px; height:40px; display:grid; place-items:center; border:1px solid var(--line); border-radius:13px; background:var(--surface-solid); color:var(--text); cursor:pointer; font-size:22px; }
+    .drawer-body { min-height:0; overflow-x:hidden; overflow-y:auto; overscroll-behavior:contain; padding:24px 26px max(38px,env(safe-area-inset-bottom)); }
+    .lesson-block { padding:19px 0; border-bottom:1px solid var(--line); }
+    .lesson-block:first-child { padding-top:0; }
+    .lesson-block:last-child { border-bottom:0; }
+    .lesson-block-label { display:flex; align-items:center; gap:9px; margin-bottom:9px; color:var(--accent); font-size:13px; font-weight:900; }
+    .lesson-block-label::before { content:""; width:8px; height:8px; border-radius:3px; background:var(--accent); }
+    .lesson-block.is-warning .lesson-block-label { color:var(--complement); }
+    .lesson-block.is-warning .lesson-block-label::before { background:var(--complement); }
+    .lesson-block p { margin:0; color:var(--muted); font-size:15px; line-height:1.95; white-space:pre-line; }
+
+    .hotspot {
+      appearance:none; font-family:inherit; cursor:pointer; transition:transform .2s ease,border-color .2s ease,background .2s ease;
+    }
+    .hotspot:hover,.hotspot[aria-expanded="true"] { transform:translateY(-2px); border-color:var(--accent); color:var(--text); background:var(--accent-soft); }
+    .hotspot-popover {
+      position:fixed; z-index:75; width:min(310px,calc(100vw - 28px)); padding:16px 17px; border:1px solid var(--line-strong);
+      border-radius:15px; background:var(--surface-solid); color:var(--text); box-shadow:var(--shadow); opacity:0; visibility:hidden;
+      transform:translateY(8px); transition:.2s ease;
+    }
+    .hotspot-popover.open { opacity:1; visibility:visible; transform:none; }
+    .hotspot-popover strong { display:block; padding-left:26px; margin-bottom:6px; font-size:15px; }
+    .hotspot-popover p { margin:0; color:var(--muted); font-size:13px; line-height:1.75; }
+    .hotspot-close { position:absolute; top:8px; left:8px; width:28px; height:28px; border:0; border-radius:9px; background:var(--soft); color:var(--text); cursor:pointer; }
+
+    .definition-card,.comparison-card,.metric-card,.class-question,.case-study-dashboard,.workshop-board {
+      border:1px solid var(--line); border-radius:var(--radius-lg); background:var(--surface-solid);
+    }
+    .definition-card { padding:24px; border-right:4px solid var(--accent); }
+    .definition-card__term { color:var(--accent); font-weight:900; }
+    .definition-card__text { color:var(--muted); line-height:1.9; }
+    .comparison-card { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); overflow:hidden; }
+    .comparison-card__side { padding:22px; }
+    .comparison-card__side + .comparison-card__side { border-right:1px solid var(--line); }
+    .metric-card { padding:22px; display:grid; gap:7px; }
+    .metric-card__label { color:var(--muted); font-size:13px; font-weight:800; }
+    .metric-card__value { color:var(--accent); font-size:clamp(28px,3.2vw,44px); font-weight:900; direction:ltr; text-align:right; }
+    .metric-card__change { color:var(--success); font-size:13px; font-weight:800; }
+    .process-diagram { display:grid; grid-template-columns:repeat(var(--steps,4),minmax(0,1fr)); gap:12px; }
+    .process-step { position:relative; padding:20px; border:1px solid var(--line); border-radius:var(--radius-md); background:var(--surface-solid); }
+    .process-step:not(:last-child)::after { content:"←"; position:absolute; left:-11px; top:50%; translate:-50% -50%; color:var(--accent); font-weight:900; }
+    .matrix-2x2 { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); grid-template-rows:repeat(2,minmax(120px,1fr)); gap:10px; }
+    .matrix-cell { padding:20px; border:1px solid var(--line); border-radius:var(--radius-md); background:var(--soft); }
+    .class-question { padding:26px; border-color:rgba(244,122,42,.32); background:var(--complement-soft); }
+    .class-question__label { color:var(--complement); font-size:13px; font-weight:900; }
+    .class-question__text { margin-top:9px; font-size:clamp(19px,2vw,28px); font-weight:800; line-height:1.6; }
+    .case-study-dashboard { padding:20px; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+    .case-study-dashboard__panel { min-height:120px; padding:17px; border-radius:var(--radius-md); background:var(--soft); }
+    .workshop-board { padding:20px; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+    .workshop-column { min-height:180px; padding:16px; border:1px dashed var(--line-strong); border-radius:var(--radius-md); background:var(--soft); }
+
+    /* Brand strategy presentation components */
+    .brand-slide { display:grid; gap:clamp(16px,2.2vw,28px); position:relative; z-index:1; }
+    .core-message { width:fit-content; max-width:100%; margin-top:4px; padding:10px 15px; border-right:4px solid var(--accent); border-radius:10px; background:var(--accent-soft); color:var(--text); font-size:clamp(14px,1.3vw,18px); font-weight:850; line-height:1.7; }
+    .instructor-cue { padding:9px 13px; border:1px dashed rgba(244,122,42,.42); border-radius:11px; background:var(--complement-soft); color:var(--complement); font-size:13px; font-weight:800; }
+    .en-label { direction:ltr; text-align:right; font-family:Inter,Arial,sans-serif; letter-spacing:.025em; }
+    .big-word { font-family:Inter,Arial,sans-serif; font-size:clamp(32px,5.4vw,76px); font-weight:900; letter-spacing:-.055em; line-height:.95; }
+    .brand-flow { display:flex; align-items:center; justify-content:center; gap:10px; direction:ltr; flex-wrap:wrap; }
+    .brand-flow .flow-node { min-width:112px; padding:14px 12px; border:1px solid var(--line); border-radius:14px; background:var(--surface-solid); text-align:center; font-size:13px; font-weight:850; }
+    .brand-flow .flow-arrow { color:var(--accent); font-size:23px; font-weight:900; animation:flowNudge 1.6s ease-in-out infinite; }
+    @keyframes flowNudge { 50% { translate:5px 0; } }
+    .meaning-chain { display:grid; gap:12px; text-align:center; }
+    #brand-01 .slide-frame{overflow:hidden;background:radial-gradient(circle at 12% 18%,color-mix(in srgb,var(--complement-soft) 80%,transparent) 0 8%,transparent 30%),linear-gradient(135deg,var(--surface) 0 65%,color-mix(in srgb,var(--accent-soft) 66%,var(--surface)) 100%)}
+    #brand-01 h1{white-space:nowrap}
+    #brand-01 .brand-flow{width:100%;padding:13px;border:1px solid var(--line);border-radius:18px;background:color-mix(in srgb,var(--surface-solid) 90%,transparent);box-shadow:var(--shadow-sm)}
+    #brand-01 .brand-flow .flow-node{display:flex;align-items:center;justify-content:center;gap:7px;min-height:62px}
+    #brand-01 .flow-icon{width:21px;height:21px;flex:0 0 21px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+    #brand-01 .core-message{margin-inline-start:auto;border-right:4px solid var(--accent);background:linear-gradient(90deg,var(--accent-soft),transparent)}
+    body.projector-mode #brand-01 h1{white-space:nowrap;font-size:clamp(48px,5vw,68px)!important}
+    .meaning-chain__fa { color:var(--muted); font-size:14px; }
+    .choice-duel { display:grid; grid-template-columns:1fr auto 1fr; align-items:stretch; gap:18px; }
+    .choice-option { min-height:250px; display:grid; place-items:center; align-content:center; gap:16px; padding:28px; border:1px solid var(--line); border-radius:24px; background:var(--surface-solid); color:var(--text); cursor:pointer; text-align:center; }
+    .choice-option:hover,.choice-option.selected { border-color:var(--accent); background:var(--accent-soft); transform:translateY(-3px); }
+    .choice-option.is-risk:hover,.choice-option.is-risk.selected { border-color:var(--complement); background:var(--complement-soft); }
+    .choice-vs { align-self:center; color:var(--dim); font-size:16px; font-weight:900; }
+    .inline-feedback { min-height:54px; padding:13px 16px; border-radius:13px; background:var(--soft); color:var(--muted); text-align:center; line-height:1.7; }
+    .brand-anatomy { display:grid; grid-template-columns:.8fr auto 1.2fr; gap:22px; align-items:center; }
+    .signal-box,.memory-system { padding:24px; border:1px solid var(--line); border-radius:20px; background:var(--surface-solid); }
+    .signal-list { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
+    .signal-list span { padding:7px 10px; border-radius:9px; background:var(--soft); color:var(--muted); font-size:12px; }
+    .memory-system { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; border-color:rgba(7,139,136,.35); }
+    .memory-system strong { grid-column:1/-1; color:var(--accent); font-size:25px; }
+    .memory-system span { padding:10px; border-radius:10px; background:var(--accent-soft); font-weight:750; }
+    .activation-arrow { color:var(--accent); font-size:32px; animation:flowNudge 1.6s ease-in-out infinite; }
+    .vertical-system { width:min(720px,100%); margin:auto; display:grid; justify-items:center; gap:9px; }
+    .system-stage { width:100%; padding:17px 20px; border:1px solid var(--line); border-radius:15px; background:var(--surface-solid); cursor:pointer; text-align:center; }
+    .system-stage strong,.system-stage span { display:block; }
+    .system-stage strong { color:var(--accent); font-size:18px; }
+    .system-stage span { margin-top:4px; color:var(--muted); font-size:14px; }
+    .system-arrow { color:var(--accent); font-size:22px; }
+    .scroll-flow { display:flex; align-items:center; gap:6px; direction:ltr; overflow:hidden; padding:12px 4px 18px; }
+    .scroll-flow .flow-node { flex:1 1 86px; min-width:0; min-height:94px; display:grid; place-items:center; padding:10px 7px; border:1px solid var(--line); border-radius:15px; background:var(--surface-solid); text-align:center; font-size:11px; font-weight:850; cursor:pointer; }
+    .scroll-flow .flow-arrow { flex:0 0 auto; color:var(--accent); font-size:21px; }
+    .concept-ladder { width:min(780px,100%); margin:auto; display:grid; gap:9px; }
+    .concept-row { display:grid; grid-template-columns:190px 1fr; gap:16px; align-items:center; padding:14px 18px; border:1px solid var(--line); border-radius:14px; background:var(--surface-solid); cursor:pointer; }
+    .concept-row strong { color:var(--accent); direction:ltr; text-align:right; }
+    .concept-row span { color:var(--muted); }
+    .product-compare { display:grid; grid-template-columns:1fr auto 1fr; gap:18px; align-items:center; }
+    .product-tile { min-height:210px; display:grid; place-items:center; align-content:center; gap:12px; border:1px solid var(--line); border-radius:24px; background:var(--surface-solid); text-align:center; }
+    .product-tile.known { border-color:rgba(7,139,136,.38); box-shadow:0 16px 40px rgba(7,139,136,.12); }
+    .response-strip { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+    .response-strip span { padding:12px; border-radius:11px; background:var(--accent-soft); color:var(--accent); text-align:center; font-weight:900; }
+    .cbbe-layout { display:grid; grid-template-columns:1fr 230px; gap:30px; align-items:center; }
+    .cbbe-pyramid { width:min(680px,100%); margin:auto; display:flex; flex-direction:column-reverse; align-items:center; gap:8px; }
+    .pyramid-level { min-height:68px; display:grid; place-items:center; padding:10px 18px; border:0; color:white; background:var(--accent); clip-path:polygon(10% 0,90% 0,100% 100%,0 100%); cursor:pointer; font-weight:850; text-align:center; }
+    .pyramid-level:nth-child(1){width:100%}.pyramid-level:nth-child(2){width:82%;background:#159b96}.pyramid-level:nth-child(3){width:64%;background:#29aaa4}.pyramid-level:nth-child(4){width:46%;background:var(--complement)}
+    .diagnostic-path { display:grid; gap:9px; }
+    .diagnostic-path span { padding:10px 12px; border-right:3px solid var(--accent); background:var(--soft); font-size:13px; font-weight:800; }
+    .memory-map { position:relative; min-height:320px; display:grid; place-items:center; }
+    .memory-core { width:138px; aspect-ratio:1; display:grid; place-items:center; border-radius:44% 56% 48% 52%; background:var(--accent); color:white; font-size:18px; font-weight:900; text-align:center; animation:memoryPulse 2.6s ease-in-out infinite; }
+    @keyframes memoryPulse { 50% { transform:scale(1.06); box-shadow:0 0 0 18px var(--accent-soft); } }
+    .buying-cue { position:absolute; min-width:126px; padding:10px; border:1px solid var(--line); border-radius:12px; background:var(--surface-solid); text-align:center; font-size:14px; }
+    .buying-cue.on { border-color:var(--accent); color:var(--accent); box-shadow:0 0 18px rgba(7,139,136,.18); }
+    .buying-cue.c1{top:2%;right:12%}.buying-cue.c2{top:15%;left:9%}.buying-cue.c3{bottom:11%;right:6%}.buying-cue.c4{bottom:2%;left:17%}
+    .depth-breadth { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+    .depth-breadth div { padding:14px; border-radius:13px; background:var(--soft); font-size:14px; }
+    .dual-meaning,.dual-response,.availability-pair { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
+    .meaning-side,.response-side,.availability-side { padding:24px; border:1px solid var(--line); border-radius:20px; background:var(--surface-solid); }
+    .meaning-side h3,.response-side h3,.availability-side h3 { color:var(--accent); direction:ltr; }
+    .keyword-cloud { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
+    .keyword-cloud span { padding:8px 10px; border-radius:9px; background:var(--soft); color:var(--muted); font-size:12px; }
+    .response-center { grid-column:1/-1; justify-self:center; padding:9px 22px; border-radius:99px; background:var(--accent); color:white; font-weight:900; }
+    .resonance-network { width:min(900px,100%); margin:auto; display:grid; grid-template-columns:minmax(0,1fr) 150px minmax(0,1fr); grid-template-rows:repeat(2,minmax(118px,auto)); gap:14px; align-items:stretch; }
+    .resonance-hub { grid-column:2; grid-row:1 / 3; align-self:center; aspect-ratio:1; display:grid; place-items:center; padding:18px; border-radius:38% 62% 44% 56%; background:linear-gradient(145deg,var(--accent-2),var(--accent)); color:#fff; text-align:center; font-size:18px; font-weight:900; box-shadow:0 18px 42px rgba(7,139,136,.22); }
+    .resonance-card { position:relative; display:grid; align-content:center; gap:8px; padding:17px 19px; border:1px solid var(--line); border-radius:17px; background:var(--surface-solid); }
+    .resonance-card::after { content:""; position:absolute; top:50%; width:15px; height:2px; background:var(--accent); }
+    .resonance-card:nth-child(1),.resonance-card:nth-child(4) { text-align:left; direction:ltr; }
+    .resonance-card:nth-child(1)::after,.resonance-card:nth-child(4)::after { right:-15px; }
+    .resonance-card:nth-child(2),.resonance-card:nth-child(5) { text-align:right; }
+    .resonance-card:nth-child(2)::after,.resonance-card:nth-child(5)::after { left:-15px; }
+    .resonance-card strong { color:var(--accent); font-size:17px; }
+    .resonance-card span { color:var(--muted); font-size:14px; line-height:1.55; }
+    .funnel { width:min(720px,100%); margin:auto; display:grid; justify-items:center; gap:7px; }
+    .funnel-step { display:grid; place-items:center; min-height:92px; color:white; background:var(--accent); clip-path:polygon(6% 0,94% 0,82% 100%,18% 100%); font-size:20px; font-weight:900; text-align:center; }
+    .funnel-step:first-child{width:100%}.funnel-step:last-child{width:58%;background:var(--complement)}
+    .warning-banner { padding:14px 18px; border:1px solid rgba(244,122,42,.42); border-radius:13px; background:var(--complement-soft); color:var(--complement); font-weight:900; text-align:center; }
+    .equity-dashboard { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; }
+    .dashboard-group { min-height:190px; padding:17px 13px; border:1px solid var(--line); border-radius:16px; background:var(--surface-solid); }
+    .dashboard-group strong { display:block; color:var(--accent); direction:ltr; font-size:16px; }
+    .dashboard-group span { display:block; margin-top:13px; color:var(--muted); font-size:14px; line-height:1.65; }
+    .mirror { display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:18px; }
+    .mirror-side { min-height:210px; padding:25px; border:1px solid var(--line); border-radius:22px; background:var(--surface-solid); text-align:center; }
+    .mirror-gap { display:grid; place-items:center; width:86px; aspect-ratio:1; border-radius:50%; background:var(--complement); color:white; font-weight:900; }
+    .prism-layout { display:grid; grid-template-columns:minmax(0,1fr) minmax(290px,340px); gap:22px; align-items:center; }
+    .brand-prism { width:100%; max-height:430px; }
+    .prism-face { fill:color-mix(in srgb,var(--accent) 12%,var(--surface-solid)); stroke:var(--accent); stroke-width:2; cursor:pointer; transition:.2s ease; }
+    .prism-face:hover { fill:var(--accent-soft); transform:translateY(-2px); }
+    .prism-label { fill:var(--text); font-family:var(--font); font-size:14px; font-weight:800; pointer-events:none; text-anchor:middle; }
+    .prism-index { fill:#fff; font-family:var(--font); font-size:24px; font-weight:900; pointer-events:none; text-anchor:middle; dominant-baseline:middle; }
+    .prism-index-dot { fill:var(--accent); stroke:var(--surface-solid); stroke-width:3; pointer-events:none; }
+    .prism-legend { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; }
+    .prism-key { min-height:68px; padding:10px 12px; border:1px solid var(--line); border-right:4px solid var(--accent); border-radius:12px; background:var(--surface-solid); }
+    .prism-key b,.prism-key span { display:block; }
+    .prism-key b { color:var(--accent); font-size:14px; }
+    .prism-key span { margin-top:3px; color:var(--muted); font-size:13px; line-height:1.45; }
+    .radar-layout { display:grid; grid-template-columns:minmax(0,1fr) 260px; gap:24px; align-items:center; }
+    .brand-radar { width:100%; max-height:430px; }
+    .radar-grid { fill:none; stroke:var(--line-strong); stroke-width:1.3; }
+    .radar-axis { stroke:var(--line); stroke-width:1; }
+    .radar-shape { fill:rgba(7,139,136,.25); stroke:var(--accent); stroke-width:3; animation:radarBreathe 2.8s ease-in-out infinite; transform-origin:center; }
+    @keyframes radarBreathe { 50% { transform:scale(1.035); } }
+    .behavior-spine { width:min(920px,100%); margin:auto; display:grid; grid-template-columns:minmax(0,1fr) 34px minmax(0,1fr) 34px minmax(0,1fr); align-items:stretch; gap:8px; }
+    .behavior-node { width:100%; min-height:112px; padding:15px; display:grid; place-items:center; align-content:center; border:1px solid var(--line); border-radius:14px; background:var(--surface-solid); text-align:center; }
+    .behavior-spine .system-arrow { display:grid; place-items:center; transform:rotate(90deg); }
+    .behavior-examples { display:grid; grid-template-columns:repeat(4,1fr); gap:9px; }
+    .behavior-examples div { padding:13px; border-radius:12px; background:var(--soft); text-align:center; font-size:14px; }
+    .archetype-system { width:min(960px,100%); margin:auto; display:grid; gap:12px; }
+    .archetype-core { width:fit-content; margin:auto; padding:11px 22px; border-radius:999px; background:var(--accent); color:white; text-align:center; font-size:16px; font-weight:900; }
+    .archetype-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; }
+    .archetype { min-height:64px; padding:10px; display:grid; place-items:center; border:1px solid var(--line); border-top:4px solid var(--accent); border-radius:13px; background:var(--surface-solid); text-align:center; font-size:14px; font-weight:800; }
+    .minimal-table { width:100%; border-collapse:separate; border-spacing:0; overflow:hidden; border:1px solid var(--line); border-radius:17px; }
+    .minimal-table th,.minimal-table td { padding:13px 16px; border-bottom:1px solid var(--line); text-align:right; }
+    .minimal-table th { color:var(--accent); background:var(--soft); }
+    .minimal-table tr:last-child td { border-bottom:0; }
+    .architecture-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; }
+    .architecture-model { min-height:190px; padding:15px; border:1px solid var(--line); border-radius:17px; background:var(--surface-solid); cursor:pointer; }
+    .architecture-model strong { display:block; color:var(--accent); margin-bottom:16px; font-size:16px; }
+    .tree-line { margin:5px 0; padding:6px 8px; border-right:2px solid var(--line-strong); background:var(--soft); font-size:14px; direction:ltr; }
+    .different-distinctive { display:grid; grid-template-columns:1fr auto 1fr; gap:20px; align-items:center; }
+    .concept-giant { min-height:270px; display:grid; align-content:center; gap:14px; padding:25px; border:1px solid var(--line); border-radius:23px; background:var(--surface-solid); }
+    .asset-layout { display:grid; grid-template-columns:250px 1fr; gap:22px; align-items:center; }
+    .asset-cloud { display:flex; flex-wrap:wrap; gap:9px; }
+    .asset-cloud span { padding:10px 12px; border:1px solid var(--line); border-radius:11px; background:var(--surface-solid); font-size:12px; }
+    .asset-matrix { position:relative; display:grid; grid-template-columns:repeat(2,1fr); grid-template-rows:repeat(2,minmax(120px,1fr)); gap:8px; padding:24px 10px 10px 38px; }
+    .asset-cell { display:grid; place-items:center; padding:14px; border:1px solid var(--line); border-radius:13px; background:var(--soft); text-align:center; cursor:pointer; }
+    .axis-x,.axis-y { position:absolute; color:var(--muted); font-size:11px; font-weight:800; }
+    .axis-x{bottom:-8px;right:45%}.axis-y{top:45%;right:-22px;rotate:-90deg}
+    .availability-footer { grid-column:1/-1; padding:13px; border-radius:13px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:white; text-align:center; font-size:18px; font-weight:900; direction:ltr; }
+    .case-slide .slide-frame { background:linear-gradient(140deg,var(--surface),color-mix(in srgb,var(--accent-soft) 58%,var(--surface))); }
+    .case-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+    .case-panel { padding:17px; border:1px solid var(--line); border-radius:15px; background:var(--surface-solid); }
+    .case-panel h3 { color:var(--accent); }
+    .case-metrics { display:grid; grid-template-columns:repeat(2,1fr); gap:7px; }
+    .case-metric { padding:9px; border-radius:9px; background:var(--soft); font-size:12px; }
+    .decision-options,.evidence-options,.action-options { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:9px; }
+    .decision-option,.select-chip { padding:12px 9px; border:1px solid var(--line); border-radius:12px; background:var(--surface-solid); color:var(--text); cursor:pointer; text-align:center; font-size:14px; font-weight:800; }
+    .decision-option.selected,.select-chip.selected { border-color:var(--accent); background:var(--accent-soft); color:var(--accent); }
+    .workshop-status { display:flex; flex-wrap:wrap; gap:8px; }
+    .status-chip { padding:7px 10px; border-radius:99px; background:var(--soft); color:var(--muted); font-size:11px; }
+    .challenge-card { padding:22px; border:1px solid rgba(244,122,42,.4); border-radius:18px; background:var(--complement-soft); color:var(--text); font-size:clamp(17px,2vw,24px); line-height:1.7; }
+    .workshop-input { width:100%; padding:11px 13px; border:1px solid var(--line); border-radius:11px; background:var(--surface-solid); color:var(--text); font:inherit; }
+    .workshop-button { width:fit-content; padding:11px 17px; border:0; border-radius:12px; background:var(--accent); color:white; cursor:pointer; font-weight:900; }
+    .workshop-button.secondary { border:1px solid var(--line); background:var(--surface-solid); color:var(--text); }
+    .workshop-button.danger { border:1px solid rgba(244,122,42,.42); background:var(--complement-soft); color:var(--complement); }
+    .workshop-button:disabled,.decision-option:disabled,.select-chip:disabled,.workshop-input:disabled { opacity:.52; cursor:not-allowed; }
+    .workshop-actions { display:flex; flex-wrap:wrap; align-items:center; gap:9px; }
+    .version-compare { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+    .version-review { display:grid; grid-template-columns:minmax(0,1fr) minmax(180px,.66fr) minmax(0,1fr); gap:12px; align-items:stretch; }
+    .version-card { min-height:210px; padding:20px; border:1px solid var(--line); border-radius:17px; background:var(--surface-solid); }
+    .version-card p { margin-bottom:7px; line-height:1.55; }
+    .review-challenge { min-height:210px; padding:18px; display:grid; place-content:center; border:1px solid rgba(244,122,42,.42); border-radius:17px; background:var(--complement-soft); text-align:center; }
+    .review-challenge h3 { color:var(--complement); }
+    .review-challenge p { margin:0; line-height:1.7; }
+    .analysis-box { display:none; padding:18px; border-right:4px solid var(--accent); border-radius:12px; background:var(--accent-soft); color:var(--muted); line-height:1.9; }
+    .analysis-box.open { display:block; }
+
+    /* Projector mode is typography-only: layout, sidebar and headings stay unchanged. */
+    body.projector-mode .slide li,
+    body.projector-mode .slide .lead,
+    body.projector-mode .slide .pill,
+    body.projector-mode .slide .panel p,
+    body.projector-mode .slide .card p,
+    body.projector-mode .slide .quote cite {
+      font-size:max(19px,1.35vw);
+      line-height:1.48;
+    }
+    .slide .presentation-min-text { font-size:clamp(14px,1.15vw,17px)!important; line-height:1.5; }
+    body.projector-mode .slide { inset:10px 14px; }
+    body.projector-mode .slide-frame { padding:clamp(18px,2.5vw,34px); }
+    body.projector-mode .brand-slide { gap:10px; }
+    body.projector-mode .slide h2 { margin-bottom:6px; font-size:clamp(39px,4vw,58px)!important; line-height:1.2!important; }
+    body.projector-mode .slide h1,
+    body.projector-mode .slide h1 span { font-size:clamp(48px,6vw,78px)!important; line-height:1.14!important; }
+    body.projector-mode .slide h2 span { font-size:inherit!important; line-height:inherit!important; }
+    body.projector-mode .slide :is(p,li,span:not(.kicker),small,em,button,label,input,textarea,td,th,.projector-small-text) { font-size:max(19px,1.35vw)!important; line-height:1.48!important; }
+    body.projector-mode .slide :is(strong,b,h3) { font-size:max(23px,1.7vw)!important; line-height:1.38!important; }
+    body.projector-mode .slide .kicker { margin-bottom:2px; font-size:16px!important; }
+    body.projector-mode .orbit-node { font-size:15px; line-height:1.2; }
+    body.projector-mode .orbit-core { font-size:19px; }
+    body.projector-mode .projector-small-text { font-size:max(19px,1.35vw)!important; line-height:1.45!important; }
+    body.projector-mode .slide :is(.meaning-side p,.response-side p,.availability-side p,.case-panel p,.mirror-side p,.concept-giant p,.instructor-cue,.inline-feedback) { font-size:max(19px,1.35vw); line-height:1.48; }
+    body.projector-mode .slide :is(.dashboard-group span,.keyword-cloud span,.signal-list span,.behavior-examples div,.case-metric,.tree-line,.status-chip) { font-size:17px; line-height:1.38; }
+    body.projector-mode .slide :is(.core-message,.system-stage span,.concept-row span) { font-size:19px; line-height:1.45; }
+    /* Dense teaching diagrams reflow inside their own component in projector mode. */
+    body.projector-mode .scroll-flow { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); direction:rtl; gap:10px; }
+    body.projector-mode .scroll-flow .flow-arrow { display:none; }
+    body.projector-mode .scroll-flow .flow-node { min-height:72px; }
+    body.projector-mode .equity-dashboard { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    body.projector-mode .architecture-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    body.projector-mode :is(.decision-options,.evidence-options,.action-options) { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    body.projector-mode .vertical-system { width:100%; grid-template-columns:minmax(0,1fr) 34px minmax(0,1fr) 34px minmax(0,1fr); align-items:stretch; gap:8px; }
+    body.projector-mode .vertical-system .system-stage { padding:10px 12px; }
+    body.projector-mode .vertical-system .system-arrow { display:grid; place-items:center; transform:rotate(90deg); }
+    body.projector-mode .memory-map { min-height:250px; }
+    body.projector-mode .memory-core { width:124px; }
+    body.projector-mode .depth-breadth div { padding:9px 12px; }
+    body.projector-mode .dashboard-group { min-height:0; padding:12px; }
+    body.projector-mode .dashboard-group span { margin-top:6px; }
+    body.projector-mode .resonance-network { grid-template-rows:repeat(2,minmax(92px,auto)); }
+    body.projector-mode .resonance-card { padding:10px 14px; gap:3px; }
+    body.projector-mode .prism-layout { grid-template-columns:minmax(0,1fr) minmax(330px,390px); gap:14px; }
+    body.projector-mode .brand-prism { max-height:360px; }
+    body.projector-mode .prism-key { min-height:0; padding:7px 9px; }
+    body.projector-mode .prism-key b { font-size:19px!important; }
+    body.projector-mode .prism-key span { font-size:17px!important; line-height:1.32!important; }
+    body.projector-mode .behavior-node { min-height:88px; padding:10px; }
+    body.projector-mode .behavior-examples div { padding:9px; }
+    body.projector-mode .archetype-grid { grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; }
+    body.projector-mode .archetype { min-height:58px; padding:7px; }
+    body.projector-mode .architecture-model { min-height:0; padding:11px; }
+    body.projector-mode .architecture-model strong { margin-bottom:7px; }
+    body.projector-mode .tree-line { margin:3px 0; padding:4px 7px; }
+    body.projector-mode :is(.decision-option,.select-chip) { padding:9px 7px; }
+
+    @media (max-width: 900px) {
+      :root { --sidebar: 0px; --topbar: 66px; --footer: 66px; }
+      .app { grid-template-columns:1fr; }
+      .sidebar { position:fixed;right:0;top:0;width:min(82vw,310px);padding-top:max(104px,calc(env(safe-area-inset-top) + 86px));transform:translateX(105%);transition:transform .28s var(--ease);box-shadow:var(--shadow); }
+      .university-logo-wrap { top:max(18px,env(safe-area-inset-top)); }
+      .sidebar.open { transform:none; }
+      .sidebar-backdrop { display:block;position:fixed;z-index:15;inset:0;background:rgba(3,14,21,.45);opacity:0;visibility:hidden;transition:.25s ease; }
+      .sidebar-backdrop.open { opacity:1;visibility:visible; }
+      .mobile-menu { display:grid; }
+      .cover-layout { grid-template-columns:1fr; }
+      .orbit { width:min(55vw,290px); }
+      .cards { grid-template-columns:1fr; }
+      .card { min-height:auto; }
+      .case-study-dashboard,.workshop-board { grid-template-columns:1fr; }
+      .equity-dashboard { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .architecture-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .case-grid { grid-template-columns:1fr; }
+      .decision-options,.evidence-options,.action-options { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .prism-layout,.radar-layout,.asset-layout { grid-template-columns:1fr; }
+      .brand-prism,.brand-radar { max-height:340px; }
+    }
+
+    @media (max-width: 640px) {
+      .topbar { padding:0 max(13px,env(safe-area-inset-right)) 0 max(13px,env(safe-area-inset-left)); }
+      .icon-btn { width:36px;height:36px; }
+      .top-actions .optional { display:none; }
+      .stage { padding:12px max(12px,env(safe-area-inset-right)) 12px max(12px,env(safe-area-inset-left)); }
+      .slide { inset:12px; }
+      .slide-frame { min-height:100%;padding:24px 20px;border-radius:20px; }
+      .slide.mobile-scroll .slide-frame { min-height:0; }
+      .two-col, .section-layout { grid-template-columns:1fr; }
+      .section-index { font-size:4.5rem; }
+      .orbit { display:none; }
+      .bottom-bar { padding:0 max(13px,env(safe-area-inset-right)) 0 max(13px,env(safe-area-inset-left));gap:10px; }
+      .nav-btn { min-width:auto;padding:9px 12px; }
+      .progress-copy { min-width:58px; }
+      .lesson-drawer { width:100vw; min-width:0; }
+      .drawer-header { padding:19px 18px 16px; }
+      .drawer-body { padding:20px 18px 32px; }
+      .lesson-trigger { top:16px; left:16px; }
+      .comparison-card,.process-diagram { grid-template-columns:1fr; }
+      .comparison-card__side + .comparison-card__side { border-right:0; border-top:1px solid var(--line); }
+      .process-step:not(:last-child)::after { content:"↓"; top:auto; left:50%; bottom:-13px; translate:-50% 50%; }
+      .choice-duel,.brand-anatomy,.product-compare,.cbbe-layout,.dual-meaning,.dual-response,.availability-pair,.mirror,.different-distinctive,.version-compare { grid-template-columns:1fr; }
+      .version-review { grid-template-columns:1fr; }
+      .choice-vs,.activation-arrow { rotate:90deg; justify-self:center; }
+      .concept-row { grid-template-columns:1fr; gap:5px; }
+      .response-strip,.behavior-examples { grid-template-columns:1fr; }
+      .equity-dashboard,.architecture-grid,.decision-options,.evidence-options,.action-options { grid-template-columns:1fr; }
+      .resonance-network { grid-template-columns:1fr; grid-template-rows:auto; }
+      .resonance-hub { grid-column:1; grid-row:1; width:130px; aspect-ratio:auto; min-height:82px; margin:auto; }
+      .resonance-card { text-align:center!important; direction:rtl!important; }
+      .resonance-card::after { display:none; }
+      .behavior-spine { grid-template-columns:repeat(3,minmax(0,1fr)); }
+      .behavior-spine .system-arrow { display:none; }
+      body.projector-mode .vertical-system { grid-template-columns:1fr; }
+      body.projector-mode .vertical-system .system-arrow { display:none; }
+      body.projector-mode :is(.equity-dashboard,.architecture-grid,.decision-options,.evidence-options,.action-options) { grid-template-columns:1fr; }
+      body.projector-mode .prism-layout { grid-template-columns:1fr; }
+      body.projector-mode .brand-prism { max-height:250px; }
+      body.projector-mode .prism-legend { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .memory-system { grid-template-columns:1fr; }
+      .memory-system strong { grid-column:auto; }
+      .scroll-flow { padding-bottom:12px; }
+      .scroll-flow { flex-direction:column; overflow-x:visible; }
+      .scroll-flow .flow-node { flex:0 0 auto; width:100%; min-height:62px; }
+      .scroll-flow .flow-arrow { rotate:90deg; }
+      .archetype-grid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:7px; }
+      .archetype { min-height:52px; padding:7px 5px; }
+      .asset-matrix { grid-template-rows:repeat(2,minmax(104px,1fr)); }
+      .minimal-table { font-size:12px; }
+      .minimal-table th,.minimal-table td { padding:9px 8px; }
+      .prism-label { font-size:20px; }
+      .brand-flow .flow-node { min-width:94px; }
+    }
+
+    @media (max-width: 760px), (max-height: 520px) and (max-width: 1000px) {
+      .lesson-drawer { width:100vw; min-width:0; }
+      .drawer-header { padding-top:max(19px,env(safe-area-inset-top)); padding-right:max(18px,env(safe-area-inset-right)); padding-left:max(18px,env(safe-area-inset-left)); }
+      .drawer-body { padding-right:max(18px,env(safe-area-inset-right)); padding-left:max(18px,env(safe-area-inset-left)); }
+    }
+
+    @media (max-width: 440px) {
+      .matrix-2x2 { grid-template-columns:1fr; grid-template-rows:none; }
+      .nav-btn { padding-inline:10px; }
+      .progress-copy { min-width:52px; font-size:12px; }
+      .lesson-trigger { min-height:38px; padding:8px 11px; }
+    }
+
+    @media (max-height: 690px) and (min-width: 641px) {
+      .slide-frame { min-height:100%;padding:28px 38px; }
+      h1 { font-size:clamp(2rem,4vw,3.7rem); }
+      h2 { font-size:clamp(1.5rem,2.7vw,2.5rem); }
+      .card { min-height:160px;padding:19px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior:auto;transition-duration:.01ms;animation-duration:.01ms;animation-iteration-count:1; }
+      .moving-node { display:none; }
+    }
+
+    @media print {
+      body { overflow:visible;background:white;color:#102d3f; }
+      .sidebar,.topbar,.bottom-bar,.ambient-grid,.motion-backdrop,.toast,.lesson-trigger,.lesson-drawer,.drawer-backdrop,.hotspot-popover { display:none; }
+      .app,.shell { display:block;height:auto; }
+      .stage { padding:0;overflow:visible; }
+      .slide { position:relative;inset:auto;display:block;opacity:1;visibility:visible;transform:none;page-break-after:always;width:100%;height:100vh;padding:20mm;overflow:hidden; }
+      .slide-frame { height:100%;box-shadow:none; }
+    }
+    /* Heading spans must inherit the heading size; never downgrade highlighted words. */
+    html body.projector-mode .app .slide h1 span,
+    html body.projector-mode .app .slide h2 span { font-size:inherit!important; line-height:inherit!important; }
+  </style>
+</head>
+<body>
+  <div class="motion-backdrop" aria-hidden="true">
+    <svg class="motion-network" viewBox="0 0 1600 900" preserveAspectRatio="none">
+      <defs>
+        <path id="flowPathA" d="M-120 720 C 170 570, 330 760, 590 610 S 980 360, 1210 470 S 1500 300, 1730 170"/>
+        <path id="flowPathB" d="M-80 250 C 190 390, 370 160, 650 300 S 1010 560, 1260 390 S 1480 220, 1690 330"/>
+        <path id="flowPathC" d="M-140 520 C 180 430, 380 540, 670 450 S 1050 210, 1320 270 S 1530 500, 1720 430"/>
+      </defs>
+      <use href="#flowPathA" class="network-path"/>
+      <use href="#flowPathB" class="network-path secondary"/>
+      <use href="#flowPathC" class="network-path complement"/>
+      <circle class="network-junction" cx="590" cy="610" r="5"/>
+      <circle class="network-junction j2" cx="1010" cy="560" r="5"/>
+      <circle class="network-junction j3" cx="1320" cy="270" r="5"/>
+      <circle class="moving-node" r="6"><animateMotion dur="7s" repeatCount="indefinite"><mpath href="#flowPathA"/></animateMotion></circle>
+      <circle class="moving-node" r="5"><animateMotion dur="9s" begin="-4s" repeatCount="indefinite"><mpath href="#flowPathB"/></animateMotion></circle>
+      <circle class="moving-node complement" r="6"><animateMotion dur="8s" begin="-2s" repeatCount="indefinite"><mpath href="#flowPathC"/></animateMotion></circle>
+    </svg>
+  </div>
+  <div class="ambient-grid" aria-hidden="true"></div>
+  <div class="app">
+    <aside class="sidebar" id="sidebar" aria-label="فهرست بخش‌های ارائه">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 4 7v10l8 4 8-4V7l-8-4Z"/><path d="m4 7 8 4 8-4M12 11v10"/><path d="m8.5 5.2 7 3.6"/></svg></div>
+        <div class="brand-copy"><strong data-deck-title>استراتژی برند و ارزش ویژه برند</strong><span>Brand Strategy &amp; Brand Equity</span></div>
+      </div>
+      <div class="nav-label">ساختار ارائه</div>
+      <nav class="section-nav" id="sectionNav"></nav>
+      <div class="sidebar-footer">
+        <div class="university-lockup">
+          <div class="university-logo-wrap"><img class="university-logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYoAAACPCAYAAADkxJwXAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAIoYSURBVHhe7J13nBT1/f+fU7fvXi8ccEc7egcRBUGxFwwq9sQUoymmqEm+SYwp3yT+jPmqMcEkGqOxRewVUUFQUOkdjnpc43rdvrPTfn/s3gWOIigqmn0+HvdQdmZ2Z3dnP695d8G2bZsMGTJkyJDhMAg1dTUZociQIUOGDIdFyFgUGTJkyJDhSIi9H8iQIUOGDBn2JyMUGTJkyJDhiGSEIkOGDBkyHJGMUGTIkCFDhiOSEYoMGTJkyHBEMkKRIUOGDBmOSEYoMmTIkCHDEckIRYYMGTJkOCIZociQIUOGDEckIxQZMmTIkOGIZIQiQ4YMGTIckYxQZMiQIUOGI5JpCpghQ4YvBJs7NBo0E9uGAlVkQp6TFsNiQ3OczqSFJUFAEZmR78Iri2wOJWmMG9i2TZFTYnyWs/dTZkiTEYoMGTJ8rgjqFk0JA820yVMlCt0yK0JJxISBR5awBOhKmLQZJq0WDHNK5CgitiAQNiyqoiY+SSTPKeBXRGzbJqRb2LbM1DyFfQmDpoSBZdoUqDJDs9Tep/BfR0YoMmTI8LnAsqEmmqRTt4kZNrYAEhDXTNZEdc7OdTLcr4IA1VGD5a1x1gc1vj4wwLiAiioKNCVMnt8XpSlucH6xi9FZDkSgKqqzoi1JiROciowtgGVYyAj4fCqj3RKqKPQ+pf8aMjGKDBkynJCEdYumhMm+uEFjwiCYNFnRqtGSMMlzSvT3yJjYrG1NUN+ZJGbZWCI4JZFSj8LJeS6yJJF2zaA5YRIzLHyKwMl5Kh6HgIGAYYNbFilxyxS7bd5oiGBaNuMCDibnOPGpIqs6EtRGdOpiBrVxg5qYQbNm9j7dLzTSr3/961/3fjBDhgwZemNZFpqmEY1GUVUVQTj4DlvXdQRBOOS2Y0GzYEdYY1NXku1hncaESVy3WdmRZGqek2F+lWxFpMgpU+RTWNGlIYiQrUh4ZIGkDV2GSU3CxCmKxJMmpgUuWaIhYVIXNRGwCSgiPkXEAnQEOiyBAR6FQqdElirhkQQSUZ31bRqVcYPdUYNdYZ0OzaKfW0YW+Njv9fNAxqLIkCHDUdHa2sqbb77JHXfcQWdnZ+/NWJbF7t27iUQivTcdE4Zt815HnNa4yfiAyjX9vUzOdvBma4IG3WBLSKMxYQBgA4INuQ6JAodEa8xgTzBJbczg77uDvFUXoVMziOgWVWGd1xsi/GhVM7tDGvkOibaYybrWBLvDOh+0xIkmTSojOm1pi0GSBHwehX2Wzan5br7a38dXSr2MCCg8XBkh/l9iWGQsigwZMnwozc3NLF26lGXLljF79mwGDBiAoig920OhEEuWLOHJJ59k4MCBFBUVHXD8h2HboFk2UdNGFkVeaoozOsvBIK+CQxJwyyKDPDJtSZOAImGZFtGkRcS0qQgleWBHFyHDJmrZVMUNFrfEeb42wr6wTlPSolG32BjWWVAfZUeHRpNuEbOgJmawIZhkcVOUl/aGKfWpjA44kIFg0iRpQ1vSoku3cEsC2apEQJXQTIudkSSYNptDGtvDSXTLJt8h80U0MDLB7AwZMhyR5uZmFi1axM6dOxk2bBgXXHABfr8fUUw5JNrb21m+fDl//vOfGT9+PN/85jcZNmxY76c5LFWaSX0oSVy3MAVojZusDSY5p9jNuCwVryQiCKAIArdt60Cwbfo4JPIcEnHLZmFjlMUNUbIViWxVRBAEunSLBt1CtkGVwCul3EtBw8K2bBAF8mURhyRg2DZR3aYjYTIm18G5fTzkyCJRwyJs2SQsm0nZTrIVkaE+hTKPQqdu8sK+KB5RYHiWiluC9qSFbgmcludEFYUvlGBkhCJDhgyHxLZtamtrWblyJVVVVZSUlHDWWWcdYC1UV1ezdOlSXnvtNSoqKrjrrruYPn06WVlZBzzXobBtm5gJKzs1ErpJtiyAKNIQ1dkY1OnnlRnhUyhySgiCQMyw+P6GNjrjBlkOCZ+SWszXd2lolo1lpU0TUnEDURGRBdBNG8u0QQBRFFAkAcNKZTXtv/gJooAowGC3jDctFJ1JC1UU+NaQAIO9KoUOEbcsEDRsNgeT9HPJTMtzElAEamIGeyMGfZ0KQ/wyyhcoSyojFBkyZDiIZDJJc3Mz77//PpWVlYwePZpTTz2V3NxcAOLxODU1NSxYsICXX36Z1tZWrrzySm666SZycnKOKsBr2VAZ1tnUmWCgV2F0tgNFFNAtm/l1ESqCSQodEgO9MoYNazs0HtoTpDNhYEsitgiCaSNIAooopDRCSC34Unf8QgDTtLGt7m0gde+b3seybLBSx5kCWLqZFhABLBtZgDOK3cwsdOOTRVriBl2GRalXYVqei2E+Ba+csq4a4yav1kc5rcCJRxbJUkV86W2fZzJCkSFDhgPQdZ2mpibeeecdGhsbmTlzJiNHjsTj8WBZFtFolIqKCh555BGWLFmCJElcdNFF3H777Xg8nh6X1KEwbEhaNrppYQHL2uKEkhZlHoVyn0qWknIzLWuLc+eWDhCgPKDSmbRY0BgjpluoigCCgG3biIKAKAhYSRPRtDEkAWQRWfyPUti6hWSmrAdDFpEUAdsCAQHTtsG0kAwbS0pZIZadsnYEQQABdMPCMG2GB1SyHTItUR1NN7lheA5jsxxMzFLJcUjYNuyK6vxtb5DRHhWfIjI6S6Xcp+KWPlw4T2QyQpEhQ4YebNumrq6OdevWkUwmOfvsswkEAj2Lf0dHB6+88gp33303e/fuZdSoUVx33XVcc801+P3+D7UkquMGGzs0qoIaqiqxI6rjFgWG+1T6u2S8Igz0q2wOJvnpyibWt2uIkoAtCZiqiFuRetxLdtoqEW2YXuCkwCGxO6KzM5QkZthIkoBpWEzJczHSr5KwbDZ0JtjeqSErEiY2kiAw2KswJuCgTTN5vyVGJGFiWTaSLCIqAnrSAtNGTFsrtmWTp4rMGRjgmjIfumnjVyQSlk1lRMfE5pwiNwDvtsRxSwIXl3g58idzYpMRigwZMvRg2zbxeJxwOIyqqj0iEYlEWLNmDU899RRvvfUWLS0tnHXWWXz5y19m5syZ5OTkHNGSAOjSLTYEk2iGxfiAA0GEzqTJ4uYYMdMmT5HwiKAoIo9VhXi/OU4wveAjpKyD/d3+NmAaNpJucs+UQqbmuXitIcq/KoPsDSZRXDLJuMGfJxdwdh8PLQmTZ2tC/GVzOy6/ipY0yXcpXD3Az5dLvSxtifO/61op8ilku2SCukWHbtHHmaqnqI0ZtGsmSctGFgT8ksBZJR4KHBJxM+WiGuxTmJLrYnRARQK6dJP6mIluwuQ8x/4fx+eKTHpshgwZehAEAUmScLvduN1uBEFg69atPPPMMzz++OOsXLkSy7K45ppruPbaa5k6dSp5eXkfakkAVIaTtCQsslSRwT4FvyySpYi0aBbvt8RZ3aFRnzRZ2BRnfXuCGCBKIqKYKuDr/RICYFtgJS1G5zuZmuvEBvZ0Jans0pAcUqrhn1vBAPZGddZ1aeyN6IiKiJkwmZDt5EulXkrdCvPrImzpSPDD4dlcM8BPQJXQLZtbhmZzTpGHLsOiIaoTNSxEWSRm2jRFDSojOjvaNWzLZkSOk2KnTLEz1fLDLYs0Jkx2R3RGZamfW6viyLcAGTJk+K9DFFON8lpbW1mwYAEPPvggjzzyCOvXr6d///5897vf5frrr2fatGnk5eX1PvwgTBvqYgYVYZ26eKqYrSZqUBvV0exUR9eOuMEHTTHeaY6zoj1B0EylsPYWh94IIpiSwDstcVo1i9EBlZPynLhUESNhgAh7ojpbgkn2RHRaNRMkESNh4lEkTs53Mj7LQUvC5J2mGIYkMMSvMinbwUCPjE8RGeRVmJDtIF+VUkFyKyVSkiTQljSpiRnUxQxaEibhpIVp29RFDdo0k9qYQW3MoEkzWN+p8V5bgs6eYPnnh4xFkSFDhh5s2yYUClFRUcHixYt5+OGHWbx4MaZpMnXqVK666iquu+46+vbti6oeuauqCYQMi9qYQWvCpF4zaNUsIoZF0kwVtCHAtlCSFc1xdoeSROxUHECVxKO6+7YRsERojxuMzXYyNsuBR5XYlzBp6kqS1C0m5rmYmOMkR5VoihrsbonjFQVm9PVy1YAAfVwSi5tiPLs3hOyQKHanCvvWtGts7tBIGhaNmsl7bQlqYwZJO5Vm2y0WotjtGgNVEilwylRHdJo0k+qoTtS0yVFFDBvaNBPDBo8k4vocBbgzMYoMGTIAoGkawWCQtWvX8sQTT/Daa6+lXDdFRcyePZurrrqKSZMm9T7ssHQkLXZEDHZENKZnOdAs2B5OUhnVsWzIV0UM4IW6COs7NKKmhfwRUkltIBHRmdHHw3eHZjGzwM3ucJI7NrezqTrEtybkc/mgADHT5l87u3h6QwsTy7P42eg8hvgV3miI8ceKDja3JXB50p1jbZAsG9WwsQFNTbvAer94GhswTBuPKDAp14lfBFMUGOhVOKfIzen5rp66ikerQowIOJic8/mJWWSEIkOGDABs3ryZ+fPn8+KLL7Jr1y4AZs6cyY033sjMmTPJz88/qlhEN6uaE7xTH+MnE7LTEQWIGRZvNMV4cG8ItwCru5K0xYxULYSccnkdKwKgWzZG3OSivl6+MyyLM4vcaKbNq3Vhcp0yI7JUDBs2dGiEEgaz+/vwKiLza8Pcv7WDDxqi2N50SxLbRpJERmU7OC3PSUi3eHZfhIQFqiggiz2JV/85BwGstFjoCRNBMxlZ7OayMj8z8pyUuGQGp59/WWucPvv9+/NARigyZPgvRtd1Ghsb+fe//82CBQvYuXMniUSCkpISrrjiCi699FL69++Px+NBluXehx+R9Z0ai5pizCxIteJwSAKWDYtb4vx+azsba8LEvAqyJCIduyFxAAICmmHitmFsQOWSAX4u7+fFIQqokoBTFLCBuGljWDYR3eLF+ijP1obZEUoiiQKyLGJh06WZKKLANWV+bh+eTZduMfu9RmqiBpII8hEqru10AZ+mmQzPdvLlAT5OynWiAGVumT5uhUerQ/RzyUzJceJXP+Yb/5TICEWGDJ8itm2j6zqKohz13blhGCxduhSPx8OgQYMoLCzsvcsxY1kWDQ0NLFu2jJdffplNmzZRV1dHVlYWp512GnPmzGHSpEn069fvgOZ/R0PMsNkX01nZnmBTKMnELAfD/SpeJeWXX94a545tHWxrjaO4FWTp8C6do0UgfUdvWDiBEqfM0GwHI3wK5/bxMCbLgWnbbOrUWNwQo6ItTkQSmJibjmsoqZhI0rL5d22YlW0J5pR4+MvEAjo1k1OW1lMZ1hFFjqo1h27ZuIGzitycUeSmwCmR0C3cikR93CCgiPgF8Ioik4tdqX5WvZ/kBCITzM6Q4VMimUxSV1fHk08+STgcxuv19qSgHo5oNMqqVat44IEHWLFiBa2trTgcDgoKCj60buFwNDQ0sGLFCl566SWee+453nnnHRKJBGPHjmXOnDlcfvnlzJgxg8LCQiRJ6n34YbGBNsOiMqwT1C0QBEwgbNi0aiZhw2JHWGdpU4y1HQlMWTouIkE6s8q0bSwENAtaEwa7QjqVLXGKPSoDfApB3eKlmjCPbWlnfWuCPJ/KFQP8TMt3kTAtTBvOKHCxI6yzvSNBmVPmwn5eYqbNP6tDdOoWggDSEb6vbiRBQDNtQunOs8F0UD9mwsiASplHwSWm5m5U6zb9nRLyUTzvZ0VGKDJk+JRoamritdde46677qKuro68vDwKCwtxuVy9d4W0JVFXV8d9993Ha6+9xoYNG6iursbtdjNp0iQcjqMPhlqWRSQSYdeuXSxcuJD58+fz6quvsmfPHoqLiznjjDO46qqrmDNnDmPHjv3QjKZDYdk277VpRHWLPi6FgV6FfIdE1LRZ1hqnMqzzQWucVe0JOnQLVZGOi0iQFinS+f6SKCBLIqJtEwnrjMp3MTrHSdy0ebsxxgc1YZBFRhc4mVHkJm7YPFoT5t3mGBf08bApmGR7p8ZAj8IFfVNC8XB1iM7k0QuFkK7iDukWDVGDlriBIIkM8yuMy3JQ7lMZ4FNRFJEP2hKM8quox0k0Pwk+2i1JhgwZjol4PM7GjRt57LHH2LdvHwsWLOD999+nqamp9649hEIh1q1bxwsvvNAzDKilpYW6ujp0Xe+9+yGxbZtEIkFdXR3vvfce9913H3feeScLFy4kkUgwYsQIrrrqKn7zm98wd+5c+vfv3/spjhrLFli2L0KuIjLImyo6GxNwcF6Rm10RnacqgyzaF6FFM3GoEsJx8HrbNtimTZ4qMSrgYFKuk0m5DibnOplY4GJcfx+Ds1T8SqpB34gcB+NKfYzr42ZwwIFfFomaFvUxg+aYgWlDmUdmfJ6LMr+aUqDu0zyG07Xt1OKqyCKaZdEY1klYNv3cCl26RYdmYlg2LkFggCxiWfZBAfITiUyMIkOGT4G1a9fy4IMP8o9//AOA7Oxs7rzzTi699NKejqy9WbFiBb/97W9ZuHBhz2NnnHEG3/nOd7j00ksP2PdwGIbBpk2bePjhh5k/fz7BYBDTNCkqKuKcc87hhhtu4JRTTul92EdCt+GOXR2UOWSm57kYkM7qSVo2N21o49W9ITpNC8Vx9O6sD8MybcyEyeVDAnx/SBYjAiqqmJpdcbzo0i2mvF3H3rCBKIByjPUPhmWjAKOzHPxseDZOScAnifR3y5gCvNoU5bp+PjwfITX40+LEPbMMGb4gtLe38/rrr/PSSy9Buk1Gd2Xz4eY2VFVVsWjRIpYtW9bzWP/+/Tn33HM5/fTTD9j3cGzcuJE//OEP3HzzzTz11FMEg0FEUeT888/njjvu4Pbbb2f8+PG9D/vo2DZuWwYEqqM6GzsT7Aon2RXW2R1MEhNA+CQWQ9vCIwt4FQGXKJAwbKojOtVRg6qITmfSRLdtkpZNu2ZRFdHZG9ZpShjETZuoYVMbM9gT0TFsm46kxd6IzuYujQ/aE7zdEieRCrl8aKX4oZBEAQOo6EjwQl2E6pjB2o4E82vCvLgvSlVU543mBO1Jq/ehJwwZiyLDfxWxWIympiba29sZNWoUTqfziMHk40E4HGbFihUsXLiQLVu2kJuby49//GOys7OJx+O43W4GDhx4wDHNzc2sXr2aN954g2XLlmFZFldddRWXXHIJw4YNO2wgO5lMUlNTwxtvvMGSJUvYsmULTU1NWJbFqFGjmD17NtOnT2fYsGHk5uYec8rrobBt6NQtlrbE2R3ScSlgWjaqIOBSRFa2J3i1NkLIshGOoi3HsWCZNmbc4Lph2dwyLIssReL1fRGergphSwIkLeYOCnBOiYekZfNqXZSFe4OAzZg+Hq4o8xE3bR7cHSQS1fnn9D680RznrZoQtREdQxFJWLAnZpBML5Uf5fRtO5U2mysLlHoUSj0yI7IcjMtyUOyUEQWojumM9Dso9x1bltmnQUYoMnxh0XW9ZyGWpFSDuNWrV/Paa69RU1PD9OnTmTNnzlE3tfuoGIZBKBSirq6OqqoqcnJyGDFiBC+//DIrV64kNzeXCy64gGnTpvWcRyKRIBgM0tjYyNatW7Esi5NPPpmysrJDBpp1XaehoYHVq1fz5ptvsmbNGvbu3YthGJSWljJt2jTOPvtsTjrpJIqLi48pEP5h1McNKoI6HlnAsm0MYEOnxrrWOPVhnZ0Jgy7j+ImEYdup9uKkcmKtuM41w7L5ybBsHJLAg7uD/GFrO0giJAx+MT6frwwKkLBsHtjVxf0bWgE4Z0iAW0fkUOySeb0+Sihm8JPRufy9KsS/tnewI5hEdMmYNiiygCwKH8sFYwOabqFgc0aRm0v6+ZiR72KAWyZm2nzQniBHFSn3qQSUj/NKx59M1lOGLySRSITt27fz1ltv0dDQgCRJNDY28uKLL/LYY4/1LKSnn346+fn5x5QGeqwIgkBTUxPV1dWYpklpaSnbtm3jkUce4bXXXqOyshJRFDnrrLPSXVIFZFnG6/VSVFTEmDFjGDNmDHl5eYc8z+bmZjZs2MDrr7/O008/zcsvv0xLSwt5eXmcdNJJzJ49m6uvvpozzzyTrKys42JFdJMwbXaEDbYEk1zUx80Ar0KRUwZBYEunxqt1YUIWqKp4QIvwj0L34YadarEhCCDYYOsWY/JdnJrnwimJbOjUWN6WAEkA22Z6kYeRWSpJy2Zjp8bq1gSCJDAoy8nobCfD/SpjshyMzXMAAivaNbZ0aXSZNpIqYpLqKSUA4iG62B4LZrot1IQcJ5NynBS7JHIcEg4pVRiYtFL37Vnqwd/zZ0lGKDJ84bBtm+3bt/Poo49y55138sEHH2CaJu+//z6LFi1i9+7dkO5tNGfOHIqLi4+5qOxYCAaDzJ8/n7vuuos33niDaDTKSy+9xLp16wiFQqiqSp8+fZg9ezaiKB7Suun9mGVZxGIxGhoaeOutt3qC1Tt37sTtdtOvXz8uuugirr/+ei655BJKS0sPOP540WXYVMUMWjSTUreMlK4h6O+WidqwsC2BQbpI7eC3dUxYto0kCpS6Ffq7lZ7gb5EqMa3Iw6QcB6oosKFT493mOIgpoejrVXApIvXxVAfX3REdSZFwqCKyIBAzbdqTJh2ayYYujWWtCfZGDRI2uGSREpdMgUNCEgVMK2XNHOIrOipMK/WcY7McDPQqyIKATxYwbYFO3UK3wCOLJ5xFkXE9ZfjCEYvF+Pvf/87//d//0djY2HszAIFAgIsvvpjf/va3Hysl9MOwbZtXX32VefPmsWjRItivjbdt24iiyCmnnMLtt9/O2Wef3fvwQ9JdE7F+/XoeeughFi9eTHNzM6Io4vf7mTx5MjfccAMzZ848qjbgH4ewbrG2U2N1R4LJuU58goBHFfEpIgsbY9y6qZWobuOSUyNOPyqWbaMZFgUumfvG5TMl18m7rXFeqo9wdT8fpxW48MkirZrJw7u6+N3GtpRFIYKsSijp17fslAtIFAUShoWhW6kH90OQxR432XCfyl2jcyl2yfyzKshrtREa4iaK46Mv5Im4wfRCN1cN8DM+S6U2mKTIp7KkJc70PCen5btS1lLvAz9DMkKR4QvHE088wYMPPthjSQB4PB6SySS6ruPxeJg4cSIPPPAAAwYMOK7++t7s3LmTX/3qVyxcuJBQKITX62Xq1KlUVlbS2NjIhAkT+OY3v8ncuXNxu1PjM49EPB5n06ZNzJ8/n5dffpmOjg6i0SgOh4Nx48ZxzTXXcNFFF5GdnY3L5Tqkq+p4YtmwojXO87URRuY5kAyLMr+DXRGd52vCLGmOoqryxxIJuvsn6RbFXoXHTirktHwnbzbFuW93Fy4B/A6JmohByLDIUUX6u1KDg2xB4M36KPWdGgCiW8bllLEsi0TMwDQsEEVEh4gii+imjZ0wsQ0LRIEpfTy8OaMEpwT/t7OLx3d3sTdioLo+2ucqpBsHqiIM8aqMDag4gFG5TizAjmkM8qtMLvGTfwJZFRmhyPCFYv369fzhD3/gjTfeIBQK4XK5mDBhApdffjktLS1s374dn8/HZZddxtlnn31MPZeOFdu2+ctf/sKDDz5IRUUFWVlZTJs2jdtvv536+np2797NwIEDOfXUUykqKup9+EFs3ryZxYsX8/bbb7Np0yYaGxuxLIsxY8Zw1llnMWvWLMaNG0dRUdEn9p72R7NttoR1tnQkiCdMst0KjTGdqqjBho4EO8I6UctGllIN+T4O3UJR5FX495RCZuS7WNgU49eb26lsjiH6FLyKhFcRGRVQmZ7nRBFTTQjfaY5TE04S0k3aTZuupIUkCYzwKuQoIh26xd6YQVgzcaoS4/wKfkmgUTNxqxL/nFRAmUfhzh2dKaGIGjicH00outEtG8W0KXOIzCzxcFqhmxF+FZcANVGDkC0wu9j9seM6x4tMjCLDF4qmpibq6uro6uoCYMiQIXzve9/j/PPPZ8SIEQwfPpyTTjqJk0466UP7LB0PIpEIHo+HvLw8xowZwzXXXMMZZ5xB//79GTx4MOXl5eTn5/c+rAdd16mvr+fVV19l/vz5LFiwgI0bNxIKhSgpKeH888/nqquu4sILL2TcuHHk5OR84u+pm/XtCYJJi1KPQrlfpY9bxhJgQX2EtZ0aUdtGOU51E7adynbyKRKX9PVS5lHYHdZZ1Bilpi1BUZaDa8v8zC7xcGqei7FZKmVumVKPTLlPZVKuk0F+Fd2w2dEUQ3LIfGtIgDn9vOQ4ZGrDOi1tcfL9Kt8cHODCEi9eVaJLtxjuVylxybzfFmdTR5KOpAXpTripHlMAKVfV0X7ypgWKAP28MjMKXfT3KAzzqfRxK2gWdCR0clURj/LxBOl4kRGKDF8oVFWlqKiIPn36MHDgQKZPn87cuXPJyckhLy+PsrIy+vXr94m6m7oRBIG+ffsydOhQysvLmTBhAtOmTUNRFBRFwe/3H7HPU1tbG+vWrePFF1/kySefZNmyZTQ2NhIIBJg4cSKXXnopV199NTNnzqRfv36HTJv9JHm7MYZLEpmQ46DELZPrkPDKIh+0J6gM6xh2agLc8cC2UxXOPkXi0m6hiOgsaYrRGtIZVejme+VZnFXoJlsRiRk2dnrh9isieY5UIeDecJL1jTEEh8QFfbwM9qq0aCYb2jWaujSyfCqnFbgpdEg0JAwa4iYnZTvp55Z5vy3B5naN9qSJJYlY6dhJd3BbOoaMKNMGtyxSnrZ+PJJIlirhlAQSlk3csgnIIv4TJPsp43rK8IXENE1M00SSpE/cT3+8CYfD7Nu3j1WrVvHCCy+wYMECLMvC5/NRUlLClClTmDNnDhdddNFhC+8+DR6rCSELAhOzU0VjggAOUeCuXV08tjtIVTiJw3VwKq6dXvixUyvs/u6Vwy1GPTEKj8KTJxcyM9/F640xbtvYypZ9UaYM8POnCfkM8yusbE3wZkMURIFunRIEaE6YbO7UqIskyfMqjM5y4JNFunSLuqhBS0QnKgpMy3OS5xDZGzUwLJs/jctjpF/ld9s7ebIyRFA3KfH/R5SFdJuPrqRF0rIQhJS10f3+DmVpGBbI2Az3ylw30EeJSyFHFSlyyrTrNs2aydn5LjwnSJwiIxQZMpwgWJaFrussW7aMJ554gjfeeIOWlhZEUURRFGbMmME111zDueeeS0FBQe/DP3VebIoR103yZREEAYcsUuyQuHdXJy/XRWhJWjgOsdCZtp0KGhs2giyiyqlCNssG6zBSYVk2hm5R7FV7hGJBY4yfb2hlW12EiQN9/HliAcUumX9s7+J361tBIpUi271KW1DgkvnS0Cyu6+dlUXOMt1vilHsVrin1sT2ic9f2Ti4t8TLII7OhK0l1TOeO0TmMDTj4n83tvFAf4fQCN/87MgfbtknaqVGp82ujPFkVYm8oicMpEzctMCxEUUCShYNaiAsC6IaFGzgpz8Gp+U46NROXJJAriQx0O7hwgO+g4z4rDv4WM2TI8Kmj6zq1tbX8/ve/58c//jHPP/887e3tOBwOBg8ezG233cZdd911xCaCnzanZDvQdJvXG2Os6khQEUzyt71BFjfGaNetA+ITopCyFpJGyjJQBYEh2Q5EMSUC3S0ukpp5yD9DsyB5oIwkTIuuhIkd0+nUTHTLRhYEZFUEr4LoVXB6FWSXguCUQRFwAANdMsN8CucXeTi/yM3UXCcTshxMzkp1kz270MWXy3zMKnSRpYh0pV9Xt20sQcCjiPRxyZS4ZQZ4FAZ4FAodEk5RwLJsdNNEAPr5Ul1rk7pFQrcOqL+wbZAlkSQCy/fFeKIqRI5DZpBfxSEKtEZ13g8l93u3ny0ZiyJDhs+Yffv28cYbb/DSSy+xbds2mpqa0DSN0tJSzjvvPL70pS9RXl5OUVERTqez9+GfCXHT5oO2OLvDOnJ63OjChiir90VoAUxZYP+ZbTY2hpXqzTQmoHJNmZ/JuU7WdCT4x45O6hImE/JdnF3g6nEX7Y9u2TTHDZa2J7lnXC5nFLjYE9FZWB+lvUujMNfJnL5eJAH+URnifys6EEUBhyRg2jZmuh15ligwpcjN1FwHLQmLymgSvywywq9SG9F5v0PjwUkFTMtz8mJ9lCdqw3x7kJ/peS5+U9HB/OowTlHg1AIX2arILeVZ5Dsk/rE3xLwdXWzrSOB1SvxsVA4Ts51URnRerIvwTkscOT1Fr9vVZgOmaSMkTS4p8/LVgQGG+FQkoCVm8EFXnO8Nyen9UXwmZCyKDP/VrFmzhsWLF7Nnz57emz5xQqEQy5cv54EHHuCBBx5gyZIl1NTUEAgEOO+887jpppu4/vrrmTFjBqWlpSeMSFg2vNcawyEKnJLn4vRCNyfnOjmzyI0tiRj2wcGGpG6TpYjMKHTzlQF+Lih2owCTsh0UumQkSWCgV+aaMj9XH+LvmgF+rh4YIKCIJEybpAWlbplL+3u5bngOc/p6KXBIPZlI3adg6BYnZTn45gA/15T56R9QaUwYWDYkLIuwbpNIF9zp3W1B0ufcHWYQ02aAUxSQLZu9nRovVId4uS5CMG0pWGn3mAPo71U4KcdJliIyNdfJdQP9XFDiIU8VMQ0LK/16KQtDoMCvMDJLRRJTVdn9PAoDAypDvZ9ucsKRyAhFhv86LMuiq6uLRYsW8dBDD/H222/T3Nzce7dPlKqqKl555RUefPBBHn/8cdavX48gCEyaNImrrrqKb3/721x77bVMmDABh8PxqaW8Hg0WNhuCGqooUO5TGOSRGexR+FKJhxH5TpyigJnKGU3tb6cW3FK3zOwSD7OK3LTETf6+pZ1X66N0pGstfLJIqVumv1tGEqArnq5tEAVK3TL93DKy+B8NMuyUZRM1LOKmRaq08j/YgK5bTM528JVSH5f18zDEr5CliJyW72JSOptpkFdlVqGbafkuFPHAmg9REPDIKUtASTcF1EybzvSI0+632S1MkiigKiJvNMX4545O9nRpnJTj5OoyHwM9CkI6pkF3QB9QJQG3LBA1LFriBqGkiSwIZB/HuR0fl4xQZPivwrZtOjo6WLZsGXfccQcvvvgiwKfm99c0jaqqKp5++mnuuecenn32WZqamigpKWHmzJl897vf5dZbb+X888+nsLCw9+EnDKYArUmTpoRJZ9IiYlg4RIESj4JTSAWOSS+eFiDLIv3cCqP8Kk5RYHFjlEcrOrl7Ryc7Q0kEAWQx3X3Wsnm7Jc4/t7bzzx2drOxIYFjQlUwtzEo6m2lPROeR3UH+ur6Vf+0N0RA3EIR0h1fDBsPC1k18kkC+QyJLEVEFAa8sMsqvMtinkK1KFDkkxgZUhgYUdMvG3M8bb2OjW6kZFTHDxky/L1EUUMReo0tF0AWojxn8aVeQf1R08ta+CFHTYkxApb9HRlHE/4iKkFKLjqhBTdSgI2mxI5hgfXucvdEkVdGjm2L4aZARis8h3X2CMhw70WiU9957j1/96le8++679O3blzPOOIOhQ4f23vW4Yts2mqZRXV3NPffcw1133cWmTZsAGDhwINdccw2PPPII1157LX379v1M014/DAGBIoeMYdnsCGosb42zpjNBddSgPqqjpYoKeva3bRunlIoXSAJEDIvmVPc7RElIZUClathSLS5seK0hxr/XtvLI5nbebU0gkEpiEgA5/fTbgkn+sq2Dx5c3cN/2TqqjOmAjmhaqZqAkTNSERTBhEjNtEqZNS8KkVbOwSAlPq2YSNiySNrQkLDqTVsp1ll4cuzST56pDvNIQZV1XgrBm4DAsZM3ESJoHtokSUgOKunQLUQTBIdFm2jQnDMx0sz9VlkBIWS2iAKIIYRNeqo3yVkOUt5tjPL8vzCv1YeSDkmo/O07cqzHDYdE0DU1L9a7JcPTous6bb77Jn//8ZyoqKlBVle9973uMHTv2E3ftaJrG+++/z09+8hMeeeQRgsEgBQUFXH311dx777387Gc/O2wb8f0xTRPDMHo//KkiCnBxkYeGhMnbLTHWdCZY2hLn55vbeK8lTtxOuZJIL+yiIBA3LEK6Rdy0cUkiBQ4JbBuHKCCKAnaq0WvPnfb4bJUhA3yM7+9luE/psUxIF6tZNgzzK3xteDZnTy3im0Oz6O+WcUsiQ7IdnDUowNmD/Jw1JMCYPCdZqkixU2ZWoYtzi9w4RYH+bonpeU7GZqW6zvZ3y1zS10Nhuj2HJEBXwuShze38ZEUTm9oTDC9086Xh2Vw0JMDsAX4C6fbpAqmW590uKiXdVDDXIZHrkNBtm7aESSJpImAjpK0KBAFJFtkXToJtc2qhhzNLfGSpMjUnkEWRyXo6wTBNk6amJlpaWigpKTkoX765uZmtW7eSlZXFxIkTD9iWITXh7XBFdq+88goPP/wwy5Ytw+v1cvXVV3PDDTfQv3//4zqjoTfBYJDXX3+dxx9/nBUrVtDV1cW0adO4/PLLmTFjBmVlZfj9/t6HHUQ8HmfLli0kk0mmTZvWe3MPtm1/4sKXMG0erQ6iWTaFToUdoSR/2tVFKGHiUEUkSehZ+E0rVTNwepGLr5T6GZ/tYHVbnOvfb0L1yBimTUAV+cbAAHeNycW2U8OQ2mIGoihQ6JbJVkUqIzrfWd/Gr0dmc1qei6hp0ZIwSegWrrQQKCJ0JFOPpzw7NvlOmSw1FWTvTFsBJa5UrUPIsFBFgWxFIpZ+vmKXjFsSWNAY49db2ljbEAXL5vRSP18dHOCkHEcqvTUtLqoo8NDeEPfv7GJrRwKHW0a3bIykyY+HZ3PNAD8NcZMHK0Ms3BfBkgRkKeW2skwbdJPz+3q4sszHSbkuvLJIV9KkVTOZknvoyv1Pm0wLjxOMRCLBq6++yp49eygoKDhIKFasWMHWrVvxeDwMHjz4gG3/rYTDYbZt28aCBQtYsGABq1evJhgM4vf78Xq9kJ4f/cgjj7B582aGDx/Oddddx6WXXkppaekn2vqis7OT559/nieeeIK1a9fi8XiYO3cu1113HbNmzaKsrOyousaS7kS7ePFiWltbmTJlSu/NdHR0sHfvXgKBAJIkfWJiYdo2i5rjFDglxmc7GeRRKEwP4KnoSpJI3SojpK0E3bZxyyIjAw4caRdUiVtmSzhJW7rVh1ORGJftYFaBG0mAgCJS7JYpcsl45dQi365ZvNIQZaBXxiEJJMzUnXm39RIyLDp1i6Rlo4ipiXSKKKBZNiE9FUcx0llRnbpF1LDRrZTodeoWESP1fGHDoiNpsTWU5IP2BK2aiSgIlPpVJuQ4KXMrSOnPNqSn3FWrOzQ2dGh0Jk1kWSQZNRiX6+LCvl4cksjKDg1BgD1Rg4SdGoMkCqnPUrQsLuznYXSWg75uhVxVwqeIZCmpgUYnAhmL4gTCsiyampr47ne/2+O3njBhQs9227a54447iEQinHnmmcyaNeuA4//bsG2bffv2sWLFCt566y3Wr19PY2Mjqqoybtw45s6dy2WXXYamafy///f/WL58OaWlpVxyySWf+KyG7sFCL7zwAg8//DDbt2+nuLiYc889l8svv5wRI0YcU7qraZo89NBDLFiwgFGjRnHHHXccsD2RSLBp0ybWrVvH17/+9U80U0q3bO7Y0cW5RS7GBhw4JQHDhlbN5LIPGtnUnsAQUgVllp3a3ysLfKnES55DpJ9bZkqOk01dGr9e20pz0sTtlDmt2M0Vfb0o6eK8/THsVAuOh/aGGO6V6Zu+k9+f/VeyA9562rLZ//HufQXA7vED7bcdqI4ZrOpI0J4wEWwo9ihMyFIpdf/H+ux+3q0hnc1Bjc64iWjbyIbFT8flc2qhi/qYwdpODack8Hh1mPakiSCk4jWGaSPpBt8ZnsWsQg+lboUCh0SWKhE3LLyZXk8ZehOLxdiwYQNz587lyiuv5Otf/zqjRo2C9KIYjUa57rrrGDBgAFdfffUBIvLfRjKZpK6ujjfeeIP58+fz/vvvHxDgd7lcnHnmmfziF7+gs7OT2267jZEjR3Ldddcxbdq0T9SKsG2bUCjEypUr+dWvfkVNTQ2DBw/m4osv5sorr6Rv3769D/lQ2tra+OEPf8iqVau49NJLufPOOw/YXldXx8KFC1m/fj1/+9vfPjGRIC0Uv9/RyZQcB2P8DrxKyk9v2PD1tS28Wx8latk9GT5W2v90RamPYX4VUYA8VWJ2Hw8/2tjKO3VRWgwLVRHxSwKiIGD3OP7/sxrbpCyBhP6fWoRPDCGV2SRLKcsEUmNKTcPC3u+1LVJvUBQERElAAnymxSl9vPxsVA5NmsnOcBJVEKiK6jxRGSIhkBqMlK69QDc5vdjFhSUe/JJIjiIxwKcSMywmnCCup0ww+wSiq6uLVatWEQwGURTlAL+5YRhUVlayZ88eZFkmOzv7gGP/W7BtG8Mw2Lt3L/PmzeOPf/wj77//PrIso6pqzyjReDzOxo0buffee7nvvvsoKSnh61//OqeffvonKhKkYwnbtm3j9ttvZ9euXYwbN46bb76Zm2666SOJhG3bbNu2jaqqKuLx+CHjKXv37qWiouKwo1SPJ4IgkOeQMG3YE0mytj3Bxq7UnOnmqI4ugLBfMFsAkkmTSNKi1K2QrUgsaomzLZzk3okFXDUkQJlbhphBZ5tGW3uCulCS2ohOXVinLpL62xfVMe1Uqq2iisjKJ/gni8jdomWnvgNZAEUWUJTU6yuqhCCJuGzwGBYe3aJYFjirv49/TCnEBt5tiRPWLUYHVOKmTTJdoNeNKAqgyrzZEOfp2jBLWqK81RDmib1dvBM8cRJWMkJxAtHR0cEHH3yAYRgoinJAQFbTNN577z1CoRA+nw+Px3PAsf8t6LrO7t27+elPf8oTTzxBXV0dXq+X4cOHM3XqVAoKCnoW0oaGBl577TW2bt3Kd77zHSZMmPCJL6IA27dv57777mPDhg3MmjWL2267jQsuuOAjtza3bZu33367x612qOepqKhg69atR5xtcbwQgVn5LhriJq83xnizOcYr9VFu2djGxg4Nk1Sgl7QVYNo2TrdCh2nRkTQpcUmMDqjct6uLLV0aPxyazaOnFnPXyYX8YHI+3xiXh88pgQCKLOJ2SLjU1J+YTo2VhVT84ZP8k4QD6ySE9DxwWUxZDsmkiY3NJYMD/GBsHr+dVMAjpxZz/+QCauI6j9eEccsCk7KdtKdrTlS3DOJ/XF922g2mSgJ+RWJqgYdz+vgY6FEJfcJG07GQEYoTBE3TqK+vZ82aNRiGgdPp7FnwbNsmFouxaNEiYrEYPp/vqAOgXyTa29tZsGAB3/3ud1m+fDmhUIgpU6bwm9/8hkceeYR58+Yxb948TjvtNJxOJ6Zpoqoqc+fOZfjw4Z+KuNbW1rJkyRLWrl3LVVddxa233sq4ceM+dsygra2NRCKBx+MhEAgcsC0UClFbW0soFKK4uPiAbZ8EogBlHoWkZVPkkpmU4yTfIRE2LAzrP5XH7Le4mumCPKeUmg0xyq/Sz6XwVG2E99ri5Dok5vTzceOQLG4aksWVpT6KBAEjppPQTAzsz3zam5B2ryWSFomogZo0ubKvlxsG+rlxcIDLS30M9qms6tB4siaSrlxXKXRKOEQRhwh60kS09+v3ZNqImsGVZV6u6u9jYpaTkdlOzinxMifn6GNYnzQZofiEMAyDlpYWVq9eTWtr64fmvicSCVpbW2lubsa2bdxuN4qiQDowGolE2L59O4qikJWVdci7yi8qlmWxc+dOnnjiCe655x5WrFhBOBxmxowZXH/99Vx22WWMHz+eUaNGceaZZ3LeeecxZMgQFEWhT58+XHbZZeTl5X3kIjbLsohGo1RVVZFMHr6jZyKRYPny5axYsYJTTjmlp0ajO/Pq4+BwOJAkiYKCAkpKSg7Ytnv3bqqrqxFF8VOp5raADZ1JRvlVzi12c2qek/OLPfxyRA7lfhXJBnM//4oopHouqaQa9MVNC48kMjZLpcgpsbpT463mGI2aST+3zECvwo2DAtw0LJtZfTzkOySMpIUWNdCS5kFi9Elj2pDULbSYga6Z+GSBKfkuvj8ih+8OCTA+20Fft0zMtHi7Jc7bLTG8ssAIv0KeKqKZqX5SLlnEMqwDgu6pd2JT6EzVW+Q7JApcMkVumXJv6vd/IvDRfjn/xViWRWdnJ83NzcRisd6be6itreXll19m3rx5PPjggyxZsoSWlpbeu/Wg6zrxeJxkMokoimRnZ/dkxViWRTwep7OzE6/Xi9frPaSf+otIW1sb7777Lo8++iiPPvoo7733Hrquc9ppp/GVr3yF8847j379+vXcrQcCAWbOnNmzQA8aNIgxY8YcU4ZRb7pdgi+99BLhcLj35h5qamqorKwkLy+Pb3zjG0yePPmwE+yOFdu2EUWRsrIyhg0bdsC2nTt3sm/fPpxO54dmcpmmeUDQ/6Ng2bAlpOFXBMrcCiUumVEBlbn9vEzJd+EV0vUB+yMI7IvpdCVT7cATlsVQX+rYXFWkJmbwemOUZa1xRAEmZDu4dlCAm4bn8M3BAS7u42GUXyVbERFMGz1pouspC+aTwLRTtR960sTULbySwFCvynlFbr4xMMD3hmfzzWHZnJzrxCWJbOjUeK0hyuagRp4qUexMtSBXhdTEuqRpsyekYx40BU/AEgWa4iadSZP2pEk4HceIdVcYngBkhOIY0XWdNWvWsGvXrsMuGsFgkPfee48HH3yQJ554grvuuou//OUvfPDBB4RCod67Q3ohMM1UWzO3201+fn6Pe6l7oI2u63g8no/txjjRsW2beDxOZWUlCxcuZN68eTz88MNs3LgRr9fLxIkT+da3vsU555xzSFdLeXk5AwYMoKCggPHjx+NyuT6WNVFdXc3TTz/NihUrjnhz0NXVRVlZGRdddBHDhw+noqKC9evXs3btWrZt2/aRGg92fxb19fU4nU6GDRvGwIEDD9inoaGB9vZ2nE4nOTmHbkvdbeGuXLmSmpoaEolE712OARvDNGlOmDQkDFq11AIXN21K3DIuoTvV6T+Iisj2YJJ96WpjIZ3y6pNFhnpV+rtlGhMGz++L8H5bnLqYQZFLYnaJhx8Ny+a2UTncMDyLS0t9TMl2UKpKeAQBM52JZB4nK8OybEzTwjQtHECJIjHer/Clvl6+PjSLn4zM4acjsrmq1Mcgj0JrwmR1e4JXG6JUhJL0dckM96vkOSSstLtKBNo0g7WtMWxFRNjPhyYIKVGqCCapjRms70ywuiPO7nCSilAmmP25pNuaeP7552ltbe29GdL7rFu3jldeeYW1a9f2pEq+9tprvPDCC1RUVPQ+5AAkSaK4uJiCgoKeu2Dbtkkmk5imicvl6nFJfdHofp/t7e1s3bqV+++/n1/84he88sortLa24vf7GT9+PHfccQfnnnvuYQO3qqri9/spLy/njDPO+Fiimkwm2bNnD8uXL2fChAlHtExGjRrFhRdeyODBg3nllVf4/e9/z49+9CNuueUWfve73/H6668fUWj2R9M0urq6aGpqoqKigoqKCgYNGsSIESMOslJisRiapvW870MRCoVYuHAht956K08++STV1dVY1ke7ZRUQKFAkIobF1mCS99sTrGhPsD2cZE8wScxO+5v2Q5YEkobF9mCSZs2kr1tmRXuC0QEHjZpJkVPmgmIPiiDw001tPFcbZncoScSw8MgiE3OcfGtwFn+dWMA9E/O5aUQOM4vd9FEl1KSFoZtY5oFunWPBJjX/Wtct5KRNgSRycr6Lbw7L4u6JBfxtcgE3D83itAIXOapE3LRpiBu8Wh/lD9s7aIwbzCp0MzHbyeZgkrFZDupiRqrRIbC8NY5l2gcHyNPB+WDSpD6mU9GVYFFjhJcbIidUC4+MUBwD7e3tvPvuu8iyzIgRIw6qmibtpnj55ZdZsmRJ701UVVVRXV3d++EDkCSJ/v374/V6e+6Cuy0KAI/H84mnd35WJJNJNm/ezH333cd1113HX//6V/bt24dhGGRnZ3P++edz7733ctpppx0xMN1teQ0ZMoQxY8Z8LKFoa2ujqqoKwzA455xz8Pl8vXfpQRAElixZws0338wPfvADnn32WZYvX84HH3zA888/z8MPP8zSpUt7H3ZI1q1bx9133833v/99vvWtbxGNRrnsssuYOnVq711JJBI9NxGHOj/btmlpaeEvf/kLmzdv5v777+eVV145rHX7YYgCnNHPR9y02dSRYGunxoYujUf2hnijMkh70kKUD0zTtW0b1SFRGTfYFkwSUETKfQoLGqNMyFJp10x2hHW+V57FL0fm8mp9lB9taOWp6jAtif/E9wRgbLaTbw8J8ODkAv59ShHfHpnDAK8KCZN43CBpHn0LE0FIx03iBlpYp8gpc+2QAA+cXMijUwq5ZVg2U/OdOPYTvs6kyVuNUW5Y3cyDlUHm9vPx/fIsbGBJS4zrSn28UB8moIjkqRJ1MYOtYR3VKacjEqn3YZoWsmkzPtfBH8fnc0V/P3P7+xnudxA3LC7vf2jR/yzICMVRYpom+/btY8GCBcycOZP8/PyDLkbTNHn55ZdZuXLlIX+Efr//kD9k0mJgmiaSJFFSUnJAsNq27R6h8Hq9XyihsG2bRCLB+++/z69//Wtuvvlm/vnPf7J37140TcOyLIYMGcK3v/1tfv7znzNixAgURTnos98fwzDIz89n2LBhhw0k2+lurvX19USj0d6be9izZw87duygb9++lJeXH/azj0QizJs3j7vuuosVK1ag6zpOp7Pne9V1ndbWVnbu3Nn7UNjvc/j3v//NL37xC37961/zz3/+k8WLF7N7926++tWvcuqppx6U8URaGCVJwu12H/L8GhsbWbJkCRUVFT1JEytXrmTt2rW9dz0qBCBLEji/2MNgr4pDFJmQ5eDUPCdXD8umxCOn3Df73d5LgpCqQgaaNZPVHak5DU4JVrYn6OOSKXZIPFIVwiuL3Dsxn9MK3CxuinH7pjYerQxSF9fpTJokrdSdeY6aaiFyU3kWT55SzE/H5DEq24GpW2iJVMvxw10lQlokdM3ESJj09ch8f1QOT51azP+MyGF6vosCp4QiCOhWqiPsvpjBC7Vh/ndzO/+qDDEqoHL/pAL6exTeaI7RrpmcWejmmboIHklkqE9hX1xna0jDKQokTRsx/dqpQUeQqwpc0t9LnkNisE9lVMDJBSVeLuzj5Z3Gj+MePL5khOIoaWpqYsOGDXR1dTFhwoSDTHzLsmhvb2fFihXU1tb2xBu6cbvdjBkz5qBAZDeGYaBpGoqiMGLEiAPSXy3LIplMYts2BQUFR7yb/rzQHYN46aWX+NWvfsXvf/975s+fz9q1a2lsbETTNERR5Mwzz+Tmm2/m2muvZejQoQe5XQ6F0+lk8uTJnHHGGYdsDkh6YX/55Zf5zW9+wzPPPENtbW3vXTAMg507d7Jr1y4GDBiA2+0+KNbR7S578MEHeeONN3A6nVxxxRXccccd/PGPf+Smm25i2LBhKIqCnS4W3J/29nZWrVrFv/71L+68807uv/9+/v3vf7Ny5UoaGxsBuPjii7n44ovp37//Qe+n+yZCkiQ8Hs9BbknbtqmsrOTll18mHo/3nEN9fT11dXUH7HssSEDISKXHnpLnZFK2k9ML3NwwJIsLSrwUqxKmfuBvQBChy7Bp0VIzLDYHNabmurCAnZHUTIrRAZU3mmNsD+tMK3DxtYF+BvlU3myK8ffdQX63vZPvrWvlp5vamLe7i6UtMQKKyLgslWsG+vnpyByuKPXilwW0uHHIuIVAqm1HMmHgFeGsYje/HJ3L9YOzOCnXQbYqsqlL48HKEL/a2s6Na5r5XUUH9+/uYmFjFJcscP3gAHP7+6iNG7zXHidHkSh2yWwOakRMm5NznDQlTBriJsGkRYtmIogHthCxBRClVMpwp24iCQJuOdXcsMglUxXPxCg+V9i2za5du1i1ahWlpaUUFBQc9IMEUBSFk046iRkzZjBkyBBUVUUQBBwOBzNnzuS00047KLWxm3g8TigUwu12M2nSpAMsD8uyetqKDxgwgKysrP2O/HzR1NTE2rVree6557j//vv561//yqOPPsqiRYuorq4mkUigqir9+/fn0ksv5YYbbmDOnDkMHTr0kJ/5oXA4HPTr1++goG83pmnS2trK448/znPPPccjjzzC0qVL6erqOmC/SCRCbW0tHR0d9OnT54Bt3UQiERYuXMjSpUsZNmwY3/jGN7jxxhv52te+xrXXXss3v/lNJk6ciNfrxePxHFCZHYlEeO+993jggQf4+9//ziOPPMKaNWt6ighPPvlk5s6dy4033siwYcMOKZLdllG3UPTOhmtra2Pjxo0HWQ+xWIxIJHLAY8fKnrBG2LDSrbRTPZxGBFROL3AxwCVhGQcGmG0ETEC3UpPp2jSL5oTBYK+ChEBtzEAWBAZ6ZLYENSpCSfJdMuOyHThlkaiRakteEUqyNaixK5zkneYYD1cGebc5Ro4qcmEfD98aksVVZX78koCRPDhuYQO6ZuKXBM7r4+E7Q7OZ28/HUJ/CmrYET1WFWNgQZVv6NVa0JVBEAc0ChywyLMvBML9KRTjJhk6NXFXEIwupIU7piXqtWqr7a/esi+5oUPepiEKqLXkkbrKxI0GbZrIrpNGumXRoJo0xnf6eQ9/kfBZkhOIoiEajbN++nZ07d3LyyScfcsHqTmm99tpr+cEPfsDVV1/NySefTP/+/Zk+fTrf+MY3mDRp0mGDoe3t7TQ2NlJcXMzw4cMPWBSSySSdnZ0oisLgwYMPm9lyIqJpGs3NzWzbto3333+fZ599lgceeIB7772Xv//97yxevJjm5uaeO+2cnBwmTpzIFVdcwY9//GMuuOACioqKej/tEREE4YitLEKhEJs2beK9994jGAyyYsUK3nzzTXbt2nXAfm1tbbS1tQEcUpzj8Ti7du3i8ccfp7y8nK9//etcddVVTJw4kby8PDweD6NGjaJPnz54PB6Ki4sZO3YspN1By5cvZ/78+TzzzDOsXr2a2tranvbxc+bM4dvf/jY33XQT06ZNO6RIkLZ6EokEbrebnJycg95zZ2cnLS0tBwWuu11iHwfNsmnTDBoTBm1aaghQm5Z6Tpn9VsU0tm2jCqkNUcPCr4jsDqdcqqWelP9+UzDJMJ/KII/CzrDO200x9kR0stVU/6Mvl/qYWehiRMDBUL+KTxZ5cE+QeRWdvLYvSkfSZEquk+8OzeKiUh8OO5XF1B0XgHSNh2Ezs8jN9UOyOLfYTcK0WdQc468VHfxrb4iIYTHcr1LuU5lW4OIrpT5GZalkqxItcYM3mqK835ag1C0zxKvSmDBp1QyG+RQUESqjOrIgYNqp7rTO/TOd0p+FExuPAJ2agWbarGiJsaotTkUoSWfSYnLOiVNUmxGKo2Dfvn3s2LEDXdcPKxTduN1upk6dyve+9z1+8YtfcPXVV/P73/+ec84557BZOpZlUVdXR3V1NWPHjsXv9x/gYojFYlRVVZGdnU1JSclhXU+maZJMJnsypD5t7HSKbywWo6Ojg6amJrZt28arr77K//3f//GDH/yAn/70pzz00ENs2LCBeDzec6zT6SQ/P58ZM2Zwyy238Mtf/pLJkycf9wp027apqanh+eefJxgMYlkWhmGwa9eunolz3TQ2NtLW1oYoigcVONrpzrVvvvkmHR0dfOc732HixIkHxQiCwSCtra243W5GjhzJ4MGDaWlp4ZVXXuHOO+/kzTffxLZtsrKyKC4u5rzzzuN//ud/uP322/nKV77CmDFjDni+3hiGQTweJzc3l7Kyst6byc3NZdy4cZxyyik9Fi7pG5vebrRjpdSjkqVKtGkm20JJ3m9LUBFKsrQ1zt6okYoD7Le/LAok9NTEubhlkTBsTs13saJNoytpMTXXSUAR+WdViKm5Tq7s56U+bvBkVYjdQY3amEHEtMhxSAhiKkYxq9iDzylT0Zbg3u2dPLcvSnPCZJBX4Xdj8xia60RMp9AipNJfkwmT0oDKTUOzOSXfSZtmsrg5xs83t7OqIYoqCpyc72KwT6XLsCj1KsQtm/q4yZaOBC/VRVjSEuerZX7OLHSztDVGxLA4OdeJTxZ5qjbClFwnDjE90ztp0hU3UbpnUACWbtHHJXHeAB9z+/nJdci0JAwWN0WojCQpD6RSbE8UPt6V8l/C2rVr2bp1Kzk5OfTp0+eofmA5OTnMmjWL//3f/2XSpEmHXdxJC8GePXtoaGhgxowZB7kPOjs7WbduHeXl5fh8vsO+fmdnJ7t372bHjh10dnZi97a5P2G6c/WXLVvGX/7yF2666Sauuuoqvvvd7/L444+zYcOGw6aHjh07lttuu40777yTOXPmHDYI/XExTZPa2lreeeedAz6fZDJ5gHABVFZW0tDQcIDrrxvTNNm2bRvPPPMMs2bNwu/3H3Q3D/Doo4+ybt06pk6dypw5c9i6dSs/+9nPuO222/jggw/w+XxMmzaNr33ta/ztb3/jvvvuY/bs2UddYZ1IJEgkEj3B9t7k5ORw4YUX8qtf/YrBgwf33OS43e6P/RmP8ivkexT2JUzW1kd5tznOrnASLBuvW0Z2iCQ0s6duQJYE4rpFe8wgqKcqtOtjBheVuNkZTvJaQ5S5fT1c2s/L3ypDBHWLfIfExFwnPxmVw4+HZfHg3hAv1UdQRYiaNo9Wh/AoAosvKuP6oQHeb4vzcFWIhGmTr4rcMjybgU4Zy7RTsygscNrwkxE5DE836lvYHOef1SHm9PWydM5AynMcvNkcZ09EZ7BH4fl9Uf68K8hFfdz8ZFRuqlpckfDIIvfs6mJ8lpNL+3qpjho8Uh3mZ8OyaYibhA2bLt2kLWES102U9OeQTFoUOiUu6uvh5qHZzC0NcHGJjysHZDGjwMMov4MBnoOTEj5LDr3iZOghEomwfv169u7dS25u7lEXu3W7P2RZPuzC3s2qVavYsGEDxcXFnHXWWQdYLIZh0NbWRk1NDZdddtlhrZKXX36ZH/7wh1x99dVcc801XHbZZXzlK1/h/vvv57333qO6uprOzs6DgqnHSrcbrLa2lm3btrF48WLuv/9+fvjDH3LVVVdx+eWXc9NNN/W4laqrq3ssnN7uD5/Px9SpU/nDH/7AvHnzuPrqqykrKzsoYHs8aWxsZNu2bQdVySuKcpA10NDQQFtbG8FgkN27dx+wLRwO09DQwJ49e3j88cd58MEHWbZsGdXV1TQ0NLBu3Tpuu+02/vrXv2JZFpZl8e9//5sbb7yRl156iVgsxrXXXtsTp7n11ls5/fTTe6zJo7nGbNtm9+7dhEIh8vLyDhn/EgQBVVUZOHAgt9xyS4/bsl+/fh978JUoCEzwq8zMc1LgUxjolZmQ7eDmodn8c3Ihtw7NJqBIaEkz3YEVJFWkIWmyoiFKnlOiMWEQ0S3OLHST65C4Y0cnZS6ZW8qzWNulUdGlEU1afNCWoDVuMCnLiWIL5CoS5xe7ubyfl86kxTutcU4vcDO7xEN1VOfO7Z0oosC5hW6G5btQFRFNM5FsmyEFLmYWuMhRRebXhFnSGOVLfTx8bYCf99tS8YKpOQ4u6uOhv1tGS5pMznEQM2y2BpM0xAw6Ewb/qgnzncEBBnsVnqmLsDeq880BfuoTRmqAkSSwt1NjV1BDcUg9NYi2bjLcpzDQr9KRtAgbJqIAQ/0OEKFFT03nO5HIzKP4EKqqqvj5z3/OW2+9xYUXXsjDDz98XBey5uZm/vjHP7J69WrOPPNMbrvttgOef8eOHTz11FO89NJLPPvss5SVlR2woCUSCZYuXcr999/PqlWr6OjogHTRmcfjoaioiKKiIvLy8ggEAvj9fvLz88nJycHv9+N2u3E6nSjpbrWCIPRk0miaRjweJxKJ0NXVRVdXFx0dHXR0dBCJRIhGo0SjUTo7O+nq6iIajRKPxw+6++5NXl4eY8aMYcaMGUybNo3BgwdTVFR00EL9SbBx40aeffZZXnjhBXbu3NljVcyaNYubbrqJL33pS5BehG+77TYee+wx2traKC8v55e//CUzZ84kJycHXdd5++23uf3229m6dStlZWUUFxeTnZ2NLMuEQiF27dpFfX09breb7OxsLMuitbUVj8fDFVdcwdy5cxk/fvxBGXRHi2VZzJs3j4ULFzJ79myuv/76w7pFk8kkVVVVXHjhhbS2tvL973+fm2666ZC1QMdKZVRnbYdGuVehzCPjV0RMG95vS/CnHZ28Wh3G5ZF7LAvDsPAA5/bzcuOgAJURgwKnREARqQgladNMLuzj5rm6CFmKxMRsB0HD4sW6CNMKXDgFgVC6EC9HFXmvPYFlwzmFLqpiBs9XhwknDP56SjHDfQp/3NXFo7uD7OrUKHBJzB0c4Lcjc2lMGPxhczt7wkmuHJLFaXlO5tdFkAQY7lNRRIGGuEGxQyKOzcYOjZEBlQEehcqwzpZgkm8O8rOsLYEAlPsUXJLAus4kp+Y6eaw6xKt1EeoTBo70ACJBEIiHk4zNdXBhfy+n5jnxyBKDvKnJdgubwmDD7JKPdk18UmSE4kN49913ueOOO1i+fDmzZs3i4YcfJjc390OthA/DsiyCwSBPPvkkTzzxBKWlpdx6662cdNJJPft0dXXx/PPP89RTT1FaWsp99913gLsgkUiwa9cufvWrX/HOO+8clLXTjaIouFyuHmsoKysLv9+Px+PB6XSiqiqKovQEgLsDnclkskcswuEw4XC4RyB0XT9q66T7rrZfv34MHTqU8ePHM3HiRMaOHUtZWdlR3T0fDxobG9m+fTt1dXV0dXXx1FNPsWXLFmzb5stf/jI//OEPGT58OKS/n//5n//h8ccfp7m5GbfbzZQpUzj99NMZNGgQgUCAqqoqnnnmGZYvX97zGpIkIYriARaUIAj4/X6Ki4sZPHgwU6ZM4fzzz6e8vPwju38syyIUCnHDDTeQm5vLlVdeyYwZM3rv1kMyPejpnHPOISsri1tuuYUrrrjiuNz07A4lWdmWYLBfpciVGt+pigK7wjr/2hPkH5vacOU4EdM+etO2MQ2bbEng9+PzyXNKRA2bLCWVObWpS6MzabGqOUaJR2FGsRvNsLhhTSunFbj46fAsNMvm7eY4bZrJJX29BHWTirBOq2aiJS0Uy2ZAjpNvDPDxVlOMP2/rZFljlEEBlV+Mz2NuXy/P10fZ3BonbtooDomAKjLMp+CVRNa0J4gYNmcWuTgl18kPNrSxsj3BV8t8TMp1srwlzrb2BKf0cZOjSpT7VEzbpjKiU+CQCekW/7etna1hHUESUCQBGzCMVLxkoFdmZqGL8dmOVODcp6a6y9rQ16MyOnBiNf3MzMz+EJYsWcKyZcvYt28fXq+XsWPH0rdv34/1A+suvlq0aBF///vf0XWdiy++mIsuuqjneWOxGCtWrOC5556joaGBb33rWwwbNqxnu23bNDQ08Pzzz/Poo48eMdWxe/FKJpN0dXXR3t5OQ0NDTxO7Xbt2sX379p5WEdu3b2fHjh3s3r2bqqoq6urqaGlpoauri1gshmEYB7mRDoXD4SAnJ4eysjImTpzIhRdeyKWXXsrs2bOZMGEC2dnZn5pIWJbF+vXrCYfDjBs3jlNPPRVFUVi9ejVZWVnMnj2bWbNm9cSHLMti0aJFbNq0qUcYq6ur2bJlC9u3b2fTpk1s3ryZmpoagsFgz+t033d50jPNy8rKGDp0KCeffDJnn302s2fPZu7cufTr1++gAPmxEA6Heffdd5k/fz7nnnsup5122mGLObvTgd966y0WLVrEmWeeyTnnnHPYlN9jJapbNMRM9sYNJBE6kxZtmkl11GBbUKO2K4kpp3scCYAgYAmg6RZBy2ZqrhNFFGhMmKiiwMRsB++2JRDSs6x3R3XqojqNCYttQY0Sp8y4LAeKCLvCOtPzXZyS5+KZugjtmsXpRW6mFbpZ2hpnZr6bsGGxti3O7lCSYo/C1QP8lHoU3m6JMSrbychsB+u7kuwMJ/lReTa6bbM9pFPiljmzyM2Spjh/3x1ElQRkIZXG25gwKFZEIgjMzHf1iIQkCAz0KPylMsiWLo2kLSB1B7FtECybiXkuTs13MTjdHXZfVCdpWiQsm3Kfk6F+J/LHuw897pxgp3PiUVNTQ1dXF1Z6nvXChQsJh8NHtVAeikQiQW1tLQsXLuT3v/89lZWVTJ8+nRkzZvQUZcXjcTZv3sxjjz3GunXretw0+we5o9EomzZt4vHHHyeZTCIIwmEX3e54yce1gj4MQRBQ0m3Qi4uLGTNmDOeffz7f+973+OMf/8jPf/5zzjrrLAoKCg57rp8U4XCYqqoqBEGgtLQUt9vN6aefjtfrZdSoUQwdOvSA1OXu+FLvxIK2tjY2b97MO++8w/Llyw8q1JNlmYKCAk4++WRuuukmfvnLX3LPPfdw99138+Mf/5izzz77gPYsHwVN06isrOS+++5DURTKy8sPG7syDIPm5maWL1/OPffcg6qqzJw585CB749KjktmaK6TqGURN2waYgbbQknq4gb5LoXpA3wEJAEsG9vebwCQKrE9rPN6UxSPJFDqkVnaGmdlR4I8VeDGYdlcOdCPbtus7tC4YaCfCVkqj+0NsrAhyoRsJ98bksX2kE5TwsRp2eTIAjlqyiXlTI8bFbuzr9I6JaavPbckElBFslWJHFnEZ0NHesDQRX09XNbPy5r2BD9e38pgr8zcvl6CukVtTOeKUh8/GZPHQLfMjrDO+20JJEFgTEDl6boIO8I6upAWCTuVbWUmTUo9CrcMzeJ3Y/K4flAWp+S5GRVw4XYonNXHx5hsB86Pfg/6ifHRr9b/EoLBYE82THNzMy+88AKbN28+bPbOh7Fjxw7uu+8+vv/977N9+3ZGjRrF+eef3zMbW9d11q9fz2233cZLL73E8OHDuf766w/Kqtm6dSvPPvssu3btwuPxfKwOqceLbvdSd2Xy448/zt///veegrFPWxz2Z82aNdTU1KTy151Ourq6ePDBB+no6GDatGk99Q3ddLvoDpWt5nA4Dkg13Z+ioiLmzp3L3/72N7797W9z4YUXMnbs2ONa+1JZWcmjjz7Ku+++y5w5cxg2bNhBgtZNS0sLzz33HD/+8Y/ZvXs3l1xyCWPHjj3k+/qoeCWBoR6Zs4o97AslaIom8UoC5xV5uGdcHs9P78NXBgfIEQV0Pe2Os20SSZO+Lpm6mMnz9VEihsUNA/0sbYnzv2ta+VdlEL8sMrefl0v6e7l5WBZvnNGXMwrdvFAX4b6dneyN6mzsSnD/niDrm2PUh5PsCSfZ3qWRMFMFf23p1t2YNgndoiqqY1gQNiz2hHV2BpPUR3V2tsS5d2cXK9sTVEV05teE+d22DsZmO3hueh9+OyaXqwf4mNPPy5iAygOVQX65qpnFjVFmpC2Ef1SFqIzoFKoigmVjWTaCkGrXIVtwcT8v/dwysgABRWRSjpOrBvjJ86g4JLFHxE40Mq6nD2HhwoVUVFQQDod77va3bdtGdyvwowlEWpbF1q1beeyxx/jrX//aM6kuNzeXn//855x22mm43W6am5t59tln+fnPf05FRQVjxozhmmuuOSgTqr29nZdeeokFCxZw+umnc+edd3L55Zczfvx4vF4vkUjksC3Qu3tGfVwEQcDpdNKvXz9mzJjBJZdcwle/+lW+853vcOGFFzJ69GgKCgoOu6B+2rzwwgssXLiQrVu3smbNGp588kleeeUVpk+fzuWXX055eflBQqtpGnv37j2gP5MkSUiShGmaB8RonE4nZ599dk9K8Md1Tx6O1atX8+CDD/Liiy8yePBgfvCDHzBo0KBDCsWmTZt46KGHeOyxx2hvb2f06NH8/Oc/Z8iQIYfc/+MgCZCjSAwNONgcTFLiVjgpx4maHik6NsvBqk6NvTEjNfdaEhBEgbaIzuQ8J/3cMp1Ji9qYQalTZlhAJQFs6NR4uynOrohOmUeh2ClT5lPZ3hjjuYpOFtdF2NCaYGCOk+8MyybglHltb4jlVWEuGRJgdEDlsdoIy9sSKbGQBExZ5NwiFyHd4sXtXaxsjHJqfy8/G53LxrDO65VBFuwOsrwmTBYCf5lWTIlLZlW7xnN1UZY1x9kT1tGBk/NcjMxKdcCtjBo4RQGnJLBkX4RE2qIw07UbSszglBIvflXEIwm4JBFFTPWSeqctwWCPQpby2d7sHY5MMPtD+NGPfsTTTz/Nvn37YL8Fsry8nJNOOolTTjmFMWPG9LQFFwQBPT2EqK2tjR07drBt2za2bNnCnj17aGxsJBqNkpOTw7e//W2++tWvUlpa2tOZ9pFHHqGlpYUJEyZw1llnMXXq1APaPgC8+OKLzJ8/H9M0+fGPf8zIkSMhHfxubGykpqaG3bt3s3PnTrZv3057e3tPULqjo+Oo6isEQUCWZZxOJy6XC7fbTVZWFn369KG0tJS+ffuSk5NDSUkJhYWF5OTkEAgECAQCn0r20tFip3sxff3rX+ftt99G13VcLheWZdGvXz9++ctfcuqppx6y8rq1tZWnnnqKBx54oKc9fLdgm6aJLMvk5eUxevRozjjjDKZMmcKwYcPIy8s77iLR3SrkhRdeYOXKlTidTm6//XbOO+88srKyDhBj0zRZtmwZjz32GO+88w4dHR2Ul5fzk5/8hHPOOeeobm4+Cradik88WRMi1ylxap6TLFmkS7dwSiJfXd3CW/URRMDhkhBsiCdNBrgVrh3oZ2KOk61dCV6vjTAxz8nQLAd7Ijox3abcp7AzojPWp9Bm2jSHkjSGdfbGDHZ0JJg10M8l/b1UR3QW1kVwA4/PKCFkWNy8poX3OhLo6YrxQlXk6el9yHNI3Lmxjfda45xb6uOsYg+PVYVYXhvGL0sMCaiUuGX65DgolAR2Rg1yVZGYYVOXMDi/2MO6tjibOzTG5Do4Od9Nh2Zyd0UHe2M6kiJhmTYKkKuK9BNFJpS4GRFQKXXL9HHJOCWRvZHUzdvkbAe5J1CR3f5khOJDuOuuu3jkkUfYsWNH703k5eUxaNAgBg0aRE5ODi6Xq0coYrEYXV1dPRXXra2tPXfzhYWFXHzxxXz/+99n0KBBOJ1O2tvbqaioYOPGjeTk5DB06FAGDx5MIBA4YBGorKzk7rvvpqGhgSuuuILLL7/8gEXJTvf+aW9vp66ujtraWjo7O4lGo4RCIVpaWojFYiQSCZLJZE9gWhAEJElCVdUecfB6vQQCATweD970ZL3c3NyedNvux4733enxxLIsEokEs2fP7hk81N1a47vf/S4XXngh2dnZvQ+D9Ge5c+dOFi1axJIlS9i9eze2bSNJErm5uQwaNIjhw4czYsQIxowZQ35+/nEXye7zf/bZZ3nuuefYvXs3BQUFnHvuudx4441kZWUdkOAQCoV47733ePzxx3nnnXfQNI2JEydy+eWXc/nll+P3+w+ynI4Xtm0TMeDZugiyaDPMr+BApMtMtfd4ZG+YjR0JIrqJBiiKiGml5kiflu/iygF+hngVFjVE2BMxcEgCdTGDvm6Z8/p4WNaWoKItTlvS5Ev9fcwodLO1S+OurR0MDqiclO8iZljsDCVRJIGvlfl5tznGa9VhmnQLQRWxTRtZM5lbnsW0fBfvt8XZGdYZ6Vfp71VY3hyjLqJzYYmXM4rd1EZ0/ry9k4AiMjrPyeRcJzVhnTcbo0zMddKRMBnoVTi1wEXShmdrwjxfG8bhkLBtcAswOdfJBSUeilQJSxDo1E0008YjCWQ7ZERspuQ4yXdKqJ/1YPDDkBGKD+Hll1/mnnvuYdmyZb039SDsV1wnCAKmaR6ywEwQBAoKCpg1axY//OEPGT9+fM8i2+3KkCTpkAtvdzrkP//5TxYuXMjkyZO5+eabjyoPvjvVtbvxYCQS6RELXdcPEAqn04nb7T5AHLrTZ08EF9Kx0m1R3HLLLXzwwQckk0kGDx7Meeedx3XXXddjBR6Jjo4OtmzZwsaNG9F1HUVRKCkp6Zk2d7zbjOyPaZoEg0H+/Oc/97RxmThxIjNmzKB///4H7VtZWclvfvMbVq1ahdfrZcyYMZx33nlccMEFn5gl0Zv32xK0JgywbeImWCK0ayZxwyZkWFQEk6xsjdFp2iiySFK3ECyb6fkuvj8sm9EBlWdqwmzo1NjYkSBHlbh0gJ+hXoWXasLUhXWmFrmZmOekNqLzr7oIM3KdDPQqCAKEdItO3aJDM3i3KU5nzEAXwJZScQPJsHC7ZE7Jd9LPoxBQJbIVEYckUB1OsqYryaQsBxOzHeyLG7y6N0iuR+GCfl5Cps0b+6JsbI8zIc/F2CwHs/t66dRNHqsK8VRVOJUOK4skkyajAirXDQrw5TIfOapEl26xvlNja4cGgkB5QGWAW2KwV0E+QUWCjFB8ON0/vGeeeeZDC8mOhCAI5OTkcO6553L99dczc+bM3rscFsMweuY2//a3v6W8vJzrr7+eWbNm9d41w2FYuXIla9aswbZtJkyYwKmnnvqhAnEiYFkWsViM+vp6/H7/AbPUe6PrOjt37uS3v/0tOTk5TJ48menTpzN48OBP9b1awPq2OJs6EkRtSCAwPd/JSJ+KTxFZ1Z7gTzu7eHpvEKdTRpIFDN3CNGwG+1VuH5nD+BwHYd1ifnWYqqjOeSVeLuzjxrSgLWHwQUeCRY0xGiI6M/t5ubU8i5huETFSbi4EWN2eYEcoSUPCJGraWLaNKIAqChSpEsP8KuOyU23FI0kLVRLo71H4y54uFtRGkIAzSjxcVOTGr0ooosB77Qleq4+Q0C1+NDybXKfMxo4ED1QGWdqcmvetqhK6aWEkTS7p7+OqAQHGZzkodctIAuiWzfstCUQBTis8dLPHE42MUHwIhmEwb948HnjggUO6n46G7rhGd9vpyZMn997lsNi2TXNzM6+//jq/+MUv8Hq9/PrXv+ayyy477m6ODJ9/7HRjRuko24B8ksQMi+2hJM81xPlReYAcVUQAkhZ80Bbn9MV1IAioiogiC5imTUKzkLCZWuSm1CkjSAKn5Ls4r9DNPbu66Ijp3Do81adpUWOUNxti3DYmh6Bu8cO1LbzTGGNktpPvjMjm66U+BFJNbG37P5PlhHSarA280hjjrzs7eWdfhP4BB09PK8YjizxXHcIji/xgeDZh3eKWtc1ku2Uu6+ejVbP4+94ghYpIddxgfUucLt1CVSUUWSSWMBBNG3STC0v9XFTmY2RAZahXIaCk3IQr2hPYwLS8Q4v+iUYm6+lDEASBkpISbNumoqLiiNPQDoUsywwdOpRbb72Va6+99oipjL2xbZu1a9fy5z//mfvvv5+uri5++tOfcu65536qxWoZPj8I6XqaE+Ha0EybDs2kNpJEkkSEdMvtkGGxJ6LzbF0k1dHVsDAtECURhyJiiwItEYM9HQmqowYuJTXv4R97Q2zcG6RetyjyKkzLd3FKvossReK9tgRvN8aIWjaRhMmephiFASelHpmamMGLdRGerg6zuUsj2yGRpYgsbo7zj81trG6O4/QqGKbFuFwnw/0KJ+e5GJfjoD5u8j+b2liwrYMGw8bvlKmKGjxbHWZ7S5zamEFSEFFVCWwQTYthAQc/GpnNnP4+ir0KOpC0bNo1Ext4uzmGRxIZFXDgkj777+loyAjFhyAIQk8qbCAQoKWlhY6OjoPiD71xuVwMHjyYOXPm8K1vfYtZs2bRv3//w7oNDkV1dTXPPfcc8+fPx7IsvvnNbzJ37lz69+9/1GKT4b+PE0EkSA/n0WzYHNbp45SIJS2ChkVDwmRf3GB8toO5pT6G+FTChk2rZiCKAqKYandhSSIJoCWZas/RrFmEbWiMGqiiQJlfZZBXQRQEAqrIpFwHw7IcROIGFS1xRK/CzHwX9XGT9Z0ae6I6ug2FLplSt8JTdREW14QpUCVuGJnDjYMCTMp1ku+Q8CkiDXGTZ2vCPLGzi5AsYCoSNXGDzV0arUkTWxKwRRFRSs3dlgUY7FH58kAfFxR7GJPtoNSjkDBtKkJJ2hMmbUmLYqdMuS/VRvwEDkscQEYojgJJkvD7/fTv359+/fqRm5uLy+VCVVUcDkdPhlB2djZlZWVMmTKFc845h9mzZ3PBBRcwZcoUcnJyDtuw7XC0tLSwd+9eRFHkS1/6EldeeSUDBw78WK0fMmT4tBAFAVkUU209IgbtukmjZtKSTDX0m13iYVK2g3J/qk9SQ8SgPapjiyCKqRoEBIGwYdGYSN2NC+lJd+2aiQX09yrkOST8ikiZR6E+YbCyJU5VRAenxPlFbgQgYlpIokCBS6HMo5CjSjxZF2ZTW4KAQ+LUYg9XlvrIUkRkIZVt9eq+KI/vDVITM1DcCqYALZpJh24hiwKSLGLYYBk2pmbikQRG5Tg4v4+XAodEoVMm1yGhWTYRw2ZswEGRS2KoTyXfmYp5fF7IxCiOEV3X2bVrFxs3bqSuro5wOIxhGIjp4TYFBQUMGTKEIUOGUFRUdEwWRG/a2tqoqqoiFosxcuRIcnNzT5i7xQwZjgY77YJa1RQnIUJdQqdLtxjoUTmzwIVXFhEFUtPltnfySnUIxatg2iCJAnLautCtVCBaEQWMdErtEK/CZaU+zipy45AEwrrNc3VhXqkNp9JWc508fXIRPkVgd9igLm7glgVG+lTyHRI3rmth0b4oblFgerGbbw8J4FdEkpbN6rYEL9dF+KA1juqQkKXU65q2jSSALAgYlo0IDHTK+LFxKiJlOU7OK3ZT7JAZ6JXJVSUqIzp7IjoX9Tl+1fCfNhmhyJAhw6fGpi6NbUENVRIZ4VcpTt9Zbw4mebYqxNv1UbIDKo0RnYaEgSEISKKQ6hHV01NQQDctdNPCJ6XaYAQUkfqEQWVYpyNpokoiA3wKfxqXjyJCVTTVyM8lCgz1qRQ6RG7f1sGy1jgJI1XTMMSfKoQL6xY7gkkaEgaSJOKURSw71Q7ETg+VsNMdcEflOPhymZ/BXoWQbtGQMJBFgf5umQKHRJFDokWzaE5YXNL3k0uj/qTJCEWGDBk+NWqjBhXBJB1Jg74+BU2zcCgibenhRuU+lRKXzMqOBHdu62Bdh4Zm29iigJRObSUtFpZtoxkWZsJMpTWJIqpDRJJTgfNsNSVGESOVNqtbKbFxSwL5DondEZ3mhImRTolKJMzUCDxBQFJFFFVCTs9nQRDQTAtLt0C3EATIcsv8akwel5Z4KHalYobVUZ1/VYcQAackIgJ93amBTkN9n98sxYxQZMiQ4VPDsKEiqrOsPYE/bpAUBRqTJogCE7KdnFXoQhYEEpbNEzVhHtrSzpqOBHgUBCu1oLscEqKYTnntzn3lP7mv3c5Z07YRdAsLsAUBO50TK9o2og2Ckmp9/p8U2nQOLennST+RIAjEkyYmMNCrkCOLxAwLj0PixoF+hvlVyr0K+Q6JVs1kcVMMw7TxqiIDvAr93Ap+WfhcxSR6kxGKDBkyfKpETJuGuEF7WCeMzc6oQdiwGOhRODU31SDQJhW3eKUmTNywGZvvolMzeLYuQnXUIGFaPQUSQjqttnvB78YCbHM/Eemm+yFROCjrSBDAsG1M3cYy0p1uJRGHCNcM8HN2kZsSl0yrZrKmU6PEKdHXLdPHKdPXJWPbNkua4pyc78Qti3hkEZcsfO7bdGeEIkOGDJ86hmUTSlpots2emEl1JIkiwBCfilsUyHVKfNCWoEu3GOCRGeZLuZDeaY1z97YOamMGeS4JjyTSlDSJ6haiJKYLDtNLWnrSXjc9xkLPI2BaB+4vpyun8xWJfFUkadjsDiYZmuvkd2NyOaPARUBJZV5tDydZ0hwjSxEJSAJeMWU1hEWR8wuduKTPuzz8h4xQZMiQ4TOlPWmyqUujMW7glkSiuoXPIbI9mGSwT+XUPBfFTgk7PVviZ+tbiVg2Y7KdeBWRvZEkr9VFaIqbCIKAQ0rZFp2WjSKkUmyx7J5AtCCAJItYpo0EONJi0mFayIbNsIDKzKJUl9dw0mJZY5RCv8rl/XyM9CsElNRQpKQFd1V0ku9IFQQKlk1AERmQ52KUR0H+/HqaDiIjFBkyZPjM2RHW2RFKEjEskqZNSDepjhuM9KtMz3PRxyUjiwJdusmrDTFGBVROzXVi2RA0TH6+uZ0l1WHyPApDcp1Yts3mYJLtnRoGkCUJ+IRUqm3QtNDsVFB7WMDBQL+KZdts7NRo69K4flg2Vw7wM8KvEjcttoWSbAvp2NiUuGT6u2SyVBHLgqeroowIyHgdEg4B+jgl+qZHnH6RyAhFhgwZTgh0yyZq2EQMiyKnxAv1YRyiSKEqETNs8t0SUdNmY5fGmICDKTlOBFIxhTeb47zTEOXMYjfn9fEQM222dGlc+UEjbZrFucUeZha6SFo2S1tivLs7yMwyPz8YmcMZBS7ChsW6To1n6iJMynYwIdtBqVshSxXRLZu3mmLsjOoEZIG+LhlRgFbNZIDfwUivQuBEG3J9nMkIRYYMGU4YUvUKqVTYXWGTdV0xmuIGzvS0uNqYhm7BUL+T0X4H+aqIJUCrZrE5pDE+4GBStgMbiBoW9+zqwrRtZhW4mZCd6mgQ1C1+t6mN8mwHZxS5GeZTUUWBhGlTFdNZ2ZFAQmCYV6Hcp+CWRf5dFySmmRi2iGkLOAWBvj6FmQVOvFKqaPCLTEYoMmTIcEISN206kiZNCZMOzcSriGQpAu+0aHhkgf4uCduykWWRbSGNhoTJqICDSVkOAopIwrJpSphsDqYskAnZjh4LZFVbgu1hnYAqMiagUu5T0Syb5U1RVrYlyHfLlHlUVAFcCuwMW4zPUshWRCxAQsAli+Q4UrUSX3QyQpEhQ4YTFsu2iZspd5RDEvHLIhu7ktTFdSK6gW2LOGUB07SojBqUehXKvQqCDSZQGzNoTpr0dcn0dco4JYFip8SyDo2KoEapS2KET8Uni2jYvNeaxGHbKDLoto1lQ5YKQ7xuBnllPF+kCPUxkBGKDBkyfK6ImTbVMZ3mhIEsiCiiQJ4ssDWURLNBEVJtvRVJJGFYtBsWHlHAI6XSV/s6JbZFDSwbsmUB0YZQ0sQlCzhUlSFuCc2y6NBTWVQ+GcZlOVMZVP+lZIQiQ4YMXwiqYwZ7wjptmoEkpgrdxmU52BbUsCxwSyKaZSHaNnlulWxFoC5qsDucRDMtciWRM/t5CSj/He6kYyEjFBkyZMiQ4YhkhDNDhgwZMhyRjFBkyJAhQ4YjkhGKDBkyZMhwRDJCkSFDhgwZjkhGKDJkyJAhwxHJCEWGDBkyZDgiGaH4BDDaK1n92kPcffe/WLgj2HtzhgwZvshYGs17d7Grth3D0qhZt576eO+dPl9k6iiOGxrtWz5g0fL11LvKOX3WGYwpSlCz4QNqs8/j9PLUTN3/VrQ9S/mAUzh9MFQuX4V80mmUpnq0fXpYBu3V6/mgNovzZpbz3/2NHDtGeyXrN0UZdMYYcntv/LxgfdK3x1E2PzWPhQ0eHFYUzQIIMOGqr3FW/49wwRtRmrevZq9nOlMHfnZXrPTrX//6170f/DxgtFfw7svP80KFythRhXzqY8vDlSx77RVeXJdk+NgSnNouVm12ctLsizh9kErlymd5ZsEqKqpbqQ95GT+2+BDnqFGz+F88tzeXkQOzDr1wafVUtjjI8clAlJpVb/LSc4to7XsSg/y9d/44GDRvepPXXnmFusApDMnpvf1j0L6Cfz35AXu2V9HZuZF31+9i6z4348cUI34a32OyncoP3uTfz77Gqm3VtNaH8Y4dQ/Ghfrftm5n/76VYpaModPfemKK9ugbbn4UqnADX4fEi2czmRa/x4st1ZJ8yhP98/QbR2o28+cK/eWX5Vqob9hDJOZnh+R9jte392+m9/ZOifTX/+uurtPYbzaDAIX9tHx8jTiThZsS5l3L+jPEMyC1hwrnnMCbvGF8v2c6ud1/hqRcWsWZXPTX1MHxSKYe5JD9xPsa3/dkid1ayujaIEU1g9N54NMR38epDr1KpQbTiRZ5YXIPWe58jkWxh155mtJYgEQBlECNK2ln66N3c/dBzrNgVBcDT9yTOO2soh1qTCDexq76d9voGIod6E1olC//xBM89/hTLGrTUYr6tgmYtSiLRe+ePi0ywdjM1nQbBaOrcjxu5U/nynJM4ac5VXHTBHM4beRJzLpmA53h8j0dAa9nM0qfm8Yd7H+K5D3YRtQBPCSedfxZDXb33JmUV1lbS1N5ETfuhr4b2NU/w0NPz+cfLFUStT/b8P1XkIDWbaggaQVJfv0b7lqU8Me9u5j21iIoWA5ApHHsep5T2PvgY6f3b+VTQiIZNsBIkIsYn913JAQZNmUpR/UL+fu88nljThfOQ19phCNew+rWH+MO9D/HimprUNesrZ+rZIwmkRnh/JnxuhQJvAA9AazNtvbd9KAY1775ORXsFry5aypK3dlG/7lU+qD2Gy0eUUv81EiQAgpt49fXV1IQB0UPp5PP46k23ctM1pzOmyHOwtRDfxav/fJHEuGu5bFQTj89LidYBCF6yfIAo43Q4AA/eQGpTc/uBsQ8jnprkdVRoWtokPhAp3fMskjjqZzoYrZLV69oxAG3Paja3px52lJ/O6QMhGncy9NzTKe/+8Xys7zGNZdC+t4b2A95TkE2vLWR1bVqw+5/EedfdxK03XcvpowvxHPSFGLSvfIqHNhdx0TVn413xJ/61Kn3y++3j9AVwALLDgSwe6fw1tE/ML22gxT/Gd3Qouq9nIiSSQOcmXnx9NfXR1PVcfsplXH/zrXz13DEUHvzhHRu9fzvdxLtdNccbjfp3n2LeS01M+PL5ON+bx7zXKg++MWxfzXOvH+Lxj4BHNggaQLjXe9wfS2PXkqUH/O4r353P0m2p604uGJO6Zr8zh9MG5qaut8+Iz/ClPyYO58cwWWVKz/42l118Jd++8HQu+sYczrvqm5ze/9A/gPZVz/FiRa+7bI+XrP3/3dlOO4BYylnX38SVZxz5B6XVV1KjaVTWtRNtrEHTathV1+sSVQuZes31fPXr13JSLoCM41CmidXO+mf+xLynN/daLA+FRuWiv/GnhxZR0+vlvD7PgQ8cM82sePQ5li5+iPmvvsg/nl/KwoeeYH049SN84t4/MW/ePP507xNpC+kov8f21TyXvoM/CKOShffezUPPzmfZjv0XzzbaW1P/V3r2t7jpqsMIdjdWkMrdzdC0k5ZIkJomaN5V2evzlPEMu4ivfe16vnn+oJSVeJjz1/a8xd/+/HcW1R6PZacX7et56s/zmL+pt5B9HLwE9v/6tWjPAjfo7K8xZ/ogco+XX633bwfAambZo/P4090P8eqqytQie7ywIBqNgB4lYUAiBkSjRPb/bsPreeKhpVRueY5/LK45+puuw5FbmIrjRA9nNRnUvPU3Xlyzmuf+tpAagwNvLnJP4sqrzzvyNfspcuLHKAwDxEPomdXOrtV7CCJSOHocJYf6tabR9i7jueeXUuXox9CCtJdPkMnJy0K2DNqrGxH7lpB1iG/EqF7IQwt20LJrE/t8QxhVlD5eClH5fgWt5DNi2lBysocw3LePbbtr2LW1k+LxQ8k5xPN1I+cMYezI0UweW0rJ4OEMGTaFcf0OoQKiG6ddw8bdGsUFXuK1q9jcaBH3lTEtHUgw6t7n5ZWNxP9/e+f/1OSdJ/CX8TFBAgaNGCBKFAQ0aKhYaXG3bumtTumV6XnFuXrbTnt39s6dcW6249z0b3B2vPXuuK1zy3XdXW/rXdm6HXZLV3ti6VYqaKyxRIkEE0qQGB8hJo/40If0fniehBACrq3ddW6e10/keT755PP+fN7fPl+eh/EB3ING1rvs5M71RuSYh/fe8xG7e53PLsxs51TYw7nABLmrH6V25TwdCiixMNe8bs4OiBhMS1iSZ8RAHqtWGxm9s5GmZ7eyftENlNqdbCuRcf/qf/j0tvblL2MMe29T/GgVyxbcYxyVIB2tv+FK2MfFkSVUOG0zZTMsI/fOOTzXpxDj6XtBy6hYv4ThvgGCvkuMFW2iar4BWZCLfeMmNj5Sx1r7KjZUVVD9WBXWLKqXs9hItP9TrpuKWSZka7+Ep+O3+G7LXP/swr1/ex6UCYmJyS/4EiPCQlQH8/t3OTs6QXTAzcCi9Tyy8g9YuZ4U8X16nZySZXPso0wR/uwcgTu5rNlci71wDdXLIlz0iUQGLn4tGciUw5hhO4Dk/jXvXI7BlxNEAl7OdZ9lIJ5HcbGVPGOWQbgfFghYK2rYUluLY7mVqk1b2LTRzuKoj9+94yF3wxqW5BRjzx+mP+5k55/XzPAFSixM5PYicrR/gTobBVn6AozCdOZ9N4T7fIAJCqnaWoV11vcMFNiWEPEEse74Sx63GQGBwrVrSAQ8DEdCeAL3sOVZZGnHA+LhDhRiD0ff+BXevDQHncQY59rHXiLksKa2Fvsc64DKYAc/fvs84oRExNfHxOrH0zaBo/Qc+TfecQ9wPWdjVuc41v8xvQEJmCI60JdmMGP4MpQ9t2gDFYsGcPsDeEeWsGnj/JubwuIcNVtYkEPeHLMPZbCDfznyvwwMGlj1eDlLbno5F5iAQiffrlQDhcFSTk1Zgs8/GyYWC9AXLWZT5bLsmYipGFfNMiJeH+JEBG+aMsoh9+xAkQDSFVUO0XP85/zyRC9e/zDhzwfxXuzBHVrC+g02cnLtONcVYlxgIHelk4qlAtz+lN91BpDWNvGDv3uK/OFzDI5FkAo2sWHV5PzjOObj494AEjA1PpBVtiWFRgK9g8RiIgurHsWRzIxzbWyoMDLgHiBw+TpLajZgyxKLUywwkqPdN5jz5jDQpM4MErVswuXI1n4jxRs2sexWH76bE0QuX8O4/hHsf4A/T6JE3Lzz05/z29/30NPTwyefXGFhdS2rFhsoKK9hzZef4/k8hhRI18k5GOvhyL+/w7nBKJa5NvGRCV1ICxSLwVi4nk1FY1y4PMro5WsYqx+ZPT73ILsca7hzPs12EiLnf/chwTuAYEJITJEggRQe4NOebq7EV1BVZsWYdTzuQUp/BYRF2jVBQFgQ5dxbRzk7GuKuVd2czy3aQJ3LwZJkOWT87x3mP3/by6cXPqH7YozimoqZCaDooe3Nn9Px8Sd0dwcwrnOp45wKFAmKN2TRawBTIesffZT1tjS/IyzB4VqPcdBNYDRAX6yYRyuW3dvxz9WOB8Q9f/+PTmo6qBDsPUMoIRP8yK1OzZQoPm9onmmhQnSwB+9o8rPImRMeZMppeqkBKzJujz+tvIWax8rVkn39zHriYbSLt0+HwVSJq9IEyHh/cwr/ZGbBaayP7aZpLTDUwQlvZkslPG8d4GBLG54YMOml7cBBWt52EwWiF9poOXiAdt/0N4TVTlwCoLjxBtLrmompZBsv/m0DNkDu+zUnBjJ/O418JztfbcZpAkY7Od47S/JpBts58MNDHD0rguyn/Y2jdA5K6jJMUTmutTYEQA50cColr0LowyMc+uEBjl2SIAEKIKAQnxCocqp9Hvw8NVDZSYTperuTMCYqayoxAXJfO6cGM2TLd1FbCRCl90Jw5j1rHbubyoEgHR94Z+vO8EkO/vAQh0+r3wt/2MKBQy10BgCCdP74EAdau9VlRQAsVLvsAIQ+65utM0kMZpzPvUpztQkI0/luz9xlMxF7OPrmSfzpq50ltbiWJj+YsD/xInuetKk6+e6JNJ3MtAFgaTWuEoAQnvTnehSJ4Hkv4WxLehqmtU289KRNleF0lv6bj3vKoTHi5kwEKNzGntd+wP4922YcvxUvHucnc+0dJESCgSyHLxIy4UsdtP7oON5U3wTpbDnIgQMd+LFQu82JAPgu+1JyKWM+3ANafUNd/PpSWt2Sh7Z3PExfidLzbse0fIkQnb84SSgBLLViS5Wbhy9EPOf9aXUCBit1L6j2KV86qfZNkonw7PLzteMB8dAFitCpFlre9RBVBBxPf5/mLXU0v7odx4SHYz86zPH2j8jcLlBRCL7fwuG3O+nwaM5iyE1vFCxbG3Au19ZFMzrPtG4LtQIQGSI0IwAoeLu7iSLgfLaJxudeoqEIkD30Xs7aAA0Tzm/VYwZ8XWdmGuFkEN8QKJIJcz4oA/34UZBiqprGxSCSAuGxNGM2OKitU3ewQ5F7uBprHbufd2JCwdvrzVCmDExq8LQB4u97CGXe1wgFfJCQucs4Pcfa8MpgWr2dV17bz76Xm2l8/hX273IB4BtK1iKQl6MgJyAYGgWLHYcJlIEOWltaaHlfC9Y3xHmdp3LlDN1REKqbaHp6p+awZDxnM2UTcNbXYwGUC+40x6Bicj5BvTognMmITWF/P0pCRlhcAIj0X5ZAltRTaFKUcEwG8Sbjad8xb6ylEmA0cwM7ExPlz2h6E/mInuGM25Nejh86QsclMc0JRul5t5MwYFrdwIv/+Dqvv76f/X+lnhJLx/rYbjUQKV5NJ7PYAABmXJsrAQiHky0O0dnSwrEP2ukZTCuaBetjjVr/BckIwypfUw7uqifGrM5KdanPukJ1skUN7Pn7RipNIPf10p9FoeUrnRz77xZaP8nYrzHE6f/Yg6j4OHMhqWUKcUkB1JNdQplTHcdAiDAgXzrGwdbjnOxSEwD/Z24UBJw7f8Dre7fjABg6yRltHGXvSTojQGEDe/9pH9tLAbkf/w0gMTXdlrmIuTn6r0fo+KCb/ljGPVM5jTvKgSiDAa39c5Sftx0PiIcrUMTcdJ6XkK74tWhoovypBspNQH45lUUAQbzJiD8DAcfmWs1ZnKRbhPC1fhSs1KzLw3fiBH6gsizzbF+edpIoTnzGKRWJ+BhAJVVlghrl650wKxOWkTMck7JwkbrBGe3mrVQmpBA604UfQMghBwnPeW3qkJhCQSJ8XQ0Y4nBoRvaUV7BcrWEyM59T8J3uwDMqpTIiU5mLKgMwHJrlxMTzHXQNiijJ4GWtxlUEKGHCaYp3N3n2NhHEe1GtOdrdTueoarwv7arFpq2pKVKQnt5+ACpL1UwbZMI3NOWOSkgGO9v/4RUat7pw1bioLNWObhVZ0f7KihRTjb+yshwBsG7ZihNgKMhoQsRzyk042fdFNdSuAPDhTs8CARSBRbkAUbqPpZ0um/Dw0Sdq2bwcIZVYgJZQiGEtgIYIpQ+5YKHADKAgZw5JxE3HR37EZLsMVqo32ACFcHhmu5QBLz45jPd6fPr49OhFerTs+qVdddqShYBgBCZ9dL7vISylRpvyDVUABK/fzGoDSYSCAtVBf5E8HWfHtVnt/WAoPF2Qu9zNTN3lKNHMa2nctxwpNNvRNn7FD9vpGgrj/+AjvIClrBzrUhd1j5inT2PNQORslx+wULk68xFAK1u3qcFRPH0SzwQgS5pdBfEFZUAgRwAUhbuAqcqlBo7IEKHJKOIogAOHwwSWWhoeN6vBeFiECR8nTqgJj7XCgRkztVucgEQ0DkTHSe/VrKRmwiE6T/tmzZiit9PTkznK36sdD4iH6sls6eIxWt4PImx6gf07Mh06KN7jHGz3wdom9j9vouNAG16sNPz9HuqWAoTpajlCtzTJjf4+AneWULGxnMIcdU/cVN3Mq+u9/POBt/AtXsfmqiXIMW14LPXs2Zs+5VXwHj+oLgMZTJjNAnJMdciOp/fxQs04Jw8exa0ojA1dYTC2DNejFRQIClKyTq2escAVBscWsXpjFVZtfVMwCShpXmbG56nb+PuuMrF8A5srzMiaY6hs2s9TsSMcPi1CdTOvfyfK0R+fVJ2ZYMa8GBRJO2JY2si+3a7p7C0R5OSPjuFWpuVhQkJSAKGWF/dvp0Dr/0QshG/gJsLKKtYWZuzbmGyUr8sjPjhKfFJC0kRNRP1c9I+zqGgDm0tNKQeaiPq5NPQljpoa7ItlpDQnV/u9H7B9pZ/2WeOokhpvwJRvRki2t7SRvy5z88vTqinOuAco4376rk1Q6NpCRYFhuk+S3Ikw4B+BkmrWJgfEYMJE2rHhjM93R6/QHxFw1NRgQ6vPUs+evXbOpLXf1nuQYxfUhpjyzQiJpMwCtd/bz/aVWv2A/70DtF3KuD7QzoFfeRGcTextdM44xiudP0rLB2roEsxmTIZpXVN10pxmA3e57r3MyJc2Njy6BtOEWs6ydQ97n9C0fLSLlp91I5U2sm93Of63WugYgjs3BrgaBscjNdhz0/S5son9O9XlmnTuVw4IqbbzxR2uX73KyBeFrFtXgjl5QhcAAdu6SnIifvWZFqGWF17bjiM9tR3rofU/OhFLtrPvpSwzlUydN8gpHQEBs0lR9Tcll4L3VwdpH1BlcV45yNHz6tiZ800wKSGNXafPO8JC+3rWFadvAiTr0/QYrW2U0/RaM845NisVbxsH2/2gjBG4MoRSWkON3Txtm1io/9u9bCvMKH/nOleu3oAVFfO3I3OZ7yvyUM0oRkPqxLZy9ewgASCsraIcbaqYmtrZsKY6w4Z9tXrC4/robSZuD3PjthokrFuaefUxkZ8f+gXdw+OIVwf4PJkmGew07Jq5LgoCzu82UWlW1zslLUhQ0sD2jWbAzrbnXJgTtxi5JhK/6ScwKqWMylzWQONWO0xGGAqKxG+PMnxzIdYVqjqrQcFMeZm6kql+NuGodmCKhxkZiyNeHWRE02zzxmaecQooWli3Fi5HUXKwrtAsUJGQYpoDM9hp2JEWJABkgbwy7Yomj1q1Gddz27AD5o3baSiBeHiQ8O1xQiNjTBrs1D/pnM4U5TD+i37CsekgARCPjHA7Fke8GmBEM0aTSb0+fiuEf0icDhJmO/W7vq86lazjqCKs20HTOrXNcrK9mmwrVpVh17Q3dQ8w5y/iVmiY8dsiVweGp/vEXE7DM/XYDXB75AqhW+OEQhGUpTZ1uSOhBYWSSvXVIsnPSyupLJpkLBxm/FaIq0Fxuo93bcM6o/0ywpIyzOntSo3fX7AtLUjAdMZqX5F22WbHDijedloOHuDQz9rouiQio6AstmJLDfe0rk3rJGk2MMaNyG3iN68SCE2X2/WtNC1ftpwigIm7KJhx7WjAbogTvhZi/FaI4PDY9G+YXTQ/MztI3L8cTNuOLDJyfZz4TT8js7JfhfAVrxokDFbqdm2bGSRQn10RU5l0Fgx2tS/QdF4BMGHWZoOSrI2jtlcBAtbl6qzh7l2wP/EXuJJlNX2/Ex7iphQnPCLy5ep6GmrUPbpkfeaaBmpn6LEJ0xxBAkAoLsUKJG6NEBTHCV39HDFNn+1P7UoFifTyd8JDhMfH76MdX4+Hakbh/80B2vrM1L+8j21FmXcBktmnk+bXtiIMKxTYCjCbTVoniXQdbqU7amXj1tUIcZEBT4BYaSP7dts5f7iV7vEF5BZVsL6iglKrEXKtOEqsmGZbgEpCQboRJDQ+hcnqwF6Y/C2NSZGrvRe4NrmUVcX5LGQhFrsDW742bLLItXMXuHYnn/WPb2ZVPkijQULjYHGUY1sMihhkMKJgWeXAZhZQ5DBXzlxk1FhCqXVx6jqANOrj5kI7RRZzSgEVWSR0TUSaUhAWW7GXZnugTGNSIjwcQpxQEBaasZY5Ms7HK0jDn9HruYlx7SY2l6l9o0hhgr5+fNrySc5SB3aLGUuBQnR8CqZijARFlIISSlcW4yiyYjIm64qxdLWNxXlW7IUWzIvTGjcpEpw1jjNRYmGCoShTmWOVNjYYLdhX2jAbFaTAebq9Eyx1lJC/EBYW2HGsMKsPLCky4tBnXLoyhnHtJurWWhEUkeCgiJxro6zUgqBIhIdCRAUrZSutCChIQ2l15mvXDXO0P9kuUUZZKGAuLMORnLmkiNLz5mE6I06aX29SEyAN8WIbb70/c8PS/t19vLhZdWJyJERQlFCmBExWO44ZZ+0zbEBR9TI3SxtkbxuH2v3aDF1zlopE6FIvfTeNlNiXYzRk9N8svqocmbaznBWrirCYFjI1Fko9Gb+wwMbK5Zas9plcgbA+uZc9j2VbxNTeuzQE5d9pxlWAakuLpwgHgkSxzLSVRJiu/zhCdzTdB033d+hsOz0jd2HFFp586s/YvEYb70kZcTRI3JzWx5MiwVFYbs3DNIdeQ9qsubyeJy2TTBWWsjwHwIR1jR1rhuCp8mtqqc9bgHnjE9SsmqcdD4iHKlCEP2zhyCcSlsdfYe93Zp8ZkH3ttBz3ohQ1sPflulnr2+LZI7SeDkNqKjqtKJYyBwwGUR57kX1PJtfSdXT+VETp+dlhOkdnLi2k0IJNv6eTkxe0pcZn091wdmbbAIjn2+hMNNC8JW02Ibo5duQkQUVd0tzp/KqO5ZuR4w9i+CQH/8uNUriNPa/Uz37mReymtbULEQeN+17QZgdzIRM88VOOXYhmXYaOXmrnp+/5kKmk6bWdcy4l3Reyn/Y32vDKArW796ub0PNxv+UfIJld+yfFVlGNCYh+coSjp/yI2kK3Iov4P2rjJ8fV43mOR6pnBomEjP+Dw6qBYKF+e3K9Up1O24DoYJAoULRidgDS0fnjY6G8zKJusB/XDiSk7aMoskQ8MoTXp+5I24uzTrGnmcMG5MEO3vrAj/9UK8e9apYuj3Rx9E01SFDayI6vHCR48HLcDytr2WIBIl20vtmBe0hEkiSio37cp47S0tqFCAjVW3DOFyQSEt53f6IGCUzUPqsFiYSCNOqho/Ugh9/zIWPC+fwzDyRIKBE3x95QTxGytpFt93D691v+QfNQzShAxv+bN2jrS1v8zqSogT0v1aWyB3m4h/Zfd2pniE04nn6JF2pm7jYokR6OHekklABTzQvse9ox51RQR+ePRipDzLyRQUkDe743rfOZzG8DMv73fkJHopFXn15O8IO3OZ589cfSWl54efvXf937A5LjKyH2cKRVPYablZIG9uyuSx0iyWTOvkvNRpKYKX96N80ZvuW+UaL47mcM7rf8N8RD9mS2wLK1m1hjvIV/SOSL9BBmMOOof46/eXYj+WmKNnXDzamLEaYMVuqa/46m9flpX1IxmO24ateQuGvluzuqyfsqT3jq6DxohGVU1azBOOYnIH6ReRcEG86ndvK9Hetn6Hwm89uAwLLyOuqqliEg4T/zMYE4mMu28/Jff5viB5AdPyg5vhK5dh7ZvIbceJiQKDH1pXbCyVbFtxuf5/kny8mb5zfn7LucSUJnvEQQsFX/GU1/9edsXZWX+fWvwP2Owf2W/2Z4yGYUM1FSb5MU5t0QCvt85JRV8k29Yl5H5xtHkZHkODc/j5O3ajk5gglzth3cOfiDbSAWxBctonLlN5SSfk05/hRk7zsFOTbFQrP2luAHyf2Owf2W/wZ4qAOFjo6Ojs6fngcdK3V0dHR0/p+hBwodHR0dnXnRA4WOjo6OzrzogUJHR0dHZ170QKGjo6OjMy96oNDR0dHRmRc9UOjo6OjozIseKHR0dHR05kUPFDo6Ojo686IHCh0dHR2dedEDhY6Ojo7OvPwfAjwTruMORpkAAAAASUVORK5CYII=" alt="دانشگاه تهران — مرکز آموزش‌های کاربردی دانشکده اقتصاد"></div>
+          <div class="instructor-name">مدرس: دکتر احسان آذرنیک</div>
+        </div>
+      </div>
+    </aside>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <main class="shell">
+      <header class="topbar">
+        <div class="title-wrap"><div class="eyebrow" id="sectionEyebrow">بخش ۱</div><div class="deck-title" data-deck-title>عنوان ارائه</div></div>
+        <div class="top-actions">
+          <button class="icon-btn mobile-menu" id="mobileMenuBtn" type="button" aria-label="باز کردن فهرست" aria-expanded="false">
+            <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </button>
+          <button class="icon-btn" id="themeBtn" type="button" aria-label="تغییر به حالت شب">
+            <svg viewBox="0 0 24 24"><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4"/><circle cx="12" cy="12" r="4"/></svg>
+          </button>
+          <button class="icon-btn optional" id="projectorBtn" type="button" aria-label="فعال‌کردن حالت پروژکتور" aria-pressed="false">
+            <svg viewBox="0 0 24 24"><path d="M4 5h16v11H4zM8 20h8M12 16v4"/></svg>
+          </button>
+          <button class="icon-btn optional" id="helpBtn" type="button" aria-label="راهنمای کنترل‌ها">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.7 9a2.5 2.5 0 1 1 3.5 2.3c-.8.4-1.2.9-1.2 1.7M12 17h.01"/></svg>
+          </button>
+          <button class="icon-btn" id="fullscreenBtn" type="button" aria-label="نمایش تمام‌صفحه">
+            <svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <section class="stage" id="stage" aria-live="polite">
+        <article class="slide active" id="brand-01" data-section="آغاز" data-slide-title="استراتژی برند" data-lesson-id="p01"><div class="slide-frame"><div class="brand-slide meaning-chain"><span class="kicker">Brand Strategy &amp; Brand Equity</span><h1>استراتژی <span class="accent">برند</span></h1><p class="lead">از معنا تا حافظه، شواهد و انتخاب</p><div class="brand-flow" aria-label="زنجیره ارزش برند"><span class="flow-node"><svg class="flow-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 0-3.5 10.9V18h7v-4.1A6 6 0 0 0 12 3Z"/><path d="M9 21h6M9 18h6"/></svg>Meaning</span><b class="flow-arrow">→</b><span class="flow-node"><svg class="flow-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6a4 4 0 1 1 8 0v1a4 4 0 0 1 1 7.9A4.5 4.5 0 0 1 12 20a4.5 4.5 0 0 1-5-5.1A4 4 0 0 1 8 7V6Z"/><path d="M12 4v16"/></svg>Memory</span><b class="flow-arrow">→</b><span class="flow-node"><svg class="flow-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m4 13 4 4L20 5"/><path d="M5 21h14"/></svg>Evidence</span><b class="flow-arrow">→</b><span class="flow-node"><svg class="flow-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16c3-7 6 2 9-5s5-2 7-7"/><circle cx="4" cy="16" r="2"/><circle cx="20" cy="4" r="2"/></svg>Experience</span><b class="flow-arrow">→</b><span class="flow-node"><svg class="flow-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-4.3 7-11a7 7 0 0 0-14 0c0 6.7 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>Choice</span></div><div class="meaning-chain__fa">معنا ← حافظه ← شواهد ← تجربه ← انتخاب</div><div class="core-message">برند زمانی ارزش دارد که رفتار بازار را تغییر دهد.</div></div></div></article>
+
+        <article class="slide" id="brand-02" data-section="برند به‌عنوان سیستم" data-slide-title="آیا برند واقعاً ممتاز است؟" data-lesson-id="p02"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Premium ≠ Expensive</span><h2>آیا برند واقعاً «ممتاز» است؟</h2><p class="lead">یا فقط «گران» ادراک می‌شود؟</p><div class="choice-duel"><button class="choice-option hotspot" type="button" data-hotspot-title="PREMIUM" data-hotspot-text="مشتری دلیل قابل‌باوری برای پرداخت بیشتر دارد."><span class="big-word accent">PREMIUM</span><b>ارزش بیشتر + شواهد بیشتر</b></button><div class="choice-vs">VS</div><button class="choice-option is-risk hotspot" type="button" data-hotspot-title="EXPENSIVE" data-hotspot-text="مشتری اختلاف قیمت را می‌بیند اما اختلاف ارزش را نه."><span class="big-word">EXPENSIVE</span><b>قیمت بیشتر بدون ارزش قابل‌درک</b></button></div><div class="instructor-cue">رأی کلاسی: آیا هر برند گران‌قیمت، Premium Brand است؟</div></div></div></article>
+
+        <article class="slide" id="brand-03" data-section="برند به‌عنوان سیستم" data-slide-title="برند مساوی لوگو نیست" data-lesson-id="p03"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Brand Definition</span><h2>برند ≠ لوگو</h2><div class="brand-anatomy"><section class="signal-box"><h3>نشانه‌ها</h3><div class="signal-list"><span>Logo</span><span>Color</span><span>Typography</span><span>Packaging</span><span>Advertising</span></div></section><div class="activation-arrow">←</div><section class="memory-system"><strong>BRAND</strong><span>معنا</span><span>حافظه</span><span>تداعی</span><span>انتظار</span><span>تجربه</span></section></div><div class="core-message">لوگو برند نیست؛ لوگو می‌تواند برند را در حافظه فعال کند.</div></div></div></article>
+
+        <article class="slide" id="brand-04" data-section="برند به‌عنوان سیستم" data-slide-title="برند کجا ساخته می‌شود؟" data-lesson-id="p04"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Intent → Reality</span><h2>برند کجا ساخته می‌شود؟</h2><p class="lead">نه در Brand Book؛ در ذهن و تجربه مشتری.</p><div class="vertical-system"><button class="system-stage hotspot" type="button" data-hotspot-title="ORGANIZATION" data-hotspot-text="هویت مطلوب و معنایی که سازمان قصد دارد بسازد."><strong>ORGANIZATION</strong><span>آنچه می‌خواهیم باشیم</span></button><b class="system-arrow">↓</b><button class="system-stage hotspot" type="button" data-hotspot-title="TOUCHPOINTS" data-hotspot-text="رفتارها و شواهدی که وعده برند را تحویل می‌دهند یا نقض می‌کنند."><strong>TOUCHPOINTS</strong><span>آنچه انجام می‌دهیم</span></button><b class="system-arrow">↓</b><button class="system-stage hotspot" type="button" data-hotspot-title="CUSTOMER MEMORY" data-hotspot-text="معنا و تجربه‌ای که واقعاً در حافظه بازار باقی می‌ماند."><strong>CUSTOMER MEMORY</strong><span>آنچه واقعاً از ما می‌ماند</span></button></div><div class="core-message">برند چیزی نیست که شرکت درباره خودش می‌گوید.</div></div></div></article>
+
+        <article class="slide" id="brand-05" data-section="برند به‌عنوان سیستم" data-slide-title="زنجیره تصمیم برند" data-lesson-id="p05"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Brand Decision Chain</span><h2>زنجیره تصمیم برند</h2><div class="scroll-flow"><button class="flow-node hotspot" data-hotspot-title="STP" data-hotspot-text="انتخاب بازار هدف و جایگاه رقابتی.">STP</button><b class="flow-arrow">→</b><button class="flow-node hotspot" data-hotspot-title="Value Proposition" data-hotspot-text="ارزشی که باید برای مشتری معنادار باشد.">Value Proposition</button><b class="flow-arrow">→</b><button class="flow-node hotspot" data-hotspot-title="Brand Meaning" data-hotspot-text="معنای مرکزی که باید در ذهن ساخته شود.">Brand Meaning</button><b class="flow-arrow">→</b><button class="flow-node hotspot" data-hotspot-title="Brand Identity" data-hotspot-text="قواعد داخلی برای بیان و تحویل معنا.">Brand Identity</button><b class="flow-arrow">→</b><button class="flow-node hotspot" data-hotspot-title="Brand Knowledge" data-hotspot-text="آگاهی و تداعی‌های ذخیره‌شده.">Brand Knowledge</button><b class="flow-arrow">→</b><button class="flow-node hotspot" data-hotspot-title="Brand Equity" data-hotspot-text="تغییر واکنش مشتری ناشی از دانش برند.">Brand Equity</button><b class="flow-arrow">→</b><button class="flow-node hotspot" data-hotspot-title="Distinctive Assets" data-hotspot-text="نشانه‌هایی که حافظه را سریع فعال می‌کنند.">Distinctive Assets</button><b class="flow-arrow">→</b><button class="flow-node hotspot" data-hotspot-title="Availability" data-hotspot-text="به ذهن آمدن و آسان بودن خرید.">Availability</button><b class="flow-arrow">→</b><button class="flow-node hotspot" data-hotspot-title="Experience" data-hotspot-text="شواهد نهایی وعده برند در عمل.">Experience</button></div><div class="core-message">هیچ مرحله‌ای نباید مستقل از مرحله قبل طراحی شود.</div><div class="instructor-cue">اگر Positioning مشخص نیست، رفتن مستقیم سراغ لوگو یا Archetype اشتباه است.</div></div></div></article>
+
+        <article class="slide" id="brand-06" data-section="برند به‌عنوان سیستم" data-slide-title="چهار مفهوم که نباید قاطی شوند" data-lesson-id="p06"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Conceptual Clarity</span><h2>چهار مفهوم که نباید قاطی شوند</h2><div class="concept-ladder"><button class="concept-row hotspot" data-hotspot-title="Brand Identity" data-hotspot-text="مثال: سازمان می‌خواهد ساده، تخصصی و قابل اتکا باشد."><strong>Brand Identity</strong><span>آنچه می‌خواهیم باشیم</span></button><button class="concept-row hotspot" data-hotspot-title="Brand Image" data-hotspot-text="مثال: بازار برند را پیچیده، گران و حرفه‌ای می‌بیند."><strong>Brand Image</strong><span>آنچه بازار از ما برداشت می‌کند</span></button><button class="concept-row hotspot" data-hotspot-title="Brand Knowledge" data-hotspot-text="نام برند و مجموعه تداعی‌های ذخیره‌شده در حافظه."><strong>Brand Knowledge</strong><span>آگاهی + تداعی‌های ذخیره‌شده</span></button><button class="concept-row hotspot" data-hotspot-title="Brand Equity" data-hotspot-text="دانستن نام برند، انتخاب یا ارزیابی مشتری را تغییر می‌دهد."><strong>Brand Equity</strong><span>تغییری که دانش برند در واکنش مشتری ایجاد می‌کند</span></button></div><div class="core-message">Awareness به‌تنهایی Brand Equity نیست.</div></div></div></article>
+
+        <article class="slide" id="brand-07" data-section="ارزش ویژه و CBBE" data-slide-title="CBBE" data-lesson-id="p07"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Customer-Based Brand Equity</span><h2>CBBE</h2><p class="lead">دانستن نام برند چه تغییری در واکنش مشتری ایجاد می‌کند؟</p><div class="product-compare"><div class="product-tile"><span class="big-word">UNKNOWN</span><b>محصول مشابه</b></div><div class="choice-vs">VS</div><div class="product-tile known"><span class="big-word accent">KNOWN</span><b>همان محصول + دانش برند</b></div></div><div class="response-strip"><span>THINK</span><span>FEEL</span><span>ACT</span></div><div class="core-message">اگر دانستن نام برند پاسخ مشتری را تغییر دهد، Brand Equity وجود دارد.</div></div></div></article>
+
+        <article class="slide" id="brand-08" data-section="ارزش ویژه و CBBE" data-slide-title="هرم CBBE" data-lesson-id="p08"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Keller CBBE Pyramid</span><h2>هرم CBBE؛ مدل تشخیص، نه مدال افتخار</h2><div class="cbbe-layout"><div class="cbbe-pyramid"><button class="pyramid-level hotspot" data-hotspot-title="Brand Salience" data-hotspot-text="آیا برند در موقعیت خرید مرتبط به ذهن می‌آید؟">Brand Salience — شناخت</button><button class="pyramid-level hotspot" data-hotspot-title="Performance + Imagery" data-hotspot-text="برند چه کار می‌کند و چه معنایی برای مشتری دارد؟">Performance + Imagery — معنا</button><button class="pyramid-level hotspot" data-hotspot-title="Judgments + Feelings" data-hotspot-text="مشتری چگونه برند را ارزیابی و احساس می‌کند؟">Judgments + Feelings — پاسخ</button><button class="pyramid-level hotspot" data-hotspot-title="Brand Resonance" data-hotspot-text="آیا رابطه‌ای عمیق و فعال شکل گرفته است؟">Brand Resonance — رابطه</button></div><div class="diagnostic-path"><span>Recognition</span><span>Meaning</span><span>Response</span><span>Relationship</span></div></div><div class="core-message">اول سؤال کن «کجای سیستم ضعیف است؟»</div></div></div></article>
+
+        <article class="slide" id="brand-09" data-section="ارزش ویژه و CBBE" data-slide-title="Brand Salience" data-lesson-id="p09"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Memory Activation</span><h2>Brand Salience</h2><p class="lead">وقتی نیاز ایجاد می‌شود، آیا ما به ذهن می‌آییم؟</p><div class="memory-map"><div class="memory-core">CUSTOMER<br>MEMORY</div><span class="buying-cue on c1">هدیه سازمانی</span><span class="buying-cue c2">خرید فوری</span><span class="buying-cue on c3">انتخاب تخصصی</span><span class="buying-cue c4">مقایسه قیمت</span></div><div class="depth-breadth"><div><b>Depth</b><br><span>چقدر سریع یادآوری می‌شویم؟</span></div><div><b>Breadth</b><br><span>در چند موقعیت خرید یادآوری می‌شویم؟</span></div></div><div class="core-message">شناخته‌شدن با «به ذهن آمدن در زمان مناسب» یکی نیست.</div></div></div></article>
+
+        <article class="slide" id="brand-10" data-section="ارزش ویژه و CBBE" data-slide-title="Performance و Imagery" data-lesson-id="p10"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Two Routes to Meaning</span><h2>Performance × Imagery</h2><div class="dual-meaning"><section class="meaning-side"><h3>PERFORMANCE</h3><p>برند چه کاری برای من انجام می‌دهد؟</p><div class="keyword-cloud"><span>Quality</span><span>Reliability</span><span>Efficiency</span><span>Service</span></div></section><section class="meaning-side"><h3>IMAGERY</h3><p>این برند چه معنایی برای من دارد؟</p><div class="keyword-cloud"><span>User Image</span><span>Usage Situation</span><span>Lifestyle</span><span>Values</span><span>Symbolism</span></div></section></div><div class="core-message">معنای برند فقط Function نیست.</div></div></div></article>
+
+        <article class="slide" id="brand-11" data-section="ارزش ویژه و CBBE" data-slide-title="Judgments و Feelings" data-lesson-id="p11"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Customer Response</span><h2>Judgments × Feelings</h2><div class="dual-response"><section class="response-side"><h3>JUDGMENTS</h3><div class="keyword-cloud"><span>Quality</span><span>Credibility</span><span>Consideration</span><span>Superiority</span></div></section><section class="response-side"><h3>FEELINGS</h3><div class="keyword-cloud"><span>Security</span><span>Confidence</span><span>Excitement</span><span>Self-respect</span><span>Social Approval</span></div></section><div class="response-center">Customer Response</div></div><div class="core-message">مشتری هم ارزیابی می‌کند، هم احساس.</div></div></div></article>
+
+        <article class="slide" id="brand-12" data-section="ارزش ویژه و CBBE" data-slide-title="Brand Resonance" data-lesson-id="p12"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Relationship</span><h2>Brand Resonance</h2><p class="lead">آیا رابطه‌ای واقعی شکل گرفته؟</p><div class="resonance-network" role="img" aria-label="چهار بعد رابطه فعال مشتری با برند"><section class="resonance-card"><strong>Behavioral Loyalty</strong><span>تکرار خرید و ترجیح رفتاری</span></section><section class="resonance-card"><strong>Attitudinal Attachment</strong><span>دلبستگی فراتر از رضایت</span></section><div class="resonance-hub">BRAND<br>RESONANCE</div><section class="resonance-card"><strong>Sense of Community</strong><span>احساس تعلق به اجتماع برند</span></section><section class="resonance-card"><strong>Active Engagement</strong><span>مشارکت داوطلبانه و فعال</span></section></div><div class="core-message">خرید تکراری الزاماً عشق به برند نیست.</div></div></div></article>
+
+        <article class="slide" id="brand-13" data-section="ارزش ویژه و CBBE" data-slide-title="Awareness بالا؛ Consideration پایین" data-lesson-id="p13"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Diagnosis Before Media</span><h2>Awareness بالا؛ Consideration پایین</h2><div class="funnel"><div class="funnel-step">Awareness — ۴۶٪</div><div class="funnel-step">Consideration — ۲۴٪</div></div><div class="warning-banner">مشکل را با Media Budget حل نکن، قبل از Diagnosis.</div><div class="class-question"><div class="class-question__label">پرسش کلاسی</div><div class="class-question__text">اگر Awareness بالا رفته اما Consideration کاهش یافته، چه فرضیه‌هایی را بررسی می‌کنید؟</div></div><div class="core-message">شناخته‌شدن بدون واردشدن به مجموعه انتخاب، موفقیت نیست.</div></div></div></article>
+
+        <article class="slide" id="brand-14" data-section="ارزش ویژه و CBBE" data-slide-title="Brand Equity Dashboard" data-lesson-id="p14"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Measurement System</span><h2>Brand Equity Dashboard</h2><div class="equity-dashboard"><section class="dashboard-group"><strong>Awareness</strong><span>Unaided<br>Aided</span></section><section class="dashboard-group"><strong>Consideration</strong><span>Choice Set</span></section><section class="dashboard-group"><strong>Meaning</strong><span>Key Associations</span></section><section class="dashboard-group"><strong>Evidence</strong><span>Trust<br>Quality</span></section><section class="dashboard-group"><strong>Behavior</strong><span>Repeat<br>Choice<br>Premium Evidence</span></section></div><div class="core-message">شاخص را از سؤال مدیریتی انتخاب کن، نه برعکس.</div></div></div></article>
+
+        <article class="slide" id="brand-15" data-section="هویت و تصویر" data-slide-title="Brand Identity با Brand Image برابر نیست" data-lesson-id="p15"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Identity–Image Gap</span><h2>Brand Identity ≠ Brand Image</h2><div class="mirror"><section class="mirror-side"><h3 class="en-label">DESIRED IDENTITY</h3><p>آنچه می‌خواهیم باشیم</p></section><div class="mirror-gap">GAP</div><section class="mirror-side"><h3 class="en-label">ACTUAL IMAGE</h3><p>آنچه واقعاً دیده می‌شویم</p></section></div><div class="brand-flow"><span class="flow-node">Organization</span><b class="flow-arrow">→</b><span class="flow-node">Touchpoints</span><b class="flow-arrow">→</b><span class="flow-node">Customer</span></div><div class="core-message">Brand Strategy یعنی مدیریت این Gap.</div></div></div></article>
+
+        <article class="slide" id="brand-16" data-section="هویت و تصویر" data-slide-title="Kapferer Brand Identity Prism" data-lesson-id="p16"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Identity System</span><h2>Kapferer Brand Identity Prism</h2><div class="prism-layout"><svg class="brand-prism" viewBox="0 0 720 420" role="img" aria-label="منشور هویت برند کاپفرر؛ شماره هر وجه در راهنمای کنار شکل توضیح داده شده است"><polygon tabindex="0" role="button" class="prism-face hotspot" data-hotspot-title="Physique" data-hotspot-text="نشانه‌ها، محصول و نمود فیزیکی برند." points="360,25 570,105 360,175 150,105"/><polygon tabindex="0" role="button" class="prism-face hotspot" data-hotspot-title="Personality" data-hotspot-text="شخصیت انسانی ادراک‌شده برند." points="150,105 360,175 360,300 150,225"/><polygon tabindex="0" role="button" class="prism-face hotspot" data-hotspot-title="Relationship" data-hotspot-text="نوع رابطه‌ای که برند با مشتری می‌سازد." points="570,105 360,175 360,300 570,225"/><polygon tabindex="0" role="button" class="prism-face hotspot" data-hotspot-title="Culture" data-hotspot-text="ارزش‌ها و منطق فرهنگی پشت رفتار برند." points="150,225 360,300 360,395 150,320"/><polygon tabindex="0" role="button" class="prism-face hotspot" data-hotspot-title="Reflection" data-hotspot-text="تصویر بیرونی کاربر نمونه برند." points="570,225 360,300 360,395 570,320"/><polygon tabindex="0" role="button" class="prism-face hotspot" data-hotspot-title="Self-image" data-hotspot-text="احساسی که مشتری نسبت به خودش پیدا می‌کند." points="150,320 360,395 570,320 360,300"/><g><circle class="prism-index-dot" cx="360" cy="105" r="23"/><text class="prism-index" x="360" y="106">۱</text><circle class="prism-index-dot" cx="255" cy="210" r="23"/><text class="prism-index" x="255" y="211">۲</text><circle class="prism-index-dot" cx="465" cy="210" r="23"/><text class="prism-index" x="465" y="211">۳</text><circle class="prism-index-dot" cx="255" cy="307" r="23"/><text class="prism-index" x="255" y="308">۴</text><circle class="prism-index-dot" cx="465" cy="307" r="23"/><text class="prism-index" x="465" y="308">۵</text><circle class="prism-index-dot" cx="360" cy="352" r="23"/><text class="prism-index" x="360" y="353">۶</text></g></svg><div class="prism-legend"><div class="prism-key"><b>۱ · Physique</b><span>نمود فیزیکی</span></div><div class="prism-key"><b>۲ · Personality</b><span>شخصیت</span></div><div class="prism-key"><b>۳ · Relationship</b><span>نوع رابطه</span></div><div class="prism-key"><b>۴ · Culture</b><span>فرهنگ</span></div><div class="prism-key"><b>۵ · Reflection</b><span>بازتاب کاربر</span></div><div class="prism-key"><b>۶ · Self-image</b><span>خودانگاره</span></div></div></div><div class="core-message">Positioning باید به قواعد قابل اجرا تبدیل شود.</div></div></div></article>
+
+        <article class="slide" id="brand-17" data-section="هویت و تصویر" data-slide-title="Kapferer در عمل" data-lesson-id="p17"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Sarvana Example</span><h2>Kapferer در عمل؛ مثال سروانا</h2><div class="prism-layout"><svg class="brand-prism" viewBox="0 0 720 420" role="img" aria-label="منشور هویت سروانا؛ مثال هر وجه در راهنمای کنار شکل نوشته شده است"><polygon class="prism-face" points="360,25 570,105 360,175 150,105"/><polygon class="prism-face" points="150,105 360,175 360,300 150,225"/><polygon class="prism-face" points="570,105 360,175 360,300 570,225"/><polygon class="prism-face" points="150,225 360,300 360,395 150,320"/><polygon class="prism-face" points="570,225 360,300 360,395 570,320"/><polygon class="prism-face" points="150,320 360,395 570,320 360,300"/><g><circle class="prism-index-dot" cx="360" cy="105" r="23"/><text class="prism-index" x="360" y="106">۱</text><circle class="prism-index-dot" cx="255" cy="210" r="23"/><text class="prism-index" x="255" y="211">۲</text><circle class="prism-index-dot" cx="465" cy="210" r="23"/><text class="prism-index" x="465" y="211">۳</text><circle class="prism-index-dot" cx="255" cy="307" r="23"/><text class="prism-index" x="255" y="308">۴</text><circle class="prism-index-dot" cx="465" cy="307" r="23"/><text class="prism-index" x="465" y="308">۵</text><circle class="prism-index-dot" cx="360" cy="352" r="23"/><text class="prism-index" x="360" y="353">۶</text></g></svg><div class="prism-legend"><div class="prism-key"><b>۱ · Physique</b><span>برنامه مراقبتی حرفه‌ای</span></div><div class="prism-key"><b>۲ · Personality</b><span>شایسته و آرام</span></div><div class="prism-key"><b>۳ · Relationship</b><span>راهنمای متخصص</span></div><div class="prism-key"><b>۴ · Culture</b><span>شواهد پیش از هیاهو</span></div><div class="prism-key"><b>۵ · Reflection</b><span>مشتری آگاه</span></div><div class="prism-key"><b>۶ · Self-image</b><span>«من آگاهانه انتخاب می‌کنم.»</span></div><div class="warning-banner">Desired ≠ Delivered</div></div></div><div class="core-message">هویت زمانی ارزش دارد که در تجربه قابل مشاهده باشد.</div></div></div></article>
+
+        <article class="slide" id="brand-18" data-section="شخصیت و روایت" data-slide-title="Brand Personality" data-lesson-id="p18"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Aaker Personality Dimensions</span><h2>Brand Personality</h2><p class="lead">اگر برند یک انسان بود...</p><div class="radar-layout"><svg class="brand-radar" viewBox="0 0 520 430" role="img" aria-label="رادار شخصیت برند"><polygon class="radar-grid" points="260,40 455,182 380,410 140,410 65,182"/><polygon class="radar-grid" points="260,95 400,197 346,362 174,362 120,197"/><polygon class="radar-grid" points="260,150 345,212 312,315 208,315 175,212"/><line class="radar-axis" x1="260" y1="230" x2="260" y2="40"/><line class="radar-axis" x1="260" y1="230" x2="455" y2="182"/><line class="radar-axis" x1="260" y1="230" x2="380" y2="410"/><line class="radar-axis" x1="260" y1="230" x2="140" y2="410"/><line class="radar-axis" x1="260" y1="230" x2="65" y2="182"/><polygon class="radar-shape" points="260,78 410,195 335,343 185,343 135,200"/></svg><div class="diagnostic-path"><span>Sincerity — صداقت</span><span>Excitement — هیجان</span><span>Competence — شایستگی</span><span>Sophistication — ظرافت</span><span>Ruggedness — سرسختی</span></div></div><div class="core-message">شخصیت باید در رفتار دیده شود.</div></div></div></article>
+
+        <article class="slide" id="brand-19" data-section="شخصیت و روایت" data-slide-title="Personality با Tone of Voice برابر نیست" data-lesson-id="p19"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Behavioral Personality</span><h2>Personality ≠ Tone of Voice</h2><div class="behavior-spine"><div class="behavior-node"><b>PERSONALITY</b><br><span>ما چه جور شخصیتی داریم؟</span></div><b class="system-arrow">↓</b><div class="behavior-node"><b>BEHAVIOR</b></div><b class="system-arrow">↓</b><div class="behavior-node"><b>TONE</b><br><span>چگونه حرف می‌زنیم؟</span></div></div><div class="behavior-examples"><div><b>محتوا</b><br>شفاف و مستند</div><div><b>فروش</b><br>تشخیصی</div><div><b>شکایت</b><br>مسئولانه</div><div><b>محصول</b><br>قابل اتکا</div></div><div class="core-message">Tone فقط یکی از خروجی‌های Personality است.</div></div></div></article>
+
+        <article class="slide" id="brand-20" data-section="شخصیت و روایت" data-slide-title="Brand Archetypes" data-lesson-id="p20"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Narrative Tool</span><h2>Brand Archetypes</h2><p class="lead">ابزار روایت؛ نه تشخیص روان‌شناختی</p><div class="archetype-system"><div class="archetype-core">NARRATIVE HYPOTHESIS</div><div class="archetype-grid" aria-label="دوازده کهن‌الگوی برند"><span class="archetype">Innocent</span><span class="archetype">Explorer</span><span class="archetype">Sage</span><span class="archetype">Hero</span><span class="archetype">Outlaw</span><span class="archetype">Magician</span><span class="archetype">Regular Guy</span><span class="archetype">Lover</span><span class="archetype">Jester</span><span class="archetype">Caregiver</span><span class="archetype">Creator</span><span class="archetype">Ruler</span></div></div><div class="core-message">Archetype یک فرضیه روایی است.</div></div></div></article>
+
+        <article class="slide" id="brand-21" data-section="شخصیت و روایت" data-slide-title="Personality در برابر Archetype" data-lesson-id="p21"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Concept Comparison</span><h2>Personality vs Archetype</h2><table class="minimal-table"><thead><tr><th>معیار</th><th>Brand Personality</th><th>Archetype</th></tr></thead><tbody><tr><td>پایه</td><td>مدل تجربی</td><td>چارچوب روایی</td></tr><tr><td>تمرکز</td><td>ویژگی انسانی ادراک‌شده</td><td>نقش داستانی</td></tr><tr><td>نمونه</td><td>Competence</td><td>Sage</td></tr><tr><td>کاربرد</td><td>Measurement &amp; Behavior</td><td>Narrative &amp; Creative Hypothesis</td></tr></tbody></table><div class="core-message">یکی Measurement-oriented است؛ دیگری Narrative-oriented.</div></div></div></article>
+
+        <article class="slide" id="brand-22" data-section="معماری برند" data-slide-title="Brand Architecture" data-lesson-id="p22"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Portfolio Logic</span><h2>Brand Architecture</h2><p class="lead">واقعاً به یک برند جدید نیاز داریم؟</p><div class="architecture-grid"><button class="architecture-model hotspot" data-hotspot-title="Branded House" data-hotspot-text="مزیت: انتقال سرمایه برند. ریسک: سرایت مسئله میان عرضه‌ها."><strong>Branded House</strong><div class="tree-line">MASTER BRAND</div><div class="tree-line">├ Product A</div><div class="tree-line">├ Product B</div><div class="tree-line">└ Product C</div></button><button class="architecture-model hotspot" data-hotspot-title="House of Brands" data-hotspot-text="مزیت: آزادی جایگاه‌ها. ریسک: هزینه بالای ساخت چند برند."><strong>House of Brands</strong><div class="tree-line">COMPANY</div><div class="tree-line">├ Brand A</div><div class="tree-line">├ Brand B</div><div class="tree-line">└ Brand C</div></button><button class="architecture-model hotspot" data-hotspot-title="Endorsed Brand" data-hotspot-text="مزیت: استقلال همراه با اعتبار. ریسک: پیچیدگی نقش دو برند."><strong>Endorsed Brand</strong><div class="tree-line">Brand A</div><div class="tree-line">by MASTER BRAND</div></button><button class="architecture-model hotspot" data-hotspot-title="Sub-brand" data-hotspot-text="مزیت: توسعه معنای برند مادر. ریسک: رقیق‌شدن یا ابهام جایگاه."><strong>Sub-brand</strong><div class="tree-line">MASTER BRAND</div><div class="tree-line">+ Sub-brand</div></button></div><div class="core-message">Brand Architecture یعنی تخصیص سرمایه برند؛ نه نام‌گذاری زیبا.</div></div></div></article>
+
+        <article class="slide" id="brand-23" data-section="دارایی‌های متمایز" data-slide-title="Different با Distinctive برابر نیست" data-lesson-id="p23"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Difference vs Distinctiveness</span><h2>Different ≠ Distinctive</h2><div class="different-distinctive"><section class="concept-giant"><span class="big-word accent">DIFFERENT</span><b>چرا باید من را انتخاب کنی؟</b><p>Meaningful Difference</p></section><div class="choice-vs">VS</div><section class="concept-giant"><span class="big-word">DISTINCTIVE</span><b>از کجا بفهمی این من هستم؟</b><p>Memory Recognition</p></section></div><div class="core-message">تمایز ارزش می‌سازد؛ متمایزبودن حافظه را فعال می‌کند.</div></div></div></article>
+
+        <article class="slide" id="brand-24" data-section="دارایی‌های متمایز" data-slide-title="Distinctive Brand Assets" data-lesson-id="p24"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Fame × Uniqueness</span><h2>Distinctive Brand Assets</h2><div class="asset-layout"><div class="asset-cloud"><span>Color</span><span>Shape</span><span>Packaging</span><span>Typography</span><span>Sound</span><span>Mascot</span><span>Pattern</span><span>Icon</span></div><div class="asset-matrix"><span class="axis-x">Uniqueness →</span><span class="axis-y">Fame →</span><button class="asset-cell hotspot" data-hotspot-title="Build" data-hotspot-text="انحصار تداعی خوب است اما شناخت عمومی هنوز پایین است.">Low Fame / High Uniqueness<br><b>BUILD</b></button><button class="asset-cell hotspot" data-hotspot-title="Protect & Strengthen" data-hotspot-text="دارایی هم شناخته‌شده و هم مشخصاً متعلق به برند است.">High Fame / High Uniqueness<br><b>PROTECT</b></button><button class="asset-cell hotspot" data-hotspot-title="Avoid" data-hotspot-text="نه شناخت دارد و نه به‌طور منحصربه‌فرد به برند نسبت داده می‌شود.">Low / Low<br><b>AVOID</b></button><button class="asset-cell hotspot" data-hotspot-title="Generic" data-hotspot-text="نشانه مشهور است اما میان رقبا مشترک و کم‌انحصار است.">High Fame / Low Uniqueness<br><b>GENERIC</b></button></div></div><div class="core-message">دارایی خوب «زیبا» نیست؛ قابل‌شناسایی و قابل‌انتساب است.</div></div></div></article>
+
+        <article class="slide" id="brand-25" data-section="دسترس‌پذیری" data-slide-title="Mental و Physical Availability" data-lesson-id="p25"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Availability</span><h2>Mental × Physical Availability</h2><div class="availability-pair"><section class="availability-side"><h3>MENTAL AVAILABILITY</h3><p>وقتی نیاز ایجاد شد، آیا به ذهن آمدیم؟</p><div class="keyword-cloud"><span>Memory</span><span>Category Entry Points</span><span>Recognition</span></div></section><section class="availability-side"><h3>PHYSICAL AVAILABILITY</h3><p>وقتی خواست خرید کند، آیا توانست ما را پیدا کند؟</p><div class="keyword-cloud"><span>Channel</span><span>Location</span><span>Inventory</span><span>Format</span><span>Time</span></div></section><div class="availability-footer">COME TO MIND + EASY TO BUY</div></div><div class="core-message">رشد نیازمند به‌ذهن‌آمدن و قابل‌خریدبودن است.</div></div></div></article>
+
+        <article class="slide case-slide" id="case-01" data-section="اتاق تصمیم برند" data-slide-title="اتاق تصمیم برند — Sarvana" data-lesson-id="case01"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Interactive Case Mode</span><h2>اتاق تصمیم برند — Sarvana</h2><div class="case-grid"><section class="case-panel"><h3>Brand Intent</h3><p>«ممتاز و تخصصی»</p><h3>Constraint</h3><p>۹۰ روز برای Pilot<br>حداکثر دو تغییر اصلی<br>بدون بازطراحی کامل</p><h3>Missing Evidence</h3><p>شناخت عمومی و انحصار تداعی دارایی‌های فعلی هنوز اندازه‌گیری نشده است.</p></section><section class="case-panel"><h3>Brand Tracking</h3><div class="case-metrics"><div class="case-metric">آگاهی بدون کمک <b>۱۸٪</b></div><div class="case-metric">آگاهی کمک‌شده <b>۴۶٪</b></div><div class="case-metric">تخصصی <b>۴٫۰/۷</b></div><div class="case-metric">گران <b>۵٫۷/۷</b></div><div class="case-metric">پیچیده <b>۵٫۴/۷</b></div><div class="case-metric">قابل اعتماد <b>۴٫۵/۷</b></div><div class="case-metric">ساده <b>۳٫۱/۷</b></div></div></section><section class="case-panel"><h3>Qualitative Evidence</h3><p>مشتری: «انتخاب سخت است.»</p><p>کانال: «با راهنمایی ساده‌تر، معرفی آسان‌تر است.»</p><p>تیم برند: «جزئیات زیاد نشانه تخصص است.»</p><p>CFO: «بازطراحی کامل بدون شواهد قابل قبول نیست.»</p></section></div><div class="core-message">مسئله را تشخیص دهید؛ هنوز راه‌حل انتخاب نکنید.</div></div></div></article>
+
+        <article class="slide case-slide" id="case-02" data-section="اتاق تصمیم برند" data-slide-title="نسخه اول — تصمیم و شواهد" data-lesson-id="case02a"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Decision V1 · Step 1</span><h2>تصمیم اصلی و شواهد نسخه اول</h2><p class="lead">اگر عضو هیئت‌مدیره بودید، کدام مسیر را انتخاب می‌کردید؟</p><div class="decision-options" id="decisionOptionsV1"><button class="decision-option" data-value="Full Rebranding">A<br>Full Rebranding</button><button class="decision-option" data-value="Repositioning">B<br>Repositioning</button><button class="decision-option" data-value="Simplify Choice">C<br>Simplify Choice</button><button class="decision-option" data-value="Strengthen Brand Assets">D<br>Strengthen Brand Assets</button><button class="decision-option" data-value="Improve Brand Delivery">E<br>Improve Brand Delivery</button></div><h3>سه Evidence انتخاب کنید</h3><div class="evidence-options multi-select" data-max="3" id="evidenceV1"><button class="select-chip" data-value="Awareness Gap">Awareness Gap</button><button class="select-chip" data-value="High Complexity">High Complexity</button><button class="select-chip" data-value="Premium Gap">Premium Gap</button><button class="select-chip" data-value="Channel Feedback">Channel Feedback</button><button class="select-chip" data-value="Asset Uncertainty">Asset Uncertainty</button></div><div class="core-message">ابتدا مسیر و شواهد را انتخاب کنید؛ طراحی اجرای تصمیم در اسلاید بعد کامل می‌شود.</div></div></div></article>
+
+        <article class="slide case-slide" id="case-02b" data-section="اتاق تصمیم برند" data-slide-title="نسخه اول — طراحی اجرا" data-lesson-id="case02b"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Decision V1 · Step 2</span><h2>ریسک، اقدام و KPI نسخه اول</h2><div class="two-col"><label>دو Risk<textarea class="workshop-input" id="risksV1" rows="2" placeholder="هر ریسک را در یک خط بنویسید"></textarea></label><label>یک KPI<input class="workshop-input" id="kpiV1" placeholder="مثلاً Consideration"></label></div><h3>دو Supporting Action انتخاب کنید</h3><div class="action-options multi-select" data-max="2" id="actionsV1"><button class="select-chip" data-value="Simplify Architecture">Simplify Architecture</button><button class="select-chip" data-value="Channel Training">Channel Training</button><button class="select-chip" data-value="Clarify RTB">Clarify RTB</button><button class="select-chip" data-value="Asset Measurement">Asset Measurement</button><button class="select-chip" data-value="Increase Media">Increase Media</button></div><div class="workshop-actions"><button class="workshop-button" id="saveV1">ثبت نسخه اول و دریافت چالش</button><button class="workshop-button secondary" id="editV1" hidden>ویرایش V1</button></div><div class="workshop-status" id="statusV1" aria-live="polite"></div><div class="core-message">تصمیم زمانی قابل دفاع است که ریسک، اقدام و معیار یادگیری آن روشن باشد.</div></div></div></article>
+
+        <article class="slide case-slide" id="case-03" data-section="اتاق تصمیم برند" data-slide-title="چالش و تصمیم دوم" data-lesson-id="case03a"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Challenge Card · Step 1</span><h2>شواهد جدید را وارد تصمیم کنید</h2><div class="challenge-card" id="challengeCard">ابتدا نسخه اول تصمیم خود را در اسلاید قبل ثبت کنید.</div><div class="workshop-actions"><button class="workshop-button secondary" id="newChallenge" disabled>Challenge پس از ثبت V1 تولید می‌شود</button><button class="workshop-button danger" id="resetCase">شروع مجدد Case</button></div><h3>تصمیم اصلی نسخه دوم</h3><div class="decision-options" id="decisionOptionsV2"><button class="decision-option" data-value="Full Rebranding">A<br>Full Rebranding</button><button class="decision-option" data-value="Repositioning">B<br>Repositioning</button><button class="decision-option" data-value="Simplify Choice">C<br>Simplify Choice</button><button class="decision-option" data-value="Strengthen Brand Assets">D<br>Strengthen Brand Assets</button><button class="decision-option" data-value="Improve Brand Delivery">E<br>Improve Brand Delivery</button></div><div class="core-message">Challenge باید منطق تصمیم را محک بزند، نه اینکه فقط یک گزینه را جابه‌جا کند.</div></div></div></article>
+
+        <article class="slide case-slide" id="case-03b" data-section="اتاق تصمیم برند" data-slide-title="نسخه دوم — شواهد و ریسک" data-lesson-id="case03b"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Decision V2 · Step 2</span><h2>شواهد و ریسک نسخه دوم</h2><h3>سه Evidence نسخه دوم</h3><div class="evidence-options multi-select" data-max="3" id="evidenceV2"><button class="select-chip" data-value="Awareness Gap">Awareness Gap</button><button class="select-chip" data-value="High Complexity">High Complexity</button><button class="select-chip" data-value="Premium Gap">Premium Gap</button><button class="select-chip" data-value="Channel Feedback">Channel Feedback</button><button class="select-chip" data-value="Asset Uncertainty">Asset Uncertainty</button></div><div class="two-col"><label>دو Risk نسخه دوم<textarea class="workshop-input" id="risksV2" rows="2" placeholder="هر ریسک را در یک خط بنویسید"></textarea></label><label>KPI نسخه دوم<input class="workshop-input" id="kpiV2" placeholder="مثلاً Consideration"></label></div><div class="core-message">شواهد جدید باید ریسک و معیار یادگیری تصمیم را هم تغییر دهد.</div></div></div></article>
+
+        <article class="slide case-slide" id="case-03c" data-section="اتاق تصمیم برند" data-slide-title="نسخه دوم — اقدام و منطق" data-lesson-id="case03c"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Decision V2 · Step 3</span><h2>اقدام و منطق نسخه دوم</h2><h3>دو Supporting Action نسخه دوم</h3><div class="action-options multi-select" data-max="2" id="actionsV2"><button class="select-chip" data-value="Simplify Architecture">Simplify Architecture</button><button class="select-chip" data-value="Channel Training">Channel Training</button><button class="select-chip" data-value="Clarify RTB">Clarify RTB</button><button class="select-chip" data-value="Asset Measurement">Asset Measurement</button><button class="select-chip" data-value="Increase Media">Increase Media</button></div><label>منطق تغییر یا حفظ تصمیم<textarea class="workshop-input" id="rationaleV2" rows="2" placeholder="توضیح دهید Challenge چه چیزی را در منطق شما تغییر داد."></textarea></label><div class="workshop-actions"><button class="workshop-button" id="saveV2">ثبت نسخه دوم</button><button class="workshop-button secondary" id="editV2" hidden>ویرایش V2</button></div><div class="workshop-status" id="statusV2" aria-live="polite"></div><div class="core-message">اقدام پشتیبان باید مستقیماً به Challenge و تصمیم اصلی متصل باشد.</div></div></div></article>
+
+        <article class="slide case-slide" id="case-04" data-section="اتاق تصمیم برند" data-slide-title="مقایسه تصمیم‌ها" data-lesson-id="case04"><div class="slide-frame"><div class="brand-slide"><span class="kicker">Decision Review</span><h2>V1 → Challenge → V2</h2><div class="version-review"><section class="version-card"><h3>V1</h3><div id="summaryV1">هنوز ثبت نشده است.</div></section><section class="review-challenge"><h3>CHALLENGE</h3><p id="reviewChallenge">هنوز Challenge ثبت نشده است.</p></section><section class="version-card"><h3>V2</h3><div id="summaryV2">هنوز ثبت نشده است.</div></section></div><button class="workshop-button secondary" id="toggleAnalysis">تحلیل پیشنهادی</button><div class="analysis-box" id="suggestedAnalysis"><b>این تنها پاسخ ممکن نیست.</b><br>بازطراحی کامل برند با شواهد موجود عجولانه است. فرضیه قوی‌تر: حفظ جایگاه تخصصی اما حرکت معنا به سمت «تخصصی که انتخاب را ساده می‌کند.»<br>تمرکز محتمل: ساده‌سازی معماری انتخاب، تقویت راهنمایی در نقاط تماس، RTB واضح‌تر و اندازه‌گیری Distinctive Assets پیش از حذف یا تغییر آنها.<br>کیفیت استدلال و شواهد مهم‌تر از تطابق با این پاسخ پیشنهادی است.</div><div class="core-message">تصمیم خوب، توان اصلاح خود در برابر شواهد جدید را دارد.</div></div></div></article>
+      </section>
+
+
+      <footer class="bottom-bar">
+        <div class="progress-copy"><span id="currentSlide">۱</span> از <span id="totalSlides">۶</span></div>
+        <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="nav-actions"><button class="nav-btn" id="prevBtn" type="button">قبلی</button><button class="nav-btn primary" id="nextBtn" type="button">بعدی</button></div>
+      </footer>
+    </main>
+  </div>
+
+  <button class="drawer-backdrop" id="lessonBackdrop" type="button" tabindex="-1" aria-label="بستن درسنامه"></button>
+  <aside class="lesson-drawer" id="lessonDrawer" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="lessonDrawerTitle">
+    <div class="drawer-shell">
+      <header class="drawer-header">
+        <div><div class="drawer-kicker">درسنامه تکمیلی</div><h2 class="drawer-title" id="lessonDrawerTitle">عنوان اسلاید</h2></div>
+        <button class="drawer-close" id="lessonCloseBtn" type="button" aria-label="بستن درسنامه">×</button>
+      </header>
+      <div class="drawer-body" id="lessonDrawerBody"></div>
+    </div>
+  </aside>
+
+  <aside class="hotspot-popover" id="hotspotPopover" role="dialog" aria-hidden="true" aria-labelledby="hotspotTitle">
+    <button class="hotspot-close" id="hotspotCloseBtn" type="button" aria-label="بستن توضیح">×</button>
+    <strong id="hotspotTitle"></strong><p id="hotspotText"></p>
+  </aside>
+
+  <template id="mbaComponentTemplates">
+    <section data-component="definition-card" class="definition-card"><div class="definition-card__term">عنوان مفهوم</div><p class="definition-card__text">تعریف روشن و کوتاه مفهوم.</p></section>
+    <section data-component="comparison-card" class="comparison-card"><div class="comparison-card__side">گزینه اول</div><div class="comparison-card__side">گزینه دوم</div></section>
+    <section data-component="metric-card" class="metric-card"><span class="metric-card__label">نام شاخص</span><strong class="metric-card__value">۰٪</strong><span class="metric-card__change">تغییر شاخص</span></section>
+    <section data-component="process-diagram" class="process-diagram" style="--steps:3"><div class="process-step">گام اول</div><div class="process-step">گام دوم</div><div class="process-step">گام سوم</div></section>
+    <section data-component="matrix-2x2" class="matrix-2x2"><div class="matrix-cell">خانه ۱</div><div class="matrix-cell">خانه ۲</div><div class="matrix-cell">خانه ۳</div><div class="matrix-cell">خانه ۴</div></section>
+    <section data-component="class-question" class="class-question"><div class="class-question__label">پرسش کلاسی</div><div class="class-question__text">پرسش بحث را اینجا قرار دهید.</div></section>
+    <section data-component="case-study-dashboard" class="case-study-dashboard"><div class="case-study-dashboard__panel">زمینه</div><div class="case-study-dashboard__panel">داده</div><div class="case-study-dashboard__panel">تصمیم</div></section>
+    <section data-component="workshop-board" class="workshop-board"><div class="workshop-column">مشاهده‌ها</div><div class="workshop-column">تحلیل</div><div class="workshop-column">اقدام</div></section>
+  </template>
+
+  <div class="toast" id="hintToast" role="status">کلیدهای جهت‌دار، Space و Swipe برای جابه‌جایی؛ F برای تمام‌صفحه.</div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const deck = {
+        title: "استراتژی برند و ارزش ویژه برند",
+        presenter: "دکتر احسان آذرنیک",
+        organization: "دانشگاه تهران"
+      };
+
+      const lessonContent = {
+        p01:{title:"در این بخش قرار است چه چیزی یاد بگیریم؟",overview:"این بخش برند را نه به‌عنوان نام، لوگو یا تبلیغات، بلکه به‌عنوان سیستمی از معنا، حافظه، تداعی، شواهد و تجربه بررسی می‌کند.",importance:"مسئله مدیریتی اصلی این است: می‌خواهیم مشتری چه معنایی از برند دریافت کند، اکنون واقعاً چه معنایی دریافت می‌کند و چه شواهدی باعث می‌شوند وعده ما را باور کند؟",example:"هدف نهایی، تبدیل جایگاه‌یابی به یک سیستم برند قابل اجرا و قابل اندازه‌گیری است.",commonMistake:"تقلیل استراتژی برند به پروژه گرافیکی یا کمپین ارتباطی."},
+        p02:{title:"Premium با Expensive فرق دارد",overview:"Premium بودن تنها به سطح قیمت مربوط نیست. مشتری باید کیفیت، اعتبار، تجربه، تمایز یا ارزش بیشتری ادراک کند.",importance:"سؤال مدیریتی این است که چه شواهدی نشان می‌دهد مشتری واقعاً این Premium را پذیرفته است؟",example:"پذیرش قیمت، WTP، ترجیح و تداعی کیفیت می‌توانند بخشی از شواهد باشند.",commonMistake:"افزایش قیمت و سپس تلاش برای ساخت تصویر Premium با تبلیغات."},
+        p03:{title:"پس برند دقیقاً چیست؟",overview:"برند مجموعه‌ای از دانش، تداعی‌ها، نشانه‌ها، تجربه‌ها و انتظارهایی است که باعث می‌شود مشتری نسبت به یک عرضه دارای نام مشخص، متفاوت از همان عرضه بدون برند واکنش نشان دهد.",importance:"تعریف ساده: برند یعنی معنایی که با شنیدن یا دیدن نام یک عرضه در ذهن مشتری فعال می‌شود.",example:"لوگو می‌تواند نشانه بازیابی حافظه باشد، اما معنای ذخیره‌شده را تجربه و شواهد می‌سازند.",commonMistake:"لوگو = برند؛ ری‌برندینگ = تغییر لوگو؛ تبلیغات بیشتر = برند قوی‌تر."},
+        p04:{title:"Intent با Reality فرق دارد",overview:"سازمان می‌تواند هویت مطلوب خود را طراحی کند اما تصویر واقعی برند در ذهن بازار شکل می‌گیرد.",importance:"مدیریت برند باید بپرسد: چه معنایی قصد داریم بسازیم و مشتری در عمل چه معنایی دریافت کرده است؟",example:"فاصله میان معنای مطلوب و معنای دریافت‌شده، Brand Gap است.",commonMistake:"فرض اینکه Brand Book به‌تنهایی رفتار نقاط تماس و حافظه مشتری را کنترل می‌کند."},
+        p05:{title:"چرا ترتیب اهمیت دارد؟",overview:"استراتژی برند از جایگاه‌یابی و ارزش پیشنهادی شروع می‌شود؛ سپس هویت، نشانه‌ها، تجربه و ارتباطات باید آن معنا را تحویل دهند.",importance:"ابتدا باید روشن باشد: برای چه کسی، در چه موقعیت خریدی، در مقایسه با چه گزینه‌ای و با چه معنایی؟",example:"Positioning روشن می‌تواند به قواعد هویت، دارایی‌های متمایز و طراحی تجربه تبدیل شود.",commonMistake:"رفتن مستقیم سراغ Logo، Archetype یا Tone بدون تصمیم روشن STP و Value Proposition."},
+        p06:{title:"Identity، Image، Knowledge و Equity",overview:"Identity از داخل سازمان شروع می‌شود؛ Image در ذهن بازار شکل می‌گیرد؛ Brand Knowledge شامل آگاهی و تصویر/تداعی‌هاست؛ Brand Equity نتیجه‌ای است که این دانش بر فکر، احساس یا رفتار مشتری ایجاد می‌کند.",importance:"تفکیک این چهار مفهوم محل واقعی مسئله را روشن می‌کند.",example:"Awareness بالا ممکن است هم‌زمان با Image نامطلوب و Equity ضعیف وجود داشته باشد.",commonMistake:"۹۰٪ Awareness داریم، پس برند بسیار قوی است."},
+        p07:{title:"منطق CBBE کلر",overview:"Customer-Based Brand Equity بررسی می‌کند دانستن اینکه یک پیشنهاد متعلق به چه برندی است، چه تغییری در فکر، احساس یا رفتار مشتری ایجاد می‌کند.",importance:"اگر مشتری همان محصول را با دانستن نام یک برند مطمئن‌تر، مطلوب‌تر یا ارزشمندتر ارزیابی کند، بخشی از تفاوت پاسخ ناشی از دانش برند است.",example:"ارزیابی یک نمونه یکسان با نام شناخته‌شده و بدون نام می‌تواند تفاوت پاسخ را آشکار کند.",commonMistake:"CBBE یک Financial Valuation Model نیست."},
+        p08:{title:"چگونه هرم CBBE را بخوانیم؟",overview:"هدف مدل فقط اعلام اینکه برند قوی یا ضعیف است نیست. مدیر باید محل ضعف را در شناخت، معنا، ارزیابی و احساس یا رابطه پیدا کند.",importance:"مداخله باید متناسب با محل ضعف انتخاب شود.",example:"اگر Salience بالا اما Judgments ضعیف باشد، تبلیغ بیشتر برای Awareness احتمالاً مسئله اصلی را حل نمی‌کند.",commonMistake:"استفاده از هرم به‌عنوان مدال افتخار به‌جای ابزار Diagnosis."},
+        p09:{title:"Salience فقط Awareness نیست",overview:"Brand Salience عمق و گستره آگاهی برند در موقعیت‌های خرید مرتبط را بررسی می‌کند.",importance:"Depth یعنی برند با چه سهولتی به ذهن می‌آید؛ Breadth یعنی در چند موقعیت خرید مرتبط فعال می‌شود.",example:"مشتری ممکن است نام برند را بشناسد، اما در زمان خرید اصلاً به آن فکر نکند.",commonMistake:"برابر دانستن شناخت نام با حضور در ذهن هنگام نیاز."},
+        p10:{title:"دو مسیر ساخت معنا",overview:"Performance به توان واقعی محصول یا خدمت در حل نیاز مربوط است. Imagery به معنای غیرکارکردی برند، تصویر کاربر، موقعیت مصرف، سبک زندگی و ارزش‌ها مربوط می‌شود.",importance:"معنای برند باید هر دو مسیر کارکردی و نمادین را مدیریت کند.",example:"برند ممکن است Performance خوبی داشته باشد اما مشتری بگوید: این برای آدم‌هایی مثل من نیست.",commonMistake:"تقلیل معنای برند به Function یا ویژگی محصول."},
+        p11:{title:"Response چگونه شکل می‌گیرد؟",overview:"Judgments ارزیابی‌های نسبتاً عقلانی درباره کیفیت، اعتبار، تناسب و برتری هستند؛ Feelings پاسخ‌های عاطفی‌اند.",importance:"مدیر باید بداند برند قرار است دقیقاً کدام Judgment و Feeling را ایجاد کند.",example:"در برخی رده‌ها احساس اطمینان از انتخاب درست مهم‌تر از هیجان تبلیغاتی است.",commonMistake:"تمرکز صرف بر احساس و نادیده‌گرفتن ارزیابی اعتبار یا Consideration."},
+        p12:{title:"Repeat Purchase ≠ Resonance",overview:"Brand Resonance می‌تواند شامل وفاداری رفتاری، دلبستگی نگرشی، احساس جامعه و مشارکت فعال باشد.",importance:"خرید تکراری به‌تنهایی برای اثبات رابطه عمیق کافی نیست.",example:"دسترسی، عادت، قرارداد، هزینه تغییر یا نبود جایگزین می‌تواند Repeat Purchase بسازد.",commonMistake:"برابر دانستن Loyalty رفتاری با Attitudinal Attachment."},
+        p13:{title:"از Vanity Metric به Diagnosis",overview:"افزایش Awareness فقط نشان می‌دهد افراد بیشتری برند را می‌شناسند؛ اگر Consideration رشد نکند باید علت را در معنا، قیمت، اعتماد، پیچیدگی، جایگاه، توزیع یا رقابت جست‌وجو کرد.",importance:"سرمایه رسانه‌ای بدون تشخیص ممکن است فقط Awareness مسئله‌دار را بزرگ‌تر کند.",example:"افت Consideration هم‌زمان با رشد Awareness می‌تواند نشانه پیام نامتناسب یا تجربه ضعیف باشد.",commonMistake:"افزایش تبلیغات قبل از تشخیص علت."},
+        p14:{title:"چه چیزی را باید اندازه بگیریم؟",overview:"هیچ KPI واحدی برای Brand Equity کافی نیست؛ شاخص باید از سؤال مدیریتی انتخاب شود.",importance:"برای شناخت، Awareness؛ برای Premium، پذیرش قیمت و WTP؛ و برای سهم در خرید بعدی، Consideration، Choice و Repeat اهمیت بیشتری دارند.",example:"Dashboard باید Awareness، Meaning، Evidence و Behavior را به یک فرضیه تصمیم متصل کند.",commonMistake:"ساخت داشبورد پرشاخص بدون سؤال تصمیم."},
+        p15:{title:"شکاف هویت و تصویر",overview:"Identity یک تصمیم درون‌سازمانی و Image یک واقعیت بازار است.",importance:"اگر برند خود را ساده و تخصصی تعریف کند اما مشتری آن را پیچیده و گران ببیند، مسئله شکاف Identity–Image است.",example:"اول شکاف را اندازه بگیرید، سپس تعیین کنید کدام نقطه تماس یا شواهد باید تغییر کند.",commonMistake:"پریدن مستقیم به طراحی هویت بدون سنجش Image واقعی."},
+        p16:{title:"چرا منشور کاپفرر؟",overview:"جایگاه‌یابی یک گزاره فشرده است؛ سازمان برای اجرا باید بداند این جایگاه در ظاهر، رفتار، فرهنگ، رابطه، تصویر کاربر و خودانگاره چگونه دیده می‌شود.",importance:"Kapferer به تبدیل مفهوم برند به قواعد اجرایی کمک می‌کند.",example:"Relationship مطلوب باید به رفتار واقعی فروش، خدمات و پشتیبانی ترجمه شود.",commonMistake:"این مدل جای تحقیقات Brand Image را نمی‌گیرد."},
+        p17:{title:"از واژه زیبا تا رفتار",overview:"نوشتن شش ویژگی جذاب ارزشی ایجاد نمی‌کند؛ برای هر وجه باید شواهد قابل مشاهده مشتری مشخص شود.",importance:"هویت زمانی مدیریتی است که بتوان آن را در Touchpoint ارزیابی کرد.",example:"اگر Relationship را راهنمای متخصص تعریف کنیم اما فروشنده فقط محصول را فشار دهد، هویت شکسته شده است.",commonMistake:"پرکردن Prism با صفت‌های زیبا بدون تعریف رفتار و Evidence."},
+        p18:{title:"مدل شخصیت برند Aaker",overview:"Jennifer Aaker در ۱۹۹۷ پنج بعد مشهور شخصیت برند را پیشنهاد کرد: Sincerity، Excitement، Competence، Sophistication و Ruggedness.",importance:"کاربرد مدیریتی آن هماهنگی لحن، طراحی، سخنگو، رفتار فروش و تعامل با مشتری است.",example:"Competence باید در شفافیت، پاسخ دقیق و حل مسئله مشاهده شود.",commonMistake:"فرض ثبات فرهنگی ابعاد یا انتخاب شخصیت براساس سلیقه مدیر."},
+        p19:{title:"شخصیت باید Behavioral باشد",overview:"اگر برند شایسته تعریف شده، باید رفتارهای قابل مشاهده آن مشخص شوند.",importance:"Tone فقط نحوه حرف‌زدن است؛ Personality باید در محتوا، فروش، شکایت و محصول دیده شود.",example:"شواهد شایستگی: پاسخ دقیق، شفافیت و حل مسئله؛ رفتار ناقض: اغراق، فشار فروش و پاسخ مبهم.",commonMistake:"نمایش شخصیت فقط در Copywriting."},
+        p20:{title:"کهن‌الگو را بیش از حد علمی نکنیم",overview:"چارچوب ۱۲ کهن‌الگو از ایده‌های یونگ الهام گرفته و با Mark & Pearson شناخته می‌شود، اما ابزار مدیریتی و خلاق برای روایت است نه آزمون روان‌شناختی قطعی.",importance:"Archetype باید با Positioning، Customer Need، Experience و Market Response سازگار باشد.",example:"Sage می‌تواند فرضیه‌ای برای نقش برند در داستان انتخاب آگاهانه باشد.",commonMistake:"برند ما Sage است، پس مسئله حل شد."},
+        p21:{title:"چرا نباید این دو را یکی گرفت؟",overview:"Brand Personality ویژگی‌های انسانی نسبت‌داده‌شده به برند را بررسی می‌کند؛ Archetype بیشتر درباره نقش برند در داستان مشتری است.",importance:"از نظر علمی این دو هم‌سطح نیستند؛ یکی Measurement-oriented و دیگری Narrative-oriented است.",example:"Competence قابل سنجش ادراکی است؛ Sage یک فرضیه روایی برای ایده‌پردازی است.",commonMistake:"جایگزین‌کردن تحقیق ادراکی با انتخاب کهن‌الگو."},
+        p22:{title:"چه زمانی برند جدید بسازیم؟",overview:"هر نام جدید هزینه Awareness، Media، Memory Structure، Design System، Legal Protection و Sales Complexity دارد.",importance:"Sub-brand یا Independent Brand فقط وقتی توجیه دارد که تفاوت معناداری در مشتری، جایگاه، رده، کانال یا ریسک وجود داشته باشد.",example:"معماری باید مشخص کند سرمایه برند کجا ساخته و میان عرضه‌ها چگونه منتقل می‌شود.",commonMistake:"برای هر SKU یک برند جدید ساختن."},
+        p23:{title:"دو مفهوم مکمل",overview:"Meaningful Differentiation یعنی مشتری تفاوتی مهم و ارزشمند ادراک کند؛ Distinctiveness یعنی برند با نشانه‌هایی به‌سادگی در حافظه شناسایی شود.",importance:"یکی منطق انتخاب را می‌سازد و دیگری بازیابی حافظه را تسهیل می‌کند.",example:"یک رنگ می‌تواند برند را سریع قابل شناسایی کند بدون اینکه محصول الزاماً بهتر باشد.",commonMistake:"یکی دانستن Difference و Distinctiveness یا سنجش فقط یکی از آنها."},
+        p24:{title:"چطور قدرت یک Brand Asset را بسنجیم؟",overview:"Fame نشان می‌دهد چند نفر نشانه را می‌شناسند؛ Uniqueness نشان می‌دهد چند نفر آن را مشخصاً به برند نسبت می‌دهند.",importance:"یک دارایی ممکن است مشهور اما میان رقبا مشترک باشد؛ پیش از تغییر باید هر دو بعد سنجیده شوند.",example:"High Fame + High Uniqueness دارایی‌ای است که باید Protect & Strengthen شود.",commonMistake:"من از این رنگ خسته شده‌ام، عوضش کنیم."},
+        p25:{title:"Awareness کافی نیست",overview:"Mental Availability احتمال فعال‌شدن برند در حافظه در موقعیت‌های خرید مرتبط است؛ Physical Availability سهولت یافتن و خرید در کانال، زمان، جغرافیا، بسته و موجودی مناسب است.",importance:"رشد به هر دو نیاز دارد: Come to Mind و Easy to Buy.",example:"مشتری ممکن است برند را دوست داشته باشد اما نتواند آن را بخرد؛ یا محصول موجود باشد اما به ذهن نیاید.",commonMistake:"برابر دانستن Awareness با دسترس‌پذیری ذهنی و نادیده‌گرفتن خریدپذیری."},
+        case01:{title:"راهنمای مطالعه Case",overview:"داده‌ها را به سه دسته Intent، Tracking و Qualitative Evidence تفکیک کنید.",importance:"هدف این مرحله تشخیص مسئله است، نه دفاع سریع از یک راه‌حل محبوب.",example:"بالابودن ادراک گران و پیچیده در کنار امتیاز متوسط تخصصی می‌تواند Premium Gap بسازد.",commonMistake:"انتخاب Full Rebranding پیش از صورت‌بندی فرضیه مسئله."},
+        case02a:{title:"نسخه اول — تصمیم و شواهد",overview:"یک تصمیم اصلی و سه شاهد مرتبط انتخاب کنید؛ هنوز وارد طراحی اجرا نشوید.",importance:"تفکیک Diagnosis از Execution کمک می‌کند تصمیم از شواهد آغاز شود، نه از فهرست فعالیت‌های محبوب.",example:"Simplify Choice می‌تواند با High Complexity و Channel Feedback پشتیبانی شود.",commonMistake:"انتخاب شواهدی که فقط تصمیم از پیش تعیین‌شده را تأیید می‌کنند."},
+        case02b:{title:"نسخه اول — طراحی اجرا",overview:"برای تصمیم قبلی دو ریسک، دو اقدام پشتیبان و یک KPI تعریف کنید.",importance:"تصمیم باید با محدودیت ۹۰ روز و حداکثر دو تغییر اصلی سازگار و قابل آزمون باشد.",example:"Simplify Choice می‌تواند با Channel Training و Clarify RTB پشتیبانی و با Consideration سنجیده شود.",commonMistake:"نوشتن فعالیت بدون ریسک مشخص یا معیار یادگیری."},
+        case03a:{title:"تصمیم زیر فشار شواهد جدید",overview:"Challenge یک واقعیت جدید وارد می‌کند تا قابلیت اصلاح تصمیم سنجیده شود.",importance:"نسخه دوم باید انتخاب اصلی را آگاهانه تغییر دهد یا با استدلال روشن حفظ کند.",example:"کاهش بودجه رسانه ممکن است وزن اقدامات داخل تجربه و کانال را بیشتر کند.",commonMistake:"نادیده‌گرفتن Challenge برای حفظ تصمیم اولیه."},
+        case03b:{title:"نسخه دوم — شواهد و ریسک",overview:"شواهد، ریسک و KPI را با Challenge جدید هم‌راستا کنید.",importance:"اگر شواهد جدید وارد مدل شده‌اند، باید اثر آنها در ریسک و معیار یادگیری دیده شود.",example:"کاهش بودجه رسانه می‌تواند ریسک دسترسی و KPIهای داخل کانال را مهم‌تر کند.",commonMistake:"حفظ فهرست شواهد نسخه اول بدون بازبینی."},
+        case03c:{title:"نسخه دوم — اقدام و منطق",overview:"اقدامات پشتیبان و منطق تغییر یا حفظ تصمیم را کامل کنید.",importance:"تغییر گزینه بدون بازطراحی منطق اجرا، پاسخ واقعی به شواهد جدید نیست.",example:"با کاهش بودجه رسانه، Clarify RTB و Channel Training می‌توانند نسبت به Increase Media اولویت بگیرند.",commonMistake:"تغییر ظاهری دو انتخاب بدون توضیح رابطه آنها با Challenge."},
+        case04:{title:"مرور کیفیت استدلال",overview:"V1 و V2 را براساس انسجام تصمیم، شواهد، ریسک، اقدام و KPI مقایسه کنید.",importance:"هدف یافتن تنها جواب صحیح نیست؛ کیفیت Diagnosis و منطق سازگاری اهمیت دارد.",example:"حفظ جایگاه تخصصی همراه با ساده‌سازی انتخاب یک فرضیه قابل دفاع است، نه حکم قطعی.",commonMistake:"تطبیق مکانیکی با تحلیل پیشنهادی مدرس."}
+      };
+
+      const lessonFields = [
+        ["overview", "توضیح تکمیلی", false],
+        ["importance", "چرا این موضوع مهم است؟", false],
+        ["example", "مثال", false],
+        ["commonMistake", "خطای رایج", true]
+      ];
+
+      const fa = value => String(value).replace(/\d/g, digit => "۰۱۲۳۴۵۶۷۸۹"[digit]);
+      const slides = [...document.querySelectorAll(".slide")];
+      const app = document.querySelector(".app");
+      const sidebar = document.getElementById("sidebar");
+      const sidebarBackdrop = document.getElementById("sidebarBackdrop");
+      const sectionNav = document.getElementById("sectionNav");
+      const sectionEyebrow = document.getElementById("sectionEyebrow");
+      const currentSlide = document.getElementById("currentSlide");
+      const totalSlides = document.getElementById("totalSlides");
+      const progressFill = document.getElementById("progressFill");
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      const themeBtn = document.getElementById("themeBtn");
+      const projectorBtn = document.getElementById("projectorBtn");
+      const fullscreenBtn = document.getElementById("fullscreenBtn");
+      const helpBtn = document.getElementById("helpBtn");
+      const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+      const hintToast = document.getElementById("hintToast");
+      const lessonDrawer = document.getElementById("lessonDrawer");
+      const lessonBackdrop = document.getElementById("lessonBackdrop");
+      const lessonCloseBtn = document.getElementById("lessonCloseBtn");
+      const lessonDrawerTitle = document.getElementById("lessonDrawerTitle");
+      const lessonDrawerBody = document.getElementById("lessonDrawerBody");
+      const hotspotPopover = document.getElementById("hotspotPopover");
+      const hotspotTitle = document.getElementById("hotspotTitle");
+      const hotspotText = document.getElementById("hotspotText");
+      const hotspotCloseBtn = document.getElementById("hotspotCloseBtn");
+      const componentTemplates = document.getElementById("mbaComponentTemplates");
+      let index = 0;
+      let toastTimer;
+      let touchStart = null;
+      let lastDrawerTrigger = null;
+      let activeHotspot = null;
+
+      document.querySelectorAll("[data-deck-title]").forEach(el => el.textContent = deck.title);
+      document.querySelectorAll("[data-presenter]").forEach(el => el.textContent = deck.presenter);
+      document.querySelectorAll("[data-organization]").forEach(el => el.textContent = deck.organization);
+
+      slides.forEach((slide, slideIndex) => {
+        if (!slide.id) slide.id = `slide-${String(slideIndex + 1).padStart(2, "0")}`;
+        slide.setAttribute("role", "group");
+        slide.setAttribute("aria-roledescription", "اسلاید");
+        slide.setAttribute("aria-label", `${fa(slideIndex + 1)} از ${fa(slides.length)} — ${slide.dataset.slideTitle || slide.querySelector("h1,h2")?.textContent || "اسلاید"}`);
+        const lessonId = slide.dataset.lessonId;
+        if (lessonId && lessonContent[lessonId]) {
+          slide.classList.add("has-lesson");
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "lesson-trigger";
+          button.textContent = "درسنامه";
+          button.setAttribute("aria-haspopup", "dialog");
+          button.setAttribute("aria-controls", "lessonDrawer");
+          button.addEventListener("click", () => openLesson(slide, button));
+          slide.querySelector(".slide-frame")?.append(button);
+        }
+      });
+
+      const sections = [...new Set(slides.map(slide => slide.dataset.section || "بدون عنوان"))];
+      sectionNav.innerHTML = sections.map((name, i) => `<button class="section-link" type="button" data-section-index="${i}"><span class="section-number">${fa(i + 1)}</span><span class="section-name">${name}</span></button>`).join("");
+      const sectionLinks = [...sectionNav.querySelectorAll(".section-link")];
+
+      function sectionOf(slideIndex) { return sections.indexOf(slides[slideIndex].dataset.section || "بدون عنوان"); }
+      function indexFromHash() {
+        let id = "";
+        try { id = decodeURIComponent(location.hash.slice(1)); }
+        catch { id = location.hash.slice(1); }
+        return slides.findIndex(slide => slide.id === id);
+      }
+      function syncHash(replace = false) {
+        const nextHash = `#${encodeURIComponent(slides[index].id)}`;
+        if (location.hash === nextHash) return;
+        try { history[replace ? "replaceState" : "pushState"](null, "", nextHash); }
+        catch { location.hash = slides[index].id; }
+      }
+      function setSidebar(open) {
+        sidebar.classList.toggle("open", open);
+        sidebarBackdrop.classList.toggle("open", open);
+        mobileMenuBtn.setAttribute("aria-expanded", String(open));
+      }
+      function render() {
+        const sectionIndex = sectionOf(index);
+        slides.forEach((slide, i) => {
+          slide.classList.toggle("active", i === index);
+          slide.setAttribute("aria-hidden", String(i !== index));
+        });
+        sectionLinks.forEach((link, i) => {
+          link.classList.toggle("active", i === sectionIndex);
+          if (i === sectionIndex) link.setAttribute("aria-current", "true"); else link.removeAttribute("aria-current");
+        });
+        currentSlide.textContent = fa(index + 1);
+        totalSlides.textContent = fa(slides.length);
+        progressFill.style.width = `${((index + 1) / slides.length) * 100}%`;
+        sectionEyebrow.textContent = `بخش ${fa(sectionIndex + 1)} از ${fa(sections.length)} — ${sections[sectionIndex]}`;
+        prevBtn.disabled = index === 0;
+        nextBtn.disabled = index === slides.length - 1;
+        document.title = `${deck.title} — ${sections[sectionIndex]}`;
+        scheduleFit(slides[index]);
+      }
+      function go(target, options = {}) {
+        const next = Math.max(0, Math.min(target, slides.length - 1));
+        if (next !== index) {
+          closeHotspot();
+          slides[index].classList.toggle("exit-back", next < index);
+          index = next;
+          render();
+          requestAnimationFrame(() => slides.forEach(slide => slide.classList.remove("exit-back")));
+        }
+        if (options.updateHash !== false) syncHash(Boolean(options.replaceHash));
+      }
+      function showHelp() {
+        clearTimeout(toastTimer);
+        hintToast.classList.add("show");
+        toastTimer = setTimeout(() => hintToast.classList.remove("show"), 3300);
+      }
+      function markProjectorSmallText(enabled) {
+        const candidates = [...document.querySelectorAll(".slide *")];
+        candidates.forEach(element => element.classList.remove("presentation-min-text", "projector-small-text"));
+        candidates.forEach(element => {
+          const hasDirectText = [...element.childNodes].some(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim());
+          if (!hasDirectText) return;
+          let size = Number.parseFloat(getComputedStyle(element).fontSize);
+          if (Number.isFinite(size) && size < 14) {
+            element.classList.add("presentation-min-text");
+            size = Number.parseFloat(getComputedStyle(element).fontSize);
+          }
+          if (enabled && Number.isFinite(size) && size < 19) element.classList.add("projector-small-text");
+        });
+      }
+      function fitSlide(slide) {
+        const frame = slide?.querySelector(".slide-frame");
+        if (!frame || !slide.clientWidth || !slide.clientHeight) return;
+        const availableWidth = Math.max(1, slide.clientWidth - 2);
+        const availableHeight = Math.max(1, slide.clientHeight - 2);
+        const isMobile = matchMedia("(max-width: 640px)").matches;
+        const projector = document.body.classList.contains("projector-mode");
+        const minimumScale = projector ? .95 : .86;
+        const measure = () => {
+          frame.style.setProperty("--fit-scale", "1");
+          frame.style.removeProperty("height");
+          frame.style.removeProperty("min-height");
+          frame.style.alignContent = "start";
+          const width = Math.max(frame.scrollWidth, frame.offsetWidth, 1);
+          let height = Math.max(frame.scrollHeight, frame.offsetHeight, 1);
+          frame.style.height = `${Math.ceil(height)}px`;
+          frame.style.minHeight = "0";
+          frame.style.removeProperty("align-content");
+          height = Math.max(height, frame.scrollHeight, frame.offsetHeight, 1);
+          frame.style.height = `${Math.ceil(height)}px`;
+          return { width, height };
+        };
+        slide.classList.remove("mobile-scroll", "fit-warning");
+        frame.classList.remove("compact-fit");
+        let size = measure();
+        let naturalScale = Math.min(1, availableWidth / size.width, availableHeight / size.height);
+        if (!isMobile && naturalScale < minimumScale) {
+          frame.classList.add("compact-fit");
+          size = measure();
+          naturalScale = Math.min(1, availableWidth / size.width, availableHeight / size.height);
+        }
+        let scale;
+        if (isMobile) {
+          scale = Math.min(1, availableWidth / size.width);
+          slide.classList.toggle("mobile-scroll", size.height * scale > availableHeight + 1);
+        } else {
+          scale = Math.max(minimumScale, naturalScale);
+          slide.classList.toggle("fit-warning", naturalScale < minimumScale);
+        }
+        frame.style.setProperty("--fit-scale", String(scale.toFixed(3)));
+        slide.dataset.fitScale = scale.toFixed(3);
+      }
+      function scheduleFit(slide = slides[index]) {
+        requestAnimationFrame(() => requestAnimationFrame(() => fitSlide(slide)));
+      }
+      function setTheme(theme) {
+        document.documentElement.dataset.theme = theme;
+        themeBtn.setAttribute("aria-label", theme === "light" ? "تغییر به حالت شب" : "تغییر به حالت روز");
+        document.querySelector('meta[name="theme-color"]').content = theme === "light" ? "#078b88" : "#06111a";
+        try { localStorage.setItem("html-deck-theme", theme); } catch {}
+      }
+      function setProjector(enabled) {
+        document.body.classList.toggle("projector-mode", enabled);
+        projectorBtn.setAttribute("aria-pressed", String(enabled));
+        projectorBtn.setAttribute("aria-label", enabled ? "غیرفعال‌کردن حالت پروژکتور" : "فعال‌کردن حالت پروژکتور");
+        markProjectorSmallText(enabled);
+        scheduleFit();
+        try { localStorage.setItem("html-deck-projector", String(enabled)); } catch {}
+      }
+      async function toggleFullscreen() {
+        try {
+          if (document.fullscreenElement) await document.exitFullscreen();
+          else await document.documentElement.requestFullscreen();
+        } catch { showHelp(); }
+      }
+
+      function createLessonBlock(label, text, warning) {
+        const section = document.createElement("section");
+        section.className = `lesson-block${warning ? " is-warning" : ""}`;
+        const heading = document.createElement("div");
+        heading.className = "lesson-block-label";
+        heading.textContent = label;
+        const paragraph = document.createElement("p");
+        paragraph.textContent = text || "این بخش در مرحله تولید محتوا تکمیل می‌شود.";
+        section.append(heading, paragraph);
+        return section;
+      }
+      function openLesson(slide, trigger) {
+        const lesson = lessonContent[slide.dataset.lessonId];
+        if (!lesson) return;
+        closeHotspot();
+        lastDrawerTrigger = trigger;
+        lessonDrawerTitle.textContent = lesson.title || slide.dataset.slideTitle || slide.querySelector("h1,h2")?.textContent || "درسنامه";
+        lessonDrawerBody.replaceChildren(...lessonFields.map(([key, label, warning]) => createLessonBlock(label, lesson[key], warning)));
+        lessonDrawer.classList.add("open");
+        lessonBackdrop.classList.add("open");
+        lessonDrawer.setAttribute("aria-hidden", "false");
+        app.setAttribute("inert", "");
+        lessonCloseBtn.focus();
+      }
+      function closeLesson() {
+        if (!lessonDrawer.classList.contains("open")) return;
+        lessonDrawer.classList.remove("open");
+        lessonBackdrop.classList.remove("open");
+        lessonDrawer.setAttribute("aria-hidden", "true");
+        app.removeAttribute("inert");
+        lastDrawerTrigger?.focus();
+        lastDrawerTrigger = null;
+      }
+      function trapDrawerFocus(event) {
+        const focusable = [...lessonDrawer.querySelectorAll("button,[href],[tabindex]:not([tabindex='-1'])")].filter(el => !el.disabled);
+        if (!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+      }
+      function positionHotspot(button) {
+        const rect = button.getBoundingClientRect();
+        const width = hotspotPopover.offsetWidth;
+        const height = hotspotPopover.offsetHeight;
+        const left = Math.min(Math.max(14, rect.left), innerWidth - width - 14);
+        const below = rect.bottom + 10;
+        const top = below + height <= innerHeight - 14 ? below : Math.max(14, rect.top - height - 10);
+        hotspotPopover.style.left = `${left}px`;
+        hotspotPopover.style.top = `${top}px`;
+      }
+      function openHotspot(button) {
+        if (activeHotspot === button && hotspotPopover.classList.contains("open")) { closeHotspot(); return; }
+        closeHotspot();
+        activeHotspot = button;
+        hotspotTitle.textContent = button.dataset.hotspotTitle || button.textContent.trim();
+        hotspotText.textContent = button.dataset.hotspotText || "توضیح این نقطه در مرحله تولید محتوا تکمیل می‌شود.";
+        button.setAttribute("aria-expanded", "true");
+        hotspotPopover.classList.add("open");
+        hotspotPopover.setAttribute("aria-hidden", "false");
+        requestAnimationFrame(() => positionHotspot(button));
+      }
+      function closeHotspot() {
+        activeHotspot?.setAttribute("aria-expanded", "false");
+        activeHotspot = null;
+        hotspotPopover.classList.remove("open");
+        hotspotPopover.setAttribute("aria-hidden", "true");
+      }
+      function createComponent(name) {
+        const source = componentTemplates.content.querySelector(`[data-component="${name}"]`);
+        return source ? source.cloneNode(true) : null;
+      }
+
+      const workshopState = { phase:"editing-v1", v1:null, v2:null, challenge:null };
+      const challenges = [
+        "امتیاز «تخصصی» از ۴٫۰ به ۳٫۴ افت کرده است.",
+        "رقیب اصلی از رنگ بسیار مشابه بسته‌بندی شما استفاده می‌کند.",
+        "کانال فروش اعلام کرده آموزش فعلی برای وعده «تخصص همراه با راهنمایی» کافی نیست.",
+        "CFO بودجه رسانه را ۳۰٪ کاهش داده است.",
+        "مشتریان با WTP بالاتر، امتیاز بالاتری نیز به «پیچیده» داده‌اند."
+      ];
+      const selectedValues = container => [...container.querySelectorAll(".selected")].map(item => item.dataset.value);
+      const readLines = element => element.value.split(/\r?\n/).map(item => item.trim()).filter(Boolean);
+      function setWorkshopStatus(element, messages, good = false) {
+        if (!element) return;
+        element.replaceChildren(...messages.map(message => {
+          const chip = document.createElement("span");
+          chip.className = "status-chip";
+          chip.textContent = message;
+          if (good) { chip.style.color = "var(--success)"; chip.style.background = "rgba(19,155,121,.12)"; }
+          return chip;
+        }));
+      }
+      function setSelected(button, selected) {
+        button.classList.toggle("selected", selected);
+        button.setAttribute("aria-pressed", String(selected));
+      }
+      function setupSingleChoice(container) {
+        container?.querySelectorAll(".decision-option").forEach(button => {
+          button.setAttribute("aria-pressed", "false");
+          button.addEventListener("click", () => {
+            container.querySelectorAll(".decision-option").forEach(item => setSelected(item, item === button));
+          });
+        });
+      }
+      function setupMultiChoice(container) {
+        if (!container) return;
+        const max = Number(container.dataset.max || 99);
+        container.querySelectorAll(".select-chip").forEach(button => {
+          button.setAttribute("aria-pressed", "false");
+          button.addEventListener("click", () => {
+            if (button.classList.contains("selected")) { setSelected(button, false); return; }
+            if (selectedValues(container).length < max) setSelected(button, true);
+            else setWorkshopStatus(document.getElementById(container.id.endsWith("V1") ? "statusV1" : "statusV2"), [`حداکثر ${fa(max)} انتخاب`]);
+          });
+        });
+      }
+      const versionControls = {
+        v1:["#decisionOptionsV1 button","#evidenceV1 button","#risksV1","#kpiV1","#actionsV1 button","#saveV1"],
+        v2:["#decisionOptionsV2 button","#evidenceV2 button","#risksV2","#kpiV2","#actionsV2 button","#rationaleV2","#saveV2"]
+      };
+      function setVersionLocked(version, locked) {
+        versionControls[version].forEach(selector => document.querySelectorAll(selector).forEach(control => {
+          control.disabled = locked;
+          control.setAttribute("aria-disabled", String(locked));
+        }));
+      }
+      function clearVersionControls(version) {
+        versionControls[version].forEach(selector => document.querySelectorAll(selector).forEach(control => {
+          if (control.matches(".decision-option,.select-chip")) setSelected(control, false);
+          else if (control.matches("input,textarea")) control.value = "";
+        }));
+        setWorkshopStatus(document.getElementById(version === "v1" ? "statusV1" : "statusV2"), []);
+      }
+      function chooseChallenge() {
+        if (!workshopState.v1) {
+          document.getElementById("challengeCard").textContent = "ابتدا نسخه اول تصمیم خود را ثبت کنید.";
+          return;
+        }
+        if (workshopState.challenge) return;
+        workshopState.challenge = challenges[Math.floor(Math.random() * challenges.length)];
+        document.getElementById("challengeCard").textContent = workshopState.challenge;
+        document.getElementById("reviewChallenge").textContent = workshopState.challenge;
+        const challengeButton = document.getElementById("newChallenge");
+        challengeButton.disabled = true;
+        challengeButton.setAttribute("aria-disabled", "true");
+        challengeButton.textContent = "Challenge قفل شد";
+      }
+      function renderVersion(element, version) {
+        if (!version) { element.textContent = "هنوز ثبت نشده است."; return; }
+        const rows = [
+          ["تصمیم", version.decision],
+          ["Evidence", version.evidence.join("، ")],
+          ["Risk", version.risks.join("، ")],
+          ["Action", version.actions.join("، ")],
+          ["KPI", version.kpi]
+        ];
+        if (version.rationale) rows.push(["منطق", version.rationale]);
+        element.replaceChildren(...rows.map(([label, value]) => {
+          const row = document.createElement("p");
+          const strong = document.createElement("strong");
+          strong.textContent = `${label}: `;
+          row.append(strong, document.createTextNode(value));
+          return row;
+        }));
+      }
+      function saveVersionOne() {
+        const decision = selectedValues(document.getElementById("decisionOptionsV1"))[0];
+        const evidence = selectedValues(document.getElementById("evidenceV1"));
+        const actions = selectedValues(document.getElementById("actionsV1"));
+        const risks = readLines(document.getElementById("risksV1"));
+        const kpi = document.getElementById("kpiV1").value.trim();
+        const errors = [];
+        if (!decision) errors.push("یک تصمیم انتخاب کنید");
+        if (evidence.length !== 3) errors.push("سه Evidence لازم است");
+        if (risks.length < 2) errors.push("دو Risk لازم است");
+        if (actions.length !== 2) errors.push("دو Supporting Action لازم است");
+        if (!kpi) errors.push("یک KPI لازم است");
+        if (errors.length) { setWorkshopStatus(document.getElementById("statusV1"), errors); return; }
+        workshopState.v1 = Object.freeze({ decision, evidence:[...evidence], risks:risks.slice(0,2), actions:[...actions], kpi });
+        workshopState.v2 = null;
+        workshopState.phase = "editing-v2";
+        chooseChallenge();
+        setVersionLocked("v1", true);
+        setVersionLocked("v2", false);
+        document.getElementById("editV1").hidden = false;
+        setWorkshopStatus(document.getElementById("statusV1"), ["نسخه اول ثبت شد", "Challenge آماده است"], true);
+        const target = slides.findIndex(slide => slide.id === "case-03");
+        if (target >= 0) setTimeout(() => go(target), 350);
+      }
+      function saveVersionTwo() {
+        const decision = selectedValues(document.getElementById("decisionOptionsV2"))[0];
+        const evidence = selectedValues(document.getElementById("evidenceV2"));
+        const actions = selectedValues(document.getElementById("actionsV2"));
+        const risks = readLines(document.getElementById("risksV2"));
+        const kpi = document.getElementById("kpiV2").value.trim();
+        const rationale = document.getElementById("rationaleV2").value.trim();
+        const errors = [];
+        if (!workshopState.v1) errors.push("ابتدا V1 را ثبت کنید");
+        if (!workshopState.challenge) errors.push("Challenge دریافت کنید");
+        if (!decision) errors.push("یک تصمیم نسخه دوم انتخاب کنید");
+        if (evidence.length !== 3) errors.push("سه Evidence نسخه دوم لازم است");
+        if (risks.length < 2) errors.push("دو Risk نسخه دوم لازم است");
+        if (actions.length !== 2) errors.push("دو Action نسخه دوم لازم است");
+        if (!kpi) errors.push("KPI نسخه دوم لازم است");
+        if (rationale.length < 20) errors.push("منطق تغییر یا حفظ تصمیم را توضیح دهید");
+        if (workshopState.v1) {
+          const normalized = values => [...values].sort().join("|");
+          const changedChoices = [
+            decision !== workshopState.v1.decision,
+            kpi !== workshopState.v1.kpi,
+            normalized(evidence) !== normalized(workshopState.v1.evidence),
+            normalized(risks.slice(0,2)) !== normalized(workshopState.v1.risks),
+            normalized(actions) !== normalized(workshopState.v1.actions)
+          ].filter(Boolean).length;
+          if (changedChoices < 2 && rationale.length < 60) errors.push("حداقل دو انتخاب را تغییر دهید یا حفظ آنها را با استدلال کامل توضیح دهید");
+        }
+        if (errors.length) { setWorkshopStatus(document.getElementById("statusV2"), errors); return; }
+        workshopState.v2 = Object.freeze({ decision, evidence:[...evidence], risks:risks.slice(0,2), actions:[...actions], kpi, rationale });
+        workshopState.phase = "v2-locked";
+        setVersionLocked("v2", true);
+        document.getElementById("editV2").hidden = false;
+        renderVersion(document.getElementById("summaryV1"), workshopState.v1);
+        renderVersion(document.getElementById("summaryV2"), workshopState.v2);
+        setWorkshopStatus(document.getElementById("statusV2"), ["نسخه دوم ثبت شد"], true);
+        const target = slides.findIndex(slide => slide.id === "case-04");
+        if (target >= 0) setTimeout(() => go(target), 350);
+      }
+      function editVersionOne() {
+        workshopState.phase = "editing-v1";
+        workshopState.v1 = null;
+        workshopState.v2 = null;
+        workshopState.challenge = null;
+        setVersionLocked("v1", false);
+        clearVersionControls("v2");
+        setVersionLocked("v2", true);
+        document.getElementById("editV1").hidden = true;
+        document.getElementById("editV2").hidden = true;
+        document.getElementById("challengeCard").textContent = "پس از ثبت دوباره V1، Challenge جدید تولید می‌شود.";
+        document.getElementById("reviewChallenge").textContent = "هنوز Challenge ثبت نشده است.";
+        const challengeButton = document.getElementById("newChallenge");
+        challengeButton.disabled = true;
+        challengeButton.setAttribute("aria-disabled", "true");
+        challengeButton.textContent = "Challenge پس از ثبت V1 تولید می‌شود";
+        renderVersion(document.getElementById("summaryV1"), null);
+        renderVersion(document.getElementById("summaryV2"), null);
+        setWorkshopStatus(document.getElementById("statusV1"), ["V1 برای ویرایش باز شد؛ آزمایش قبلی پاک شد"]);
+      }
+      function editVersionTwo() {
+        workshopState.phase = "editing-v2";
+        workshopState.v2 = null;
+        setVersionLocked("v2", false);
+        document.getElementById("editV2").hidden = true;
+        renderVersion(document.getElementById("summaryV2"), null);
+        setWorkshopStatus(document.getElementById("statusV2"), ["V2 برای ویرایش باز شد"]);
+      }
+      function resetWorkshop() {
+        if (!confirm("تمام انتخاب‌ها، Challenge و نسخه‌های V1 و V2 پاک شوند؟")) return;
+        workshopState.phase = "editing-v1";
+        workshopState.v1 = null;
+        workshopState.v2 = null;
+        workshopState.challenge = null;
+        clearVersionControls("v1");
+        clearVersionControls("v2");
+        setVersionLocked("v1", false);
+        setVersionLocked("v2", true);
+        document.getElementById("editV1").hidden = true;
+        document.getElementById("editV2").hidden = true;
+        document.getElementById("challengeCard").textContent = "ابتدا نسخه اول تصمیم خود را ثبت کنید.";
+        document.getElementById("reviewChallenge").textContent = "هنوز Challenge ثبت نشده است.";
+        const challengeButton = document.getElementById("newChallenge");
+        challengeButton.disabled = true;
+        challengeButton.setAttribute("aria-disabled", "true");
+        challengeButton.textContent = "Challenge پس از ثبت V1 تولید می‌شود";
+        renderVersion(document.getElementById("summaryV1"), null);
+        renderVersion(document.getElementById("summaryV2"), null);
+        document.getElementById("suggestedAnalysis").classList.remove("open");
+        scheduleFit();
+      }
+
+      document.querySelectorAll("button:not([type])").forEach(button => { button.type = "button"; });
+      setupSingleChoice(document.getElementById("decisionOptionsV1"));
+      setupSingleChoice(document.getElementById("decisionOptionsV2"));
+      document.querySelectorAll(".multi-select").forEach(setupMultiChoice);
+      setVersionLocked("v2", true);
+      document.getElementById("saveV1")?.addEventListener("click", saveVersionOne);
+      document.getElementById("saveV2")?.addEventListener("click", saveVersionTwo);
+      document.getElementById("newChallenge")?.addEventListener("click", chooseChallenge);
+      document.getElementById("editV1")?.addEventListener("click", editVersionOne);
+      document.getElementById("editV2")?.addEventListener("click", editVersionTwo);
+      document.getElementById("resetCase")?.addEventListener("click", resetWorkshop);
+      document.getElementById("toggleAnalysis")?.addEventListener("click", () => {
+        document.getElementById("suggestedAnalysis").classList.toggle("open");
+        scheduleFit();
+      });
+
+      sectionLinks.forEach((link, sectionIndex) => link.addEventListener("click", () => {
+        go(slides.findIndex(slide => sectionOf(slides.indexOf(slide)) === sectionIndex));
+        setSidebar(false);
+      }));
+      prevBtn.addEventListener("click", () => go(index - 1));
+      nextBtn.addEventListener("click", () => go(index + 1));
+      themeBtn.addEventListener("click", () => setTheme(document.documentElement.dataset.theme === "light" ? "dark" : "light"));
+      projectorBtn.addEventListener("click", () => setProjector(!document.body.classList.contains("projector-mode")));
+      fullscreenBtn.addEventListener("click", toggleFullscreen);
+      helpBtn.addEventListener("click", showHelp);
+      mobileMenuBtn.addEventListener("click", () => setSidebar(!sidebar.classList.contains("open")));
+      sidebarBackdrop.addEventListener("click", () => setSidebar(false));
+      lessonCloseBtn.addEventListener("click", closeLesson);
+      lessonBackdrop.addEventListener("click", closeLesson);
+      hotspotCloseBtn.addEventListener("click", closeHotspot);
+      document.addEventListener("pointerdown", event => {
+        if (!hotspotPopover.classList.contains("open")) return;
+        if (hotspotPopover.contains(event.target) || event.target.closest?.(".hotspot")) return;
+        closeHotspot();
+      });
+      document.querySelectorAll(".hotspot").forEach(button => {
+        if (!/^(BUTTON|A)$/.test(button.tagName)) {
+          button.setAttribute("tabindex", button.getAttribute("tabindex") || "0");
+          button.setAttribute("role", button.getAttribute("role") || "button");
+        }
+        button.setAttribute("aria-expanded", "false");
+        button.setAttribute("aria-controls", "hotspotPopover");
+        button.addEventListener("click", () => openHotspot(button));
+        button.addEventListener("keydown", event => {
+          if (["Enter", " "].includes(event.key)) { event.preventDefault(); openHotspot(button); }
+        });
+      });
+      document.addEventListener("fullscreenchange", () => fullscreenBtn.setAttribute("aria-label", document.fullscreenElement ? "خروج از تمام‌صفحه" : "نمایش تمام‌صفحه"));
+      document.addEventListener("keydown", event => {
+        if (lessonDrawer.classList.contains("open")) {
+          if (event.key === "Escape") { event.preventDefault(); closeLesson(); }
+          else if (event.key === "Tab") trapDrawerFocus(event);
+          return;
+        }
+        if (hotspotPopover.classList.contains("open") && event.key === "Escape") { event.preventDefault(); closeHotspot(); return; }
+        const targetTag = event.target?.tagName;
+        if (["INPUT", "TEXTAREA", "SELECT"].includes(targetTag)) return;
+        if (event.key === " " && ["BUTTON", "A"].includes(targetTag)) return;
+        if (["ArrowLeft", "PageDown", " "].includes(event.key)) { event.preventDefault(); go(index + 1); }
+        if (["ArrowRight", "PageUp"].includes(event.key)) { event.preventDefault(); go(index - 1); }
+        if (event.key === "Home") { event.preventDefault(); go(0); }
+        if (event.key === "End") { event.preventDefault(); go(slides.length - 1); }
+        if (event.key.toLowerCase() === "f") { event.preventDefault(); toggleFullscreen(); }
+      });
+      document.getElementById("stage").addEventListener("touchstart", event => {
+        if (lessonDrawer.classList.contains("open")) return;
+        if (event.touches.length === 1) touchStart = { x: event.touches[0].clientX, y: event.touches[0].clientY };
+      }, { passive: true });
+      document.getElementById("stage").addEventListener("touchend", event => {
+        if (!touchStart || event.changedTouches.length !== 1) return;
+        const dx = event.changedTouches[0].clientX - touchStart.x;
+        const dy = event.changedTouches[0].clientY - touchStart.y;
+        touchStart = null;
+        if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.25) return;
+        go(index + (dx > 0 ? 1 : -1));
+      }, { passive: true });
+      window.addEventListener("resize", () => {
+        if (innerWidth > 900) setSidebar(false);
+        if (activeHotspot) positionHotspot(activeHotspot);
+        scheduleFit();
+      });
+      window.addEventListener("hashchange", () => {
+        const hashIndex = indexFromHash();
+        if (hashIndex >= 0) go(hashIndex, { updateHash: false });
+      });
+      window.addEventListener("popstate", () => {
+        const hashIndex = indexFromHash();
+        if (hashIndex >= 0) go(hashIndex, { updateHash: false });
+      });
+
+      let fitMutationQueued = false;
+      new MutationObserver(() => {
+        if (fitMutationQueued) return;
+        fitMutationQueued = true;
+        requestAnimationFrame(() => {
+          fitMutationQueued = false;
+          markProjectorSmallText(document.body.classList.contains("projector-mode"));
+          scheduleFit();
+        });
+      }).observe(document.getElementById("stage"), { subtree:true, childList:true, characterData:true });
+
+      try {
+        setTheme(localStorage.getItem("html-deck-theme") || "light");
+        setProjector(localStorage.getItem("html-deck-projector") === "true");
+      } catch { setTheme("light"); setProjector(false); }
+      const initialIndex = indexFromHash();
+      if (initialIndex >= 0) index = initialIndex;
+      render();
+      syncHash(true);
+      setTimeout(showHelp, 700);
+      document.fonts?.ready.then(() => scheduleFit());
+
+      window.MBAPresentation = Object.freeze({
+        createComponent,
+        goToSlide: slideId => {
+          const target = slides.findIndex(slide => slide.id === slideId);
+          if (target >= 0) go(target);
+        },
+        openLesson: lessonId => {
+          const slide = slides.find(item => item.dataset.lessonId === lessonId);
+          const trigger = slide?.querySelector(".lesson-trigger");
+          if (slide && trigger) openLesson(slide, trigger);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
