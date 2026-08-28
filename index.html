@@ -24,6 +24,7 @@
       --accent: #078b88;
       --accent-2: #35b9b2;
       --accent-soft: rgba(7,139,136,.13);
+      --term-text: #075f5c;
       --complement: #f47a2a;
       --complement-2: #ffb44c;
       --complement-soft: rgba(244,122,42,.13);
@@ -54,6 +55,7 @@
       --muted: #a8bac8;
       --dim: #7890a2;
       --accent-soft: rgba(24,184,177,.15);
+      --term-text: #d6fffb;
       --complement-soft: rgba(244,122,42,.16);
       --shadow: 0 24px 80px rgba(0,0,0,.38);
     }
@@ -288,6 +290,12 @@
     .hotspot-popover strong { display:block; padding-left:26px; margin-bottom:6px; font-size:15px; }
     .hotspot-popover p { margin:0; color:var(--muted); font-size:13px; line-height:1.75; }
     .hotspot-close { position:absolute; top:8px; left:8px; width:28px; height:28px; border:0; border-radius:9px; background:var(--soft); color:var(--text); cursor:pointer; }
+    .bilingual-term { display:inline!important;width:auto!important;min-width:0!important;min-height:0!important;margin:0!important;padding:0 2px!important;writing-mode:horizontal-tb!important;grid-row:auto!important;grid-column:auto!important;font:inherit!important;line-height:inherit!important;text-align:inherit!important;direction:inherit;border-bottom:1px dotted currentColor;color:var(--term-text)!important;cursor:help;outline:none; }
+    .bilingual-term:hover,.bilingual-term:focus-visible,.bilingual-term[aria-expanded="true"] { color:var(--accent)!important;border-bottom-color:currentColor; }
+    :is(.pyramid-level,.memory-core,.response-center,.resonance-hub,.funnel-step,.mirror-gap,.archetype-core,.availability-footer,.workshop-button:not(.secondary):not(.danger),.nav-btn.primary,.orbit-core) .bilingual-term { color:#fff!important; }
+    :is(.pyramid-level,.memory-core,.response-center,.resonance-hub,.funnel-step,.mirror-gap,.archetype-core,.availability-footer,.workshop-button:not(.secondary):not(.danger),.nav-btn.primary,.orbit-core) .bilingual-term:is(:hover,:focus-visible,[aria-expanded="true"]) { color:#fff!important;border-bottom-style:solid; }
+    .term-tooltip { position:fixed;z-index:120;width:max-content;max-width:min(280px,calc(100vw - 28px));padding:9px 12px;border:1px solid var(--line-strong);border-radius:11px;background:var(--surface-solid);color:var(--text);box-shadow:var(--shadow);direction:ltr;text-align:center;font-family:Inter,Arial,sans-serif;font-size:13px;font-weight:800;line-height:1.45;opacity:0;visibility:hidden;translate:0 6px;transition:.16s ease;pointer-events:none; }
+    .term-tooltip.open { opacity:1;visibility:visible;translate:0; }
 
     .definition-card,.comparison-card,.metric-card,.class-question,.case-study-dashboard,.workshop-board {
       border:1px solid var(--line); border-radius:var(--radius-lg); background:var(--surface-solid);
@@ -317,7 +325,7 @@
 
     /* Brand strategy presentation components */
     .brand-slide { display:grid; gap:clamp(16px,2.2vw,28px); position:relative; z-index:1; }
-    .core-message { width:fit-content; max-width:100%; margin-top:4px; padding:10px 15px; border-right:4px solid var(--accent); border-radius:10px; background:var(--accent-soft); color:var(--text); font-size:clamp(14px,1.3vw,18px); font-weight:850; line-height:1.7; }
+    .core-message { width:fit-content; max-width:100%; margin:4px auto 0; padding:10px 15px; border-right:4px solid var(--accent); border-radius:10px; background:var(--accent-soft); color:var(--text); font-size:clamp(14px,1.3vw,18px); font-weight:850; line-height:1.7; text-align:center; }
     .instructor-cue { padding:9px 13px; border:1px dashed rgba(244,122,42,.42); border-radius:11px; background:var(--complement-soft); color:var(--complement); font-size:13px; font-weight:800; }
     .en-label { direction:ltr; text-align:right; font-family:Inter,Arial,sans-serif; letter-spacing:.025em; }
     .big-word { font-family:Inter,Arial,sans-serif; font-size:clamp(32px,5.4vw,76px); font-weight:900; letter-spacing:-.055em; line-height:.95; }
@@ -329,9 +337,9 @@
     #brand-01 .slide-frame{overflow:hidden;background:radial-gradient(circle at 12% 18%,color-mix(in srgb,var(--complement-soft) 80%,transparent) 0 8%,transparent 30%),linear-gradient(135deg,var(--surface) 0 65%,color-mix(in srgb,var(--accent-soft) 66%,var(--surface)) 100%)}
     #brand-01 h1{white-space:nowrap}
     #brand-01 .brand-flow{width:100%;padding:13px;border:1px solid var(--line);border-radius:18px;background:color-mix(in srgb,var(--surface-solid) 90%,transparent);box-shadow:var(--shadow-sm)}
-    #brand-01 .brand-flow .flow-node{display:flex;align-items:center;justify-content:center;gap:7px;min-height:62px}
+    #brand-01 .brand-flow .flow-node{display:flex;align-items:center;justify-content:center;gap:7px;min-height:62px;direction:rtl}
     #brand-01 .flow-icon{width:21px;height:21px;flex:0 0 21px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-    #brand-01 .core-message{margin-inline-start:auto;border-right:4px solid var(--accent);background:linear-gradient(90deg,var(--accent-soft),transparent)}
+    #brand-01 .core-message{margin-inline:auto;border-right:4px solid var(--accent);background:linear-gradient(90deg,var(--accent-soft),transparent)}
     body.projector-mode #brand-01 h1{white-space:nowrap;font-size:clamp(48px,5vw,68px)!important}
     .meaning-chain__fa { color:var(--muted); font-size:14px; }
     .choice-duel { display:grid; grid-template-columns:1fr auto 1fr; align-items:stretch; gap:18px; }
@@ -667,7 +675,7 @@
 
     @media print {
       body { overflow:visible;background:white;color:#102d3f; }
-      .sidebar,.topbar,.bottom-bar,.ambient-grid,.motion-backdrop,.toast,.lesson-trigger,.lesson-drawer,.drawer-backdrop,.hotspot-popover { display:none; }
+      .sidebar,.topbar,.bottom-bar,.ambient-grid,.motion-backdrop,.toast,.lesson-trigger,.lesson-drawer,.drawer-backdrop,.hotspot-popover,.term-tooltip { display:none; }
       .app,.shell { display:block;height:auto; }
       .stage { padding:0;overflow:visible; }
       .slide { position:relative;inset:auto;display:block;opacity:1;visibility:visible;transform:none;page-break-after:always;width:100%;height:100vh;padding:20mm;overflow:hidden; }
@@ -827,6 +835,7 @@
     <button class="hotspot-close" id="hotspotCloseBtn" type="button" aria-label="بستن توضیح">×</button>
     <strong id="hotspotTitle"></strong><p id="hotspotText"></p>
   </aside>
+  <div class="term-tooltip" id="termTooltip" role="tooltip" aria-hidden="true"></div>
 
   <template id="mbaComponentTemplates">
     <section data-component="definition-card" class="definition-card"><div class="definition-card__term">عنوان مفهوم</div><p class="definition-card__text">تعریف روشن و کوتاه مفهوم.</p></section>
@@ -886,6 +895,25 @@
         case04:{title:"مرور کیفیت استدلال",overview:"V1 و V2 را براساس انسجام تصمیم، شواهد، ریسک، اقدام و KPI مقایسه کنید.",importance:"هدف یافتن تنها جواب صحیح نیست؛ کیفیت Diagnosis و منطق سازگاری اهمیت دارد.",example:"حفظ جایگاه تخصصی همراه با ساده‌سازی انتخاب یک فرضیه قابل دفاع است، نه حکم قطعی.",commonMistake:"تطبیق مکانیکی با تحلیل پیشنهادی مدرس."}
       };
 
+      const terminology = [
+        ["Brand Strategy","استراتژی برند"],["Brand Equity","ارزش ویژه برند"],["Brand Promise","وعده برند"],["Brand Definition","تعریف برند"],["Brand Decision Chain","زنجیره تصمیم برند"],["Brand Identity Prism","منشور هویت برند"],["Brand Identity","هویت برند"],["Brand Image","تصویر برند"],["Brand Knowledge","دانش برند"],["Brand Meaning","معنای برند"],["Brand Personality","شخصیت برند"],["Brand Resonance","طنین برند"],["Brand Salience","برجستگی برند"],["Brand Architecture","معماری برند"],["Distinctive Brand Assets","دارایی‌های متمایز برند"],["Distinctive Assets","دارایی‌های متمایز"],["Value Proposition","ارزش پیشنهادی"],["Customer-Based Brand Equity","ارزش ویژه برند مبتنی بر مشتری"],["Customer Memory","حافظه مشتری"],["Customer Response","واکنش مشتری"],["Meaningful Differentiation","تمایز معنادار"],["Mental Availability","دسترس‌پذیری ذهنی"],["Physical Availability","دسترس‌پذیری فیزیکی"],["Category Entry Points","موقعیت‌های ورود به رده"],["Behavioral Loyalty","وفاداری رفتاری"],["Attitudinal Attachment","دلبستگی نگرشی"],["Sense of Community","احساس تعلق اجتماعی"],["Active Engagement","مشارکت فعال"],["Identity–Image Gap","شکاف هویت و تصویر"],["Decision Review","مرور تصمیم"],["Full Rebranding","بازطراحی کامل برند"],["Simplify Choice","ساده‌سازی انتخاب"],["Strengthen Brand Assets","تقویت دارایی‌های برند"],["Improve Brand Delivery","بهبود تحویل وعده برند"],["Supporting Action","اقدام پشتیبان"],["Channel Training","آموزش کانال"],["Asset Measurement","اندازه‌گیری دارایی‌ها"],["Increase Media","افزایش رسانه"],["Awareness Gap","شکاف آگاهی"],["High Complexity","پیچیدگی زیاد"],["Premium Gap","شکاف ممتازبودن"],["Channel Feedback","بازخورد کانال"],["Asset Uncertainty","ابهام دارایی‌ها"],["Premium Evidence","شواهد ممتازبودن"],["Brand Tracking","پایش برند"],["Qualitative Evidence","شواهد کیفی"],["Missing Evidence","شواهد مفقود"],["Brand Intent","قصد برند"],["Brand Gap","شکاف برند"],["Brand Book","راهنمای برند"],["Brand Asset","دارایی برند"],["Media Budget","بودجه رسانه"],["Measurement System","سیستم اندازه‌گیری"],["Financial Valuation Model","مدل ارزش‌گذاری مالی"],["Repeat Purchase","خرید مجدد"],["Come to Mind","به ذهن آمدن"],["Easy to Buy","آسان‌بودن خرید"],["Performance","عملکرد"],["Imagery","تصویرسازی ذهنی"],["Judgments","قضاوت‌ها"],["Feelings","احساسات"],["Awareness","آگاهی"],["Consideration","قرارگرفتن در مجموعه انتخاب"],["Recognition","بازشناسی"],["Relationship","رابطه"],["Meaning","معنا"],["Memory","حافظه"],["Evidence","شواهد"],["Experience","تجربه"],["Choice","انتخاب"],["Touchpoints","نقاط تماس"],["Organization","سازمان"],["Positioning","جایگاه‌یابی"],["Identity","هویت"],["Image","تصویر"],["Equity","ارزش ویژه"],["Salience","برجستگی ذهنی"],["Depth","عمق"],["Breadth","گستره"],["Quality","کیفیت"],["Reliability","قابلیت اتکا"],["Efficiency","کارایی"],["Service","خدمت"],["Credibility","اعتبار"],["Superiority","برتری"],["Confidence","اطمینان"],["Archetype","کهن‌الگو"],["Personality","شخصیت"],["Narrative","روایت"],["Distinctiveness","متمایزبودن"],["Difference","تمایز"],["Fame","شناخت عمومی"],["Uniqueness","انحصار تداعی"],["Channel","کانال"],["Inventory","موجودی"],["Format","قالب عرضه"],["Risk","ریسک"],["KPI","شاخص کلیدی عملکرد"],["Challenge","چالش"],["Diagnosis","تشخیص"],["Dashboard","داشبورد"],["Pilot","آزمون محدود"],["Rebranding","بازطراحی برند"],["Repositioning","بازتعریف جایگاه"],["Rationale","منطق تصمیم"],["Logo","لوگو"],["Color","رنگ"],["Typography","تایپوگرافی"],["Packaging","بسته‌بندی"],["Advertising","تبلیغات"]
+      ].map(([source,fa])=>({source,fa,en:source}));
+      const glossaryPattern = new RegExp(terminology.map(item=>item.source.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).sort((a,b)=>b.length-a.length).join("|"),"g");
+      const termBySource = new Map(terminology.map(item=>[item.source,item]));
+      function applyGlossary(root=document) {
+        const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode(node){
+          if(!node.nodeValue?.trim()||node.parentElement?.closest("script,style,.bilingual-term,.term-tooltip,input,textarea,select,option,.tree-line"))return NodeFilter.FILTER_REJECT;
+          glossaryPattern.lastIndex=0;return glossaryPattern.test(node.nodeValue)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;
+        }});
+        const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
+        nodes.forEach(node=>{const fragment=document.createDocumentFragment();let last=0;glossaryPattern.lastIndex=0;for(const match of node.nodeValue.matchAll(glossaryPattern)){if(match.index>last)fragment.append(node.nodeValue.slice(last,match.index));const item=termBySource.get(match[0]);const span=document.createElement("span");span.className="bilingual-term";span.tabIndex=0;span.dataset.term=item.en;span.setAttribute("role","button");span.setAttribute("aria-label",`${item.fa}؛ اصطلاح انگلیسی: ${item.en}`);span.setAttribute("aria-expanded","false");span.textContent=item.fa;fragment.append(span);last=match.index+match[0].length;}if(last<node.nodeValue.length)fragment.append(node.nodeValue.slice(last));node.replaceWith(fragment);});
+      }
+      function localizeVisibleDigits(root=document) {
+        const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode(node){if(!/[0-9]/.test(node.nodeValue||"")||node.parentElement?.closest("script,style,.term-tooltip,input,textarea,select,option,.tree-line"))return NodeFilter.FILTER_REJECT;return NodeFilter.FILTER_ACCEPT;}});
+        const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
+        nodes.forEach(node=>{const text=node.nodeValue;if(/[A-Za-z]/.test(text)&&!/[\u0600-\u06ff]/.test(text))return;node.nodeValue=text.replace(/\d/g,(digit,offset)=>{const before=text.slice(Math.max(0,offset-12),offset),after=text.slice(offset+1,offset+13);return /[A-Za-z][A-Za-z0-9./-]*$/.test(before)||/^[A-Za-z0-9./-]*[A-Za-z]/.test(after)?digit:"۰۱۲۳۴۵۶۷۸۹"[digit];});});
+      }
+
       const lessonFields = [
         ["overview", "توضیح تکمیلی", false],
         ["importance", "چرا این موضوع مهم است؟", false],
@@ -920,12 +948,14 @@
       const hotspotTitle = document.getElementById("hotspotTitle");
       const hotspotText = document.getElementById("hotspotText");
       const hotspotCloseBtn = document.getElementById("hotspotCloseBtn");
+      const termTooltip = document.getElementById("termTooltip");
       const componentTemplates = document.getElementById("mbaComponentTemplates");
       let index = 0;
       let toastTimer;
       let touchStart = null;
       let lastDrawerTrigger = null;
       let activeHotspot = null;
+      let activeTerm = null;
 
       document.querySelectorAll("[data-deck-title]").forEach(el => el.textContent = deck.title);
       document.querySelectorAll("[data-presenter]").forEach(el => el.textContent = deck.presenter);
@@ -1108,6 +1138,7 @@
         lastDrawerTrigger = trigger;
         lessonDrawerTitle.textContent = lesson.title || slide.dataset.slideTitle || slide.querySelector("h1,h2")?.textContent || "درسنامه";
         lessonDrawerBody.replaceChildren(...lessonFields.map(([key, label, warning]) => createLessonBlock(label, lesson[key], warning)));
+        applyGlossary(lessonDrawer);localizeVisibleDigits(lessonDrawer);
         lessonDrawer.classList.add("open");
         lessonBackdrop.classList.add("open");
         lessonDrawer.setAttribute("aria-hidden", "false");
@@ -1147,6 +1178,7 @@
         activeHotspot = button;
         hotspotTitle.textContent = button.dataset.hotspotTitle || button.textContent.trim();
         hotspotText.textContent = button.dataset.hotspotText || "توضیح این نقطه در مرحله تولید محتوا تکمیل می‌شود.";
+        applyGlossary(hotspotPopover);localizeVisibleDigits(hotspotPopover);
         button.setAttribute("aria-expanded", "true");
         hotspotPopover.classList.add("open");
         hotspotPopover.setAttribute("aria-hidden", "false");
@@ -1158,6 +1190,9 @@
         hotspotPopover.classList.remove("open");
         hotspotPopover.setAttribute("aria-hidden", "true");
       }
+      function positionTerm(term){const rect=term.getBoundingClientRect(),tip=termTooltip.getBoundingClientRect();const left=Math.min(Math.max(14,rect.left+(rect.width-tip.width)/2),innerWidth-tip.width-14);const above=rect.top-tip.height-9,top=above>=14?above:Math.min(innerHeight-tip.height-14,rect.bottom+9);termTooltip.style.left=`${left}px`;termTooltip.style.top=`${top}px`;}
+      function openTerm(term){if(activeTerm&&activeTerm!==term)activeTerm.setAttribute("aria-expanded","false");activeTerm=term;termTooltip.textContent=term.dataset.term;term.setAttribute("aria-expanded","true");termTooltip.classList.add("open");termTooltip.setAttribute("aria-hidden","false");requestAnimationFrame(()=>positionTerm(term));}
+      function closeTerm(){activeTerm?.setAttribute("aria-expanded","false");activeTerm=null;termTooltip.classList.remove("open");termTooltip.setAttribute("aria-hidden","true");}
       function createComponent(name) {
         const source = componentTemplates.content.querySelector(`[data-component="${name}"]`);
         return source ? source.cloneNode(true) : null;
@@ -1401,6 +1436,11 @@
       lessonCloseBtn.addEventListener("click", closeLesson);
       lessonBackdrop.addEventListener("click", closeLesson);
       hotspotCloseBtn.addEventListener("click", closeHotspot);
+      document.addEventListener("pointerover",event=>{const term=event.target.closest?.(".bilingual-term");if(term&&event.pointerType!=="touch")openTerm(term);});
+      document.addEventListener("pointerout",event=>{const term=event.target.closest?.(".bilingual-term");if(term&&event.pointerType!=="touch"&&!term.contains(event.relatedTarget))closeTerm();});
+      document.addEventListener("focusin",event=>{const term=event.target.closest?.(".bilingual-term");if(term)openTerm(term);});
+      document.addEventListener("focusout",event=>{if(event.target.closest?.(".bilingual-term"))closeTerm();});
+      document.addEventListener("click",event=>{const term=event.target.closest?.(".bilingual-term");if(term){event.preventDefault();openTerm(term);return;}if(activeTerm)closeTerm();});
       document.addEventListener("pointerdown", event => {
         if (!hotspotPopover.classList.contains("open")) return;
         if (hotspotPopover.contains(event.target) || event.target.closest?.(".hotspot")) return;
@@ -1425,6 +1465,8 @@
           else if (event.key === "Tab") trapDrawerFocus(event);
           return;
         }
+        if (activeTerm && event.key === "Escape") { event.preventDefault(); closeTerm(); return; }
+        if (event.target?.closest?.(".bilingual-term") && ["Enter"," "].includes(event.key)) { event.preventDefault(); activeTerm===event.target?closeTerm():openTerm(event.target); return; }
         if (hotspotPopover.classList.contains("open") && event.key === "Escape") { event.preventDefault(); closeHotspot(); return; }
         const targetTag = event.target?.tagName;
         if (["INPUT", "TEXTAREA", "SELECT"].includes(targetTag)) return;
@@ -1450,6 +1492,7 @@
       window.addEventListener("resize", () => {
         if (innerWidth > 900) setSidebar(false);
         if (activeHotspot) positionHotspot(activeHotspot);
+        if (activeTerm) positionTerm(activeTerm);
         scheduleFit();
       });
       window.addEventListener("hashchange", () => {
@@ -1467,12 +1510,14 @@
         fitMutationQueued = true;
         requestAnimationFrame(() => {
           fitMutationQueued = false;
+          applyGlossary(document.getElementById("stage"));localizeVisibleDigits(document.getElementById("stage"));
           markProjectorSmallText(document.body.classList.contains("projector-mode"));
           scheduleFit();
         });
       }).observe(document.getElementById("stage"), { subtree:true, childList:true, characterData:true });
 
       try {
+        applyGlossary(document.getElementById("stage"));localizeVisibleDigits(document.getElementById("stage"));
         setTheme(localStorage.getItem("html-deck-theme") || "light");
         setProjector(localStorage.getItem("html-deck-projector") === "true");
       } catch { setTheme("light"); setProjector(false); }
